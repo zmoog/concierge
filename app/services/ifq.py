@@ -27,12 +27,8 @@ class IFQ(object):
             login='Accedi')
 
         edition_payload = dict(
-            # edition_date='30/05/2015',
             edition_date=pub_date.strftime('%d/%m/%Y'),
-            # edition_date_nonce=edition_date_nonce,
             _wp_http_referer='/abbonati/')
-
-        # logging.debug('login_payload: {}'.format(login_payload))
 
         with requests.Session() as session:
 
