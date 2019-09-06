@@ -107,5 +107,6 @@ venv.bak/
 .serverless
 node_modules
 
-# vscode
+# IDEs
 .vscode
+.idea

@@ -5,9 +5,9 @@ import requests
 
 from lxml import html
 
-
 IFQ_LOGIN_URL = 'https://shop.ilfattoquotidiano.it/login/'
 IFQ_ARCHIVE_URL = 'https://shop.ilfattoquotidiano.it/archivio-edizioni/'
+
 
 # logging.basicConfig(level=logging.DEBUG)
 
@@ -71,7 +71,6 @@ class IFQ(object):
             resp = session.post(IFQ_ARCHIVE_URL,
                                 data=edition_payload,
                                 stream=True)
-
 
             if resp.status_code != 200:
                 # print(resp.text)
