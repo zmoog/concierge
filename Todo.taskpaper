@@ -1,0 +1,12 @@
+Business:
+	- schedule the workflow
+		- check the current dates on the dropbox archive to discover the time the new issues are published on the web site.
+	- test the wait state
+	- add error handling and retry policy
+	
+Make it production-ready:
+	- logging
+	
+Ideas:
+- IFQ: move old issues to S3
+	- monitor Dropbox usage and move stuff when the usage is above 90%
