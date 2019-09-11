@@ -78,10 +78,10 @@ functions:
 
 stepFunctions:
   stateMachines:
-    hello:
+    ifqdownload:
       name: IFQDownloadStateMachine
       definition:
-        Comment: "A Hello World example of the Amazon States Language using an AWS Lambda Function"
+        Comment: "Download a IFQ issue from the newpaper website"
         StartAt: CheckIfAlreadyDownloaded
         States:
 
@@ -112,20 +112,16 @@ stepFunctions:
             Choices:
               - Variable: "$.available"
                 BooleanEquals: true
-                Next: PublishToDropbox
+                Next: SuccessState
               - Variable: "$.available"
                 BooleanEquals: false
                 Next: WaitState
             Default: DefaultState
+            
           WaitState:
             Type: Wait
             Seconds: 900
             Next: DownloadFromIfqState
-
-          PublishToDropbox:
-            Type: Task
-            Resource: "arn:aws:lambda:#{AWS::Region}:#{AWS::AccountId}:function:${self:service}-${opt:stage}-publish-to-dropbox"
-            Next: SuccessState
 
           SuccessState:
             Type: Succeed
