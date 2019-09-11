@@ -28,3 +28,15 @@ $ aws ssm put-parameter --name dropboxAccessToken --type String --value xYz123..
     "Version": 1
 }
 ```
+
+### Slack
+
+```bash
+$ aws ssm put-parameter --name concierge-dev-skack-webhook-url --type String --value 'https://...'
+```
+
+Note: when adding a URL as parameter value the AWS CLI may attempt to follow the link. This behaviour can be overcome, as described in https://github.com/aws/aws-cli/issues/1475 addind a simple entry in the profile section of your `~/.aws/config`:
+
+```
+cli_follow_urlparam = false
+```

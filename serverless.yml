@@ -54,6 +54,7 @@ provider:
     DROPBOX_ACCESS_TOKEN: ${ssm:dropboxAccessToken}
     IFQ_USERNAME: ${ssm:ifqUsername}
     IFQ_PASSWORD: ${ssm:ifqPassword}
+    SLACK_WEBHOOK_URL: ${ssm:concierge-dev-skack-webhook-url}
 
 # you can add packaging information here
 package:
@@ -73,8 +74,6 @@ functions:
   download-from-ifq:
     handler: functions/download-from-ifq/download.handler
     timeout: 30 # download a 8M file from the IFQ site may require some time ..
-  publish-to-dropbox:
-    handler: functions/publish-to-dropbox/publish.handler
 
 stepFunctions:
   stateMachines:

@@ -6,6 +6,8 @@ from app.services.dropbox import DropboxService
 from app.services.ifq import IFQ
 from app.tasks import Ifq2DropboxTask
 from app.services.toggl import TogglService, TogglConfig
+from app.services.slack import SlackConfig, SlackService
+from app.intents.toggl import TogglSummary
 
 # @pytest.fixture(scope="session")
 # def tmp_dir(tmpdir_factory):
@@ -40,4 +42,16 @@ def toggl_config():
 @pytest.fixture(scope="session")
 def toggl_service(toggl_config):
     return TogglService(toggl_config)
+
+@pytest.fixture(scope="session")
+def summary_intent(toggl_service, slack_service):
+    return TogglSummary(toggl_service, slack_service)
+
+@pytest.fixture(scope="session")
+def slack_config():
+    return SlackConfig(webhook_url=os.environ["SLACK_WEBHOOK_URL"])
+
+@pytest.fixture(scope="session")
+def slack_service(slack_config):
+    return SlackService(slack_config)
 
