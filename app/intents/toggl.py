@@ -1,13 +1,18 @@
 import json
+import logging
 
 
-class TogglSummary(object):
+class TogglSummaryIntent(object):
+    """Fetches the report data from Toggl and format as a Slack message.
+    """
     
-    def __init__(self, toggl_service, slack_service):
+    def __init__(self, toggl_service,):
+        self.logger = logging.getLogger(__name__)
         self.toggl = toggl_service
-        self.slack = slack_service
 
     def execute(self, execution_id: str, entities: dict):
+        """Executes the intent using the given entities
+        """
 
         summary = self.toggl.summary(entities["since"], entities["until"])
 
@@ -17,8 +22,10 @@ class TogglSummary(object):
                 "text": "There are no entries for this date."
             }
 
-        print(json.dumps(summary, indent=2))
+        if self.logger.isEnabledFor("DEBUG"):
+            self.logger.debug(json.dumps(summary, indent=2))
 
+        # TODO: should we move to the new Slack block api for messages?
         attachments = [
             {
                 "title": entry["title"]["project"], 
@@ -27,11 +34,7 @@ class TogglSummary(object):
             } for entry in summary["data"]
         ]
 
-        message = {
+        return {
             "text": "Toggl Summary",
             "attachments": attachments
         }
-
-        self.slack.post(message)
-
-        return message
