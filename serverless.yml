@@ -27,6 +27,7 @@ plugins:
 provider:
   name: aws
   runtime: python3.7
+  logRetentionInDays: 30
 
 # you can overwrite defaults here
 #  stage: dev
@@ -50,11 +51,16 @@ provider:
 
   # you can define service wide environment variables here
   environment:
+    LOG_LEVEL: INFO
     DROPBOX_ROOT_FOLDER: ${ssm:dropboxRootFolder}
     DROPBOX_ACCESS_TOKEN: ${ssm:dropboxAccessToken}
     IFQ_USERNAME: ${ssm:ifqUsername}
     IFQ_PASSWORD: ${ssm:ifqPassword}
     SLACK_WEBHOOK_URL: ${ssm:concierge-dev-skack-webhook-url}
+
+    TOGGL_API_TOKEN: ${ssm:concierge-dev-toggl-api-token}
+    TOGGL_USER_AGENT: ${ssm:concierge-dev-toggl-user-agent}
+    TOGGL_WORKSPACE_ID: ${ssm:concierge-dev-toggl-workspace-id}
 
 # you can add packaging information here
 package:
@@ -69,11 +75,27 @@ custom:
     dockerizePip: non-linux
 
 functions:
+
   check-if-downloaded:
     handler: functions/check-if-downloaded/check.handler
+
   download-from-ifq:
     handler: functions/download-from-ifq/download.handler
     timeout: 30 # download a 8M file from the IFQ site may require some time ..
+
+  run-intent:
+    handler: functions/run-intent/run.handler
+    events:
+      - schedule:
+          name: ${self:service}-${opt:stage, self:provider.stage}-TogglSummaryIntent
+          rate: cron(15 8 ? * MON-FRI *)
+          enabled: true
+          # input:
+          #   name: TogglSummaryIntent
+          #   entities: 
+          #     period:
+          #       since: "2019-09-12"
+          #       until: "2019-09-12"
 
 stepFunctions:
   stateMachines:

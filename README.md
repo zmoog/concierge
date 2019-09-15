@@ -40,3 +40,11 @@ Note: when adding a URL as parameter value the AWS CLI may attempt to follow the
 ```
 cli_follow_urlparam = false
 ```
+
+### Toggl
+
+```bash
+$ aws ssm put-parameter --name concierge-dev-toggl-api-token --type String --value 'xyz'
+$ aws ssm put-parameter --name concierge-dev-toggl-user-agent --type String --value 'xyz'
+$ aws ssm put-parameter --name concierge-dev-toggl-workspace-id --type String --value 'xyz'
+```

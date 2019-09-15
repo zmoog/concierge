@@ -19,9 +19,9 @@ class SlackService(object):
     def post(self, message):
         """Posts the message to to channel configured in the webhook.
         """
-        if self.logger.isEnabledFor("DEBUG"):
+        if self.logger.isEnabledFor(logging.DEBUG):
             self.logger.debug(message)
-            
+
         requests.post(self.config.webhook_url, headers={"Content-type": "application/json"}, data=json.dumps(message))
 
 
