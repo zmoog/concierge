@@ -17,16 +17,18 @@ This bot use some external service that require some sort of secret credential t
 
 See [Managing secrets, API keys and more with Serverless](https://serverless.com/blog/serverless-secrets-api-keys/) on how to access this kind of data with the Serverless Framework.
 
+### IFQ
+
+```bash
+$ aws ssm put-parameter --name concierge/dev/ifq-username --type String --value 'me@gmail.com'
+$ aws ssm put-parameter --name concierge/dev/ifq-password --type String --value 'secret!'
+```
+
 ### Dropbox
 
 ```bash
-$ aws ssm put-parameter --name ifqUsername --type String --value 'me@gmail.com'
-$ aws ssm put-parameter --name ifqPassword --type String --value 'secret!'
-$ aws ssm put-parameter --name dropboxRootFolder --type String --value '/Il Fatto Quotidiano'
-$ aws ssm put-parameter --name dropboxAccessToken --type String --value xYz123..
-{
-    "Version": 1
-}
+$ aws ssm put-parameter --name concierge/dev/dropbox-root-folder --type String --value '/Il Fatto Quotidiano'
+$ aws ssm put-parameter --name concierge/dev/dropbox-access-token --type String --value xYz123..
 ```
 
 ### Slack
@@ -41,10 +43,14 @@ Note: when adding a URL as parameter value the AWS CLI may attempt to follow the
 cli_follow_urlparam = false
 ```
 
+```bash
+$ aws ssm put-parameter --name concierge/dev/slack-webhook-url --type String --value 'xyz'
+```
+
 ### Toggl
 
 ```bash
-$ aws ssm put-parameter --name concierge-dev-toggl-api-token --type String --value 'xyz'
-$ aws ssm put-parameter --name concierge-dev-toggl-user-agent --type String --value 'xyz'
-$ aws ssm put-parameter --name concierge-dev-toggl-workspace-id --type String --value 'xyz'
+$ aws ssm put-parameter --name concierge/dev/toggl-api-token --type String --value 'xyz'
+$ aws ssm put-parameter --name concierge/dev/toggl-user-agent --type String --value 'xyz'
+$ aws ssm put-parameter --name concierge/dev/toggl-workspace-id --type String --value 'xyz'
 ```

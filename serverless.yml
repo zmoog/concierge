@@ -52,15 +52,14 @@ provider:
   # you can define service wide environment variables here
   environment:
     LOG_LEVEL: INFO
-    DROPBOX_ROOT_FOLDER: ${ssm:dropboxRootFolder}
-    DROPBOX_ACCESS_TOKEN: ${ssm:dropboxAccessToken}
-    IFQ_USERNAME: ${ssm:ifqUsername}
-    IFQ_PASSWORD: ${ssm:ifqPassword}
-    SLACK_WEBHOOK_URL: ${ssm:concierge-dev-skack-webhook-url}
-
-    TOGGL_API_TOKEN: ${ssm:concierge-dev-toggl-api-token}
-    TOGGL_USER_AGENT: ${ssm:concierge-dev-toggl-user-agent}
-    TOGGL_WORKSPACE_ID: ${ssm:concierge-dev-toggl-workspace-id}
+    DROPBOX_ROOT_FOLDER: ${ssm:/concierge/dev/dropbox-root-folder}
+    DROPBOX_ACCESS_TOKEN: ${ssm:/concierge/dev/dropbox-access-token}
+    IFQ_USERNAME: ${ssm:/concierge/dev/ifq-username}
+    IFQ_PASSWORD: ${ssm:/concierge/dev/ifq-password}
+    SLACK_WEBHOOK_URL: ${ssm:/concierge/dev/slack-webhook-url}
+    TOGGL_API_TOKEN: ${ssm:/concierge/dev/toggl-api-token}
+    TOGGL_USER_AGENT: ${ssm:/concierge/dev/toggl-user-agent}
+    TOGGL_WORKSPACE_ID: ${ssm:/concierge/dev/toggl-workspace-id}
 
 # you can add packaging information here
 package:
