@@ -87,7 +87,7 @@ functions:
     events:
       - schedule:
           name: ${self:service}-${opt:stage, self:provider.stage}-TogglSummaryIntent
-          rate: cron(15 8 ? * MON-FRI *)
+          rate: cron(30 7 ? * MON-FRI *)
           enabled: true
           # input:
           #   name: TogglSummaryIntent
