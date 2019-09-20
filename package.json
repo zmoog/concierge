@@ -18,10 +18,10 @@
   },
   "homepage": "https://github.com/zmoog/concierge#readme",
   "dependencies": {
-    "serverless": "^1.51.0",
     "serverless-python-requirements": "^5.0.0"
   },
   "devDependencies": {
+    "serverless": "^1.52.1",
     "serverless-pseudo-parameters": "^2.4.0",
     "serverless-step-functions": "^2.6.0"
   }
