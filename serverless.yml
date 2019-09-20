@@ -23,6 +23,7 @@ plugins:
   - serverless-python-requirements
   - serverless-step-functions
   - serverless-pseudo-parameters
+  - serverless-domain-manager
 
 provider:
   name: aws
@@ -63,15 +64,23 @@ provider:
 
 # you can add packaging information here
 package:
- include:
-   - app/**
-   - functions/**
- exclude:
-   - "**"
+  # individually: true
+  include:
+    - app/**
+    - functions/**
+  exclude:
+    - "**"
 
 custom:
   pythonRequirements:
     dockerizePip: non-linux
+  customDomain:
+    domainName: '${self:service}-${opt:stage, self:provider.stage}-api.weirdco.de'
+    basePath: ''
+    stage: ${self:provider.stage}
+    createRoute53Record: true
+    certificateName: '${self:service}-${opt:stage, self:provider.stage}-api.weirdco.de'
+    endpointType: REGIONAL
 
 functions:
 
@@ -205,6 +214,23 @@ stepFunctions:
 #       Value: "Some output value"
 
 resources:
+  Resources:
+    APIGatewayCertificate:
+      Type: AWS::CertificateManager::Certificate
+      Properties:
+        DomainName:  '${self:service}-${opt:stage, self:provider.stage}-api.weirdco.de'
+        DomainValidationOptions:
+          - DomainName:  '${self:service}-${opt:stage, self:provider.stage}-api.weirdco.de'
+            ValidationDomain:  '${self:service}-${opt:stage, self:provider.stage}-api.weirdco.de'
+        ValidationMethod: DNS
+        Tags:
+          - Key: Name
+            Value: ${self:service}-${opt:stage, self:provider.stage}
+          - Key: ApplicationName
+            Value: ${self:service}-${opt:stage, self:provider.stage}
+          - Key: Environment
+            Value: ${opt:stage, self:provider.stage}
+
   Outputs:
     IFQDownloadStateMachine:
       Description: The ARN of the example state machine

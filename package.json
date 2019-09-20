@@ -17,12 +17,12 @@
     "url": "https://github.com/zmoog/concierge/issues"
   },
   "homepage": "https://github.com/zmoog/concierge#readme",
-  "dependencies": {
-    "serverless-python-requirements": "^5.0.0"
-  },
+  "dependencies": {},
   "devDependencies": {
-    "serverless": "^1.52.1",
+    "serverless": "^1.52.2",
+    "serverless-domain-manager": "^3.3.0",
     "serverless-pseudo-parameters": "^2.4.0",
+    "serverless-python-requirements": "^5.0.0",
     "serverless-step-functions": "^2.6.0"
   }
 }
