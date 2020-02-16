@@ -1,56 +1,99 @@
 # Concierge
 
-The Concierge is a serverless application that handles all the boring and repetivive tasks that I can handle to it.
+A Slack bot to handle boring and repetitive stuff.
 
-## Features
+Here's few examples:
 
-### IFQ
+ * Download the latest issue from the [il Fatto Quotidiano](https://www.ilfattoquotidiano.it) website and store it in a Dropbox folder (requires a valid subscription to the newspaper).
+ * Fetch the [Toggl](https://toggl.com) summary from the latest working day, and post it to Slack channel.
 
-The Concierge will handle the download of new issues of the Il Fatto Quotidiano newspaper (I'm a paid subscriber!) publishing them to a family owner Dropbox account for ease of use.
+## Getting Started
 
-https://serverless.com/framework/docs/providers/aws/events/schedule/
+These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
 
+### Prerequisites
 
-## Secrets
+ * [Serverless Framework](https://serverless.com) — this may require you to install Node.js depending on how you plan to install Serverless, see the [Serverless Framework Getting Started](https://serverless.com/framework/docs/getting-started/) page for more details.
+ * [Python](https://www.python.org) 3.7 — all the code is written in Python.
+ * [Pipenv](https://pipenv.kennethreitz.org/en/latest/) the so called "Python Dev Workflow for Humans"
+ * An [AWS](https://aws.amazon.com) account — the bot is a serverless application using Lambda, Step Functions, and other services. 
 
-This bot use some external service that require some sort of secret credential to use. We're using the Parameter Store from the [AWS Systems Manager](https://docs.aws.amazon.com/systems-manager/latest/APIReference/Welcome.html) service.
-
-See [Managing secrets, API keys and more with Serverless](https://serverless.com/blog/serverless-secrets-api-keys/) on how to access this kind of data with the Serverless Framework.
-
-### IFQ
-
-```bash
-$ aws ssm put-parameter --name concierge/dev/ifq-username --type String --value 'me@gmail.com'
-$ aws ssm put-parameter --name concierge/dev/ifq-password --type String --value 'secret!'
-```
-
-### Dropbox
-
-```bash
-$ aws ssm put-parameter --name concierge/dev/dropbox-root-folder --type String --value '/Il Fatto Quotidiano'
-$ aws ssm put-parameter --name concierge/dev/dropbox-access-token --type String --value xYz123..
-```
-
-### Slack
-
-```bash
-$ aws ssm put-parameter --name concierge-dev-skack-webhook-url --type String --value 'https://...'
-```
-
-Note: when adding a URL as parameter value the AWS CLI may attempt to follow the link. This behaviour can be overcome, as described in https://github.com/aws/aws-cli/issues/1475 addind a simple entry in the profile section of your `~/.aws/config`:
+What things you need to install the software and how to install them
 
 ```
-cli_follow_urlparam = false
+Give examples
 ```
 
-```bash
-$ aws ssm put-parameter --name concierge/dev/slack-webhook-url --type String --value 'xyz'
+### Installing
+
+A step by step series of examples that tell you how to get a development env running
+
+Say what the step will be
+
+```
+$ git clone https://github.com/zmoog/concierge.git
+
+$ cd concierge
 ```
 
-### Toggl
+And install all the Serverless Framework dependencies:
 
-```bash
-$ aws ssm put-parameter --name concierge/dev/toggl-api-token --type String --value 'xyz'
-$ aws ssm put-parameter --name concierge/dev/toggl-user-agent --type String --value 'xyz'
-$ aws ssm put-parameter --name concierge/dev/toggl-workspace-id --type String --value 'xyz'
 ```
+$ npm install 
+```
+
+End with an example of getting some data out of the system or using it for a little demo
+
+## Running the tests
+
+Explain how to run the automated tests for this system
+
+### Break down into end to end tests
+
+Explain what these tests test and why
+
+```
+Give an example
+```
+
+### And coding style tests
+
+Explain what these tests test and why
+
+```
+Give an example
+```
+
+## Deployment
+
+Add additional notes about how to deploy this on a live system
+
+## Built With
+
+* [Dropwizard](http://www.dropwizard.io/1.0.2/docs/) - The web framework used
+* [Maven](https://maven.apache.org/) - Dependency Management
+* [ROME](https://rometools.github.io/rome/) - Used to generate RSS Feeds
+
+## Contributing
+
+Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c63ec426) for details on our code of conduct, and the process for submitting pull requests to us.
+
+## Versioning
+
+We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/your/project/tags). 
+
+## Authors
+
+* **Billie Thompson** - *Initial work* - [PurpleBooth](https://github.com/PurpleBooth)
+
+See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
+
+## Acknowledgments
+
+* Hat tip to anyone whose code was used
+* Inspiration
+* etc
