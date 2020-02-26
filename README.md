@@ -17,6 +17,7 @@ These instructions will get you a copy of the project up and running on your loc
  * [Python](https://www.python.org) — all the code is written in Python, tested with Python version 3.7.
  * [Pipenv](https://pipenv.kennethreitz.org/en/latest/) — the so called "Python Dev Workflow for Humans", used to handle Python virtual environment and dependencies.
  * An [AWS](https://aws.amazon.com) account — the bot is a serverless application using Lambda, Step Functions, and other services. 
+ * AWS [CLI](https://aws.amazon.com/cli/) - the CLI to handle Systems Manager parameters
 
 What things you need to install the software and how to install them
 
