@@ -1,10 +1,10 @@
 import json
 import collections
-import datetime
 import requests
 
 
-TogglConfig = collections.namedtuple("TogglConfig", "api_token user_agent workspace_id")
+TogglConfig = collections.namedtuple(
+    "TogglConfig", "api_token user_agent workspace_id")
 
 
 class TogglService(object):
@@ -14,6 +14,10 @@ class TogglService(object):
 
     def summary(self, since, until):
         """Fetches the Toggl report between `since` and `until` dates.
+
+        Toggl Reports API v2
+        https://github.com/toggl/toggl_api_docs/blob/master/reports.md
+        https://github.com/toggl/toggl_api_docs/blob/master/reports/summary.md  
         """
         url = f"https://toggl.com/reports/api/v2/summary?workspace_id={self.config.workspace_id}&since={since}&until={until}&user_agent={self.config.user_agent}"
 
