@@ -3,6 +3,27 @@ import humanize
 import logging
 
 
+def _find_previous_business_day(day: datetime.date):
+    """Find the previous business day of the given date.
+
+    The current definition of 'business day' is quite simple
+    and limited to week days between mon-fri. It doesn't
+    consider holidays at all (it can be a future improvement).
+
+    :param day: the date of the given day. :return: a date object
+    of the previous business day (see the description above
+    for a devinition of the 'business day' term.
+    """
+    business_days = [0, 1, 2, 3, 4]  # Monday to Friday
+
+    previous_day = day - datetime.timedelta(days=1)
+
+    while previous_day.weekday() not in business_days:
+        previous_day -= datetime.timedelta(days=1)
+
+    return previous_day
+
+
 class TogglSummaryIntent(object):
     """Fetches the report data from Toggl and format as a Slack message.
     """
@@ -18,7 +39,7 @@ class TogglSummaryIntent(object):
             since = entities["since"]
             until = entities["until"]
         else:
-            business_day = self._find_previous_business_day(
+            business_day = _find_previous_business_day(
                 datetime.date.today()
             )
             since = business_day.strftime("%Y-%m-%d")
@@ -57,23 +78,3 @@ class TogglSummaryIntent(object):
                 "text": text,
                 "mrkdwn_in": ["text"]
         }
-
-    def _find_previous_business_day(self, day: datetime.date):
-        """Find the previous business day of the given date.
-
-        The current definition of 'business day' is quite simple
-        and limited to week days between mon-fri. It doesn't
-        consider holidays at all (it can be a future improvement).
-
-        :param date: the date of the given day. :return: a date object
-        of the previous business day (see the description above
-        for a devinition of the 'business day' term.
-        """
-        business_days = [0, 1, 2, 3, 4]  # Monday to Friday
-
-        previous_day = day - datetime.timedelta(days=1)
-
-        while previous_day.weekday() not in business_days:
-            previous_day -= datetime.timedelta(days=1)
-
-        return previous_day
