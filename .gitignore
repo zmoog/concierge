@@ -112,4 +112,4 @@ node_modules
 .idea
 
 # Local files
-env.sh
+setenv-*.sh
