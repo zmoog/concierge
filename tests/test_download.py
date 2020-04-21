@@ -13,8 +13,8 @@ today = datetime.date.today()
 def test_download(ifq):
     # filename = today.strftime('ilfatto-%Y%m%d.pdf')
 
-    # tmp_file = ifq.download_pdf(today)
-    tmp_file = '/var/folders/vl/dc89lvrs3xn9xf55xgwzm6n5fdnj16/T/tmp2c5ez2az'
+    tmp_file = ifq.download_pdf(today)
+    # tmp_file = '/var/folders/vl/dc89lvrs3xn9xf55xgwzm6n5fdnj16/T/tmp2c5ez2az'
     print(tmp_file)
 
     assert os.path.exists(tmp_file)

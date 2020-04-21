@@ -86,15 +86,17 @@ functions:
     handler: functions/run-intent/run.handler
     events:
       - schedule:
-          name: ${self:service}-${opt:stage, self:provider.stage}-TogglSummaryIntent
-          rate: cron(30 7 ? * MON-FRI *)
+          name: ${self:service}-${opt:stage, self:provider.stage}-last-business-day
+          rate: cron(30 6 ? * MON-FRI *)
           enabled: true
-          # input:
-          #   name: TogglSummaryIntent
-          #   entities: 
-          #     period:
-          #       since: "2019-09-12"
-          #       until: "2019-09-12"
+          input:
+            when: previous_business_day
+      - schedule:
+          name: ${self:service}-${opt:stage, self:provider.stage}-today
+          rate: cron(30 16 ? * MON-FRI *)
+          enabled: true
+          input:
+            when: today
 
 stepFunctions:
   stateMachines:

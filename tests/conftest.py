@@ -23,13 +23,16 @@ from app.intents.toggl import TogglSummaryIntent
 def dropbox():
     return DropboxService(os.environ['DROPBOX_ROOT_FOLDER'], os.environ['DROPBOX_ACCESS_TOKEN'])
 
+
 @pytest.fixture(scope="session")
 def ifq():
     return IFQ(os.environ['IFQ_USERNAME'], os.environ['IFQ_PASSWORD'])
 
+
 @pytest.fixture(scope="session")
 def ifq2dropbox(ifq, dropbox):
     return Ifq2DropboxTask(ifq, dropbox)
+
 
 @pytest.fixture(scope="session")
 def toggl_config():
@@ -39,19 +42,22 @@ def toggl_config():
         os.environ["TOGGL_WORKSPACE_ID"],
     )
 
+
 @pytest.fixture(scope="session")
 def toggl_service(toggl_config):
     return TogglService(toggl_config)
+
 
 @pytest.fixture(scope="session")
 def summary_intent(toggl_service, slack_service):
     return TogglSummaryIntent(toggl_service)
 
+
 @pytest.fixture(scope="session")
 def slack_config():
     return SlackConfig(webhook_url=os.environ["SLACK_WEBHOOK_URL"])
 
+
 @pytest.fixture(scope="session")
 def slack_service(slack_config):
     return SlackService(slack_config)
-
