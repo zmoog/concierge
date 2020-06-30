@@ -11,7 +11,7 @@ flake8 = "*"
 [packages]
 dropbox = "==9.5.0"
 requests = "==2.24.0"
-lxml = "==4.5.0"
+lxml = "==4.5.1"
 humanize = "==2.4.1"
 
 [requires]
