@@ -9,7 +9,7 @@ pypdf4 = "==1.27.0"
 flake8 = "*"
 
 [packages]
-dropbox = "==9.5.0"
+dropbox = "==10.2.0"
 requests = "==2.24.0"
 lxml = "==4.5.2"
 humanize = "==2.5.0"
