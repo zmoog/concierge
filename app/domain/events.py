@@ -22,6 +22,7 @@ class IFQIssueAlreadyExists(Event):
 
 @dataclass
 class IFQIssueDownloadFailed(Event):
+    filename: str
     error: Exception
 
 

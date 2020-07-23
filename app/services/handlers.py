@@ -2,8 +2,6 @@ import datetime
 from typing import List
 
 from humanize import naturaldelta
-from refurbished import Store
-from refurbished.parser import Product
 
 from app.adapters import terminal
 from app.domain import commands, events
@@ -30,7 +28,8 @@ def summarize(cmd: commands.Summarize, uow: UnitOfWork) -> List[events.Event]:
                 duration = naturaldelta(
                     datetime.timedelta(milliseconds=item_duration)
                 )
-                items_text += f" * {item['title']['time_entry']} ({duration})\n"
+                items_text += \
+                    f" * {item['title']['time_entry']} ({duration})\n"
 
             x = naturaldelta(
                 datetime.timedelta(milliseconds=project_duration)
@@ -56,7 +55,9 @@ def check_refurbished(
 
             text = f"Found {len(products)} {product}(s):\n\n"
             for p in products:
-                text += f"- {p.name} at ~{p.previous_price}~ *{p.price}* (-{p.savings_price})\n"
+                text += \
+                    f"- {p.name} at ~{p.previous_price}~ \
+*{p.price}* (-{p.savings_price})\n"
             _events.append(
                 events.RefurbishedProductAvailable(text=text)
             )
@@ -90,6 +91,15 @@ def log_entries_summarized(
 ):
     """Logs the event in the termimal"""
     terminal.log(event.summary)
+
+
+def log_event(
+    event: events.Event,
+    uow: UnitOfWork
+):
+    """"Logs events"""
+    text = str(event)
+    terminal.log(text)
 
 
 def notify_entries_summarized(
