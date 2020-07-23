@@ -1,0 +1,147 @@
+{
+    "total_grand": 59473052,
+    "total_billable": 0,
+    "total_currencies": [
+        {
+            "currency": "EUR",
+            "amount": 0.0
+        }
+    ],
+    "data": [
+        {
+            "id": 153201265,
+            "title": {
+                "project": "Arduino",
+                "client": "Arduino",
+                "color": "0",
+                "hex_color": "#bf7000"
+            },
+            "time": 40782052,
+            "total_currencies": [
+                {
+                    "currency": "EUR",
+                    "amount": 0.0
+                }
+            ],
+            "items": [
+                {
+                    "title": {
+                        "time_entry": "AEK R2: check datocms upload"
+                    },
+                    "time": 1349000,
+                    "cur": "EUR",
+                    "sum": 0.0,
+                    "rate": 0.0
+                },
+                {
+                    "title": {
+                        "time_entry": "Classroom: meeting w/ Luca Osti"
+                    },
+                    "time": 1985000,
+                    "cur": "EUR",
+                    "sum": 0.0,
+                    "rate": 0.0
+                },
+                {
+                    "title": {
+                        "time_entry": "Contact Us: add tags in Support API"
+                    },
+                    "time": 6672000,
+                    "cur": "EUR",
+                    "sum": 0.0,
+                    "rate": 0.0
+                },
+                {
+                    "title": {
+                        "time_entry": "\ud83c\udf0a Inbox"
+                    },
+                    "time": 2344731,
+                    "cur": "EUR",
+                    "sum": 0.0,
+                    "rate": 0.0
+                },
+                {
+                    "title": {
+                        "time_entry": "IoT Cloud: 'measured at' support added [add dual-write]"
+                    },
+                    "time": 5955949,
+                    "cur": "EUR",
+                    "sum": 0.0,
+                    "rate": 0.0
+                },
+                {
+                    "title": {
+                        "time_entry": "Onboarding"
+                    },
+                    "time": 22475372,
+                    "cur": "EUR",
+                    "sum": 0.0,
+                    "rate": 0.0
+                }
+            ]
+        },
+        {
+            "id": 28041930,
+            "title": {
+                "project": "Maintenance",
+                "client": "Me",
+                "color": "0",
+                "hex_color": "#0b83d9"
+            },
+            "time": 11673000,
+            "total_currencies": [
+                {
+                    "currency": "EUR",
+                    "amount": 0.0
+                }
+            ],
+            "items": [
+                {
+                    "title": {
+                        "time_entry": "\ud83c\udf72 Dinner"
+                    },
+                    "time": 7524000,
+                    "cur": "EUR",
+                    "sum": 0.0,
+                    "rate": 0.0
+                },
+                {
+                    "title": {
+                        "time_entry": "\ud83c\udf5c Lunch"
+                    },
+                    "time": 4149000,
+                    "cur": "EUR",
+                    "sum": 0.0,
+                    "rate": 0.0
+                }
+            ]
+        },
+        {
+            "id": 95029662,
+            "title": {
+                "project": "Professional development",
+                "client": "Me",
+                "color": "0",
+                "hex_color": "#e36a00"
+            },
+            "time": 7018000,
+            "total_currencies": [
+                {
+                    "currency": "EUR",
+                    "amount": 0.0
+                }
+            ],
+            "items": [
+                {
+                    "title": {
+                        "time_entry": "Concierge: today recap"
+                    },
+                    "time": 7018000,
+                    "cur": "EUR",
+                    "sum": 0.0,
+                    "rate": 0.0
+                }
+            ]
+        }
+    ]
+}

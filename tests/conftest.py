@@ -1,9 +1,12 @@
 import os
-import datetime
+import json
 import pytest
 
+from app.adapters import apple, dropbox, ifq, slack, toggl
+from app import config
 from app.services.dropbox import DropboxService
 from app.services.ifq import IFQ
+from app.services.unit_of_work import UnitOfWork
 from app.tasks import Ifq2DropboxTask
 from app.services.toggl import TogglService, TogglConfig
 from app.services.slack import SlackConfig, SlackService
@@ -19,14 +22,14 @@ from app.intents.toggl import TogglSummaryIntent
 #     return str(tmpdir_factory.mktemp("ConciergeTest"))
 
 
-@pytest.fixture(scope="session")
-def dropbox():
-    return DropboxService(os.environ['DROPBOX_ROOT_FOLDER'], os.environ['DROPBOX_ACCESS_TOKEN'])
+# @pytest.fixture(scope="session")
+# def dropbox():
+#     return DropboxService(os.environ['DROPBOX_ROOT_FOLDER'], os.environ['DROPBOX_ACCESS_TOKEN'])
 
 
-@pytest.fixture(scope="session")
-def ifq():
-    return IFQ(os.environ['IFQ_USERNAME'], os.environ['IFQ_PASSWORD'])
+# @pytest.fixture(scope="session")
+# def ifq():
+#     return IFQ(os.environ['IFQ_USERNAME'], os.environ['IFQ_PASSWORD'])
 
 
 @pytest.fixture(scope="session")
@@ -61,3 +64,59 @@ def slack_config():
 @pytest.fixture(scope="session")
 def slack_service(slack_config):
     return SlackService(slack_config)
+
+
+@pytest.fixture(scope="function")
+def ifq_adapter():
+    return ifq.IFQAdapter(
+        config.IFQ_USERNAME,
+        config.IFQ_PASSWORD,
+    )
+
+
+@pytest.fixture(scope="function")
+def dropbox_adapter():
+    return dropbox.DropboxAdapter(
+        config.DROPBOX_ROOT_FOLDER,
+        config.DROPBOX_ACCESS_TOKEN,
+    )
+
+
+@pytest.fixture(scope="function")
+def slack_adapter():
+    return slack.SlackAdapter(slack.SlackConfig(
+        webhook_url=config.SLACK_WEBHOOK_URL
+    ))
+
+
+@pytest.fixture(scope="function")
+def toggl_adapter():
+    return toggl.TogglAdapter()
+
+
+@pytest.fixture(scope="function")
+def refurbished_adapter():
+    return apple.RefurbishedStoreAdapter()
+
+
+@pytest.fixture(scope="function")
+def uow(toggl_adapter,
+        ifq_adapter,
+        dropbox_adapter,
+        slack_adapter,
+        refurbished_adapter):
+    return UnitOfWork(
+        toggl_adapter,
+        ifq_adapter,
+        dropbox_adapter,
+        slack_adapter,
+        refurbished_adapter
+    )
+
+
+@pytest.fixture(scope="function")
+def from_json():
+    def wrapper(path: str):
+        with open(path) as f:
+            return json.loads(f.read())
+    return wrapper

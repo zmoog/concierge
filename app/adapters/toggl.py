@@ -1,19 +1,14 @@
 import json
-import collections
+import urllib
 import requests
-import urllib.parse
+
+from datetime import datetime
+from app import config
 
 
-TogglConfig = collections.namedtuple(
-    "TogglConfig", "api_token user_agent workspace_id")
+class TogglAdapter:
 
-
-class TogglService(object):
-
-    def __init__(self, config):
-        self.config = config
-
-    def summary(self, since, until, extra_params={}):
+    def summary(self, since: datetime, until: datetime):
         """Fetches the Toggl report between `since` and `until` dates.
 
         Toggl Reports API v2
@@ -21,18 +16,18 @@ class TogglService(object):
         https://github.com/toggl/toggl_api_docs/blob/master/reports/summary.md  
         """
         params = dict(
-            workspace_id=self.config.workspace_id,
+            workspace_id=config.TOGGL_WORKSPACE_ID,
             since=since,
             until=until,
-            user_agent=self.config.user_agent,
+            user_agent=config.TOGGL_USER_AGENT,
         )
-        params.update(extra_params)
 
-        url = "https://toggl.com/reports/api/v2/summary?" + urllib.parse.urlencode(params)
+        url = "https://toggl.com/reports/api/v2/summary?" + \
+            urllib.parse.urlencode(params)
 
         # For the authentication details see the official Toggl API docs:
         # https://github.com/toggl/toggl_api_docs/blob/master/chapters/authentication.md
-        resp = requests.get(url, auth=(self.config.api_token, "api_token"))
+        resp = requests.get(url, auth=(config.TOGGL_API_TOKEN, "api_token"))
 
         if resp.status_code == 200:
             return json.loads(resp.content)

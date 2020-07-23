@@ -1,5 +1,6 @@
 # import logging
-import os
+from datetime import datetime
+# import os
 import tempfile
 import requests
 
@@ -11,13 +12,13 @@ IFQ_ARCHIVE_URL = 'https://shop.ilfattoquotidiano.it/archivio-edizioni/'
 
 # logging.basicConfig(level=logging.DEBUG)
 
-class IFQ(object):
+class IFQAdapter:
 
-    def __init__(self, username, password):
+    def __init__(self, username: str, password: str):
         self.username = username
         self.password = password
 
-    def download_pdf(self, pub_date):
+    def download_pdf(self, pub_date: datetime):
 
         login_payload = dict(
             username=self.username,

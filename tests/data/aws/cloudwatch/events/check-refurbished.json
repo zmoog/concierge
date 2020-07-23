@@ -1,0 +1,9 @@
+{
+    "CheckRefurbished": {
+        "store": "it",
+        "products": [
+            "ipad",
+            "iphone"
+        ]
+    }
+}

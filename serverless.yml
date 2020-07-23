@@ -65,7 +65,6 @@ provider:
 package:
  include:
    - app/**
-   - functions/**
  exclude:
    - "**"
 
@@ -75,140 +74,38 @@ custom:
 
 functions:
 
-  check-if-downloaded:
-    handler: functions/check-if-downloaded/check.handler
-
-  download-from-ifq:
-    handler: functions/download-from-ifq/download.handler
+  run-scheduled:
+    handler: app/entrypoints/lambda.run_scheduled
     timeout: 30 # download a 8M file from the IFQ site may require some time ..
-
-  run-intent:
-    handler: functions/run-intent/run.handler
     events:
       - schedule:
-          name: ${self:service}-${opt:stage, self:provider.stage}-last-business-day
-          rate: cron(30 6 ? * MON-FRI *)
+          name: ${self:service}-${opt:stage, self:provider.stage}-toggl-summarize-previous-business-day
+          rate: cron(30 6 ? * MON-SUN *)
           enabled: true
           input:
-            when: previous_business_day
+            Summarize:
+              when: previous_business_day
       - schedule:
-          name: ${self:service}-${opt:stage, self:provider.stage}-today
-          rate: cron(30 16 ? * MON-FRI *)
+          name: ${self:service}-${opt:stage, self:provider.stage}-toggl-summarize-today
+          rate: cron(30 16 ? * MON-SUN *)
           enabled: true
           input:
-            when: today
-
-stepFunctions:
-  stateMachines:
-    ifqdownload:
-      name: IFQDownloadStateMachine
-      definition:
-        Comment: "Download a IFQ issue from the newpaper website"
-        StartAt: CheckIfAlreadyDownloaded
-        States:
-
-          CheckIfAlreadyDownloaded:
-            Type: Task
-            Resource: "arn:aws:lambda:#{AWS::Region}:#{AWS::AccountId}:function:${self:service}-${opt:stage}-check-if-downloaded"
-            Next: ChoiceState
-          ChoiceState:
-            Type: Choice
-            Choices:
-              - Variable: "$.exists"
-                BooleanEquals: true
-                Next: SuccessState
-              - Variable: "$.exists"
-                BooleanEquals: false
-                Next: DownloadFromIfqState
-            Default: DefaultState
-          DefaultState:
-            Type: Fail
-            Cause: "No Matches!" 
-
-          DownloadFromIfqState:
-            Type: Task
-            Resource: "arn:aws:lambda:#{AWS::Region}:#{AWS::AccountId}:function:${self:service}-${opt:stage}-download-from-ifq"
-            Next: VerifyDownloadState
-          VerifyDownloadState:
-            Type: Choice
-            Choices:
-              - Variable: "$.available"
-                BooleanEquals: true
-                Next: SuccessState
-              - Variable: "$.available"
-                BooleanEquals: false
-                Next: WaitState
-            Default: DefaultState
-            
-          WaitState:
-            Type: Wait
-            Seconds: 900
-            Next: DownloadFromIfqState
-
-          SuccessState:
-            Type: Succeed
-      events:
-        - schedule:
-            rate: cron(0 4 * * ? *)
-        - http:
-            path: ifq/check-if-downloaded
-            method: POST    
-
-
-#    NOTE: Please make sure to change your handler code to work with those events
-#    Check the event documentation for details
-#    events:
-#      - http:
-#          path: users/create
-#          method: get
-#      - websocket: $connect
-#      - s3: ${env:BUCKET}
-#      - schedule: rate(10 minutes)
-#      - sns: greeter-topic
-#      - stream: arn:aws:dynamodb:region:XXXXXX:table/foo/stream/1970-01-01T00:00:00.000
-#      - alexaSkill: amzn1.ask.skill.xx-xx-xx-xx
-#      - alexaSmartHome: amzn1.ask.skill.xx-xx-xx-xx
-#      - iot:
-#          sql: "SELECT * FROM 'some_topic'"
-#      - cloudwatchEvent:
-#          event:
-#            source:
-#              - "aws.ec2"
-#            detail-type:
-#              - "EC2 Instance State-change Notification"
-#            detail:
-#              state:
-#                - pending
-#      - cloudwatchLog: '/aws/lambda/hello'
-#      - cognitoUserPool:
-#          pool: MyUserPool
-#          trigger: PreSignUp
-#      - alb:
-#          listenerArn: arn:aws:elasticloadbalancing:us-east-1:XXXXXX:listener/app/my-load-balancer/50dc6c495c0c9188/
-#          priority: 1
-#          conditions:
-#            host: example.com
-#            path: /hello
-
-#    Define function environment variables here
-#    environment:
-#      variable2: value2
-
-# you can add CloudFormation resource templates here
-#resources:
-#  Resources:
-#    NewResource:
-#      Type: AWS::S3::Bucket
-#      Properties:
-#        BucketName: my-new-bucket
-#  Outputs:
-#     NewOutput:
-#       Description: "Description for the output"
-#       Value: "Some output value"
-
-resources:
-  Outputs:
-    IFQDownloadStateMachine:
-      Description: The ARN of the example state machine
-      Value:
-        Ref: IFQDownloadStateMachine
+            Summarize:
+              when: today
+      - schedule:
+          name: ${self:service}-${opt:stage, self:provider.stage}-refurbished-products
+          rate: cron(00 6 ? * MON-SUN *)
+          enabled: true
+          input:
+            CheckRefurbished:
+              store: it
+              products:
+                - ipad
+                - iphone
+      - schedule:
+          name: ${self:service}-${opt:stage, self:provider.stage}-download-ifq
+          rate: cron(0 4 * * ? *)
+          enabled: true
+          input:
+            DownloadIFQ:
+              when: today
