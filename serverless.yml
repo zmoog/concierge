@@ -68,6 +68,7 @@ package:
    - app/**
  exclude:
    - "**"
+ individually: false
 
 custom:
   pythonRequirements:
