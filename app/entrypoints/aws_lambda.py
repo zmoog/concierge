@@ -1,6 +1,8 @@
 from datetime import date
+# from urllib.parse import parse_qs
 
 from app import bootstrap
+from app.adapters import slack
 from app.domain import commands, model
 
 
@@ -10,6 +12,22 @@ whens = {
     'today': date.today,
     'previous_business_day': model.find_previous_business_day
 }
+
+
+handler = slack.SlashCommandHandler()
+
+
+@handler.route(
+    "/refurbished",
+    text_regex="(?P<store>it|us) (?P<product>ipad|iphone|mac)"
+)
+def check_refurbished(store: str, product: str):
+    messagebus.handle(
+        commands.CheckRefurbished(
+            store=store,
+            products=[product]
+        )
+    )
 
 
 def run_scheduled(event, config):
@@ -37,3 +55,7 @@ def run_scheduled(event, config):
         return
 
     messagebus.handle(cmd)
+
+
+def run_slash_command(event, context):
+    return handler.handle(event['body'], event['headers'])
