@@ -33,10 +33,10 @@ def test_slash_commands_from_a_dm(
     mocker.patch.object(refurbished_adapter, "search")
     refurbished_adapter.search.side_effect = [[
         Product(
-            name='iPad Wi-Fi + Cellular 32GB ricondizionato',
-            price=decimal.Decimal('419.00'),
-            previous_price=decimal.Decimal('489.00'),
-            savings_price=decimal.Decimal('70.00')
+            name='MacBook Air 13,3"',
+            price=decimal.Decimal('939.00'),
+            previous_price=decimal.Decimal('1109.00'),
+            savings_price=decimal.Decimal('170.00')
         )]]
 
     resp = run_slash_command(event, None)
@@ -45,7 +45,12 @@ def test_slash_commands_from_a_dm(
     assert resp['statusCode'] == 200
 
     message = {
-        'text': '\nFound 1 ipad(s):\n\n- iPad Wi-Fi + Cellular 32GB ricondizionato at ~489.00~ *419.00* (-70.00)\n\n'
+        'text': """
+Found 1 mac(s):
+
+- MacBook Air 13,3" at ~1109.00~ *939.00* (-170.00)
+
+"""
     }
     slack_adapter.post_message.assert_called_once_with(
         message
