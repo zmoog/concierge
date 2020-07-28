@@ -12,7 +12,7 @@
         "CloudFront-Is-Tablet-Viewer": "false",
         "CloudFront-Viewer-Country": "US",
         "Content-Type": "application/x-www-form-urlencoded",
-        "Host": "tk64fyptcj.execute-api.eu-west-1.amazonaws.com",
+        "Host": "example.com",
         "User-Agent": "Slackbot 1.0 (+https://api.slack.com/robots)",
         "Via": "1.1 99baebf4b5bb631267dcfa82456151cc.cloudfront.net (CloudFront)",
         "X-Amz-Cf-Id": "Yi7eLZtZCGcIYz3duJjjSWiGlKzOkoMMc5M9O7W1jmyI7SN54C__vw==",
@@ -52,7 +52,7 @@
             "application/x-www-form-urlencoded"
         ],
         "Host": [
-            "tk64fyptcj.execute-api.eu-west-1.amazonaws.com"
+            "example.com"
         ],
         "User-Agent": [
             "Slackbot 1.0 (+https://api.slack.com/robots)"
@@ -113,7 +113,7 @@
             "userAgent": "Slackbot 1.0 (+https://api.slack.com/robots)",
             "user": null
         },
-        "domainName": "tk64fyptcj.execute-api.eu-west-1.amazonaws.com",
+        "domainName": "example.com",
         "apiId": "tk64fyptcj"
     },
     "body": "token=xxx&team_id=T02RX18RT&team_domain=zmoog&channel_id=C02RX18S3&channel_name=general&user_id=U02RX18RV&user_name=zmoog&command=%2Frefurbished&text=ipad&response_url=https%3A%2F%2Fhooks.slack.com%2Fcommands%2FT02RX18RT%2F1258012719589%2FnYhMyqSKcJhx8TjF5Wn9rWBS&trigger_id=1265570558804.2881042877.c2f39a1bb7f9782b7e265c41c1adbc69",

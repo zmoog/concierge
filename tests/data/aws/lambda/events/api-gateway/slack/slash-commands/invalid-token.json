@@ -12,7 +12,7 @@
         "CloudFront-Is-Tablet-Viewer": "false",
         "CloudFront-Viewer-Country": "US",
         "Content-Type": "application/x-www-form-urlencoded",
-        "Host": "tk64fyptcj.execute-api.eu-west-1.amazonaws.com",
+        "Host": "example.com",
         "User-Agent": "Slackbot 1.0 (+https://api.slack.com/robots)",
         "Via": "1.1 6b7e1e42d74fd61097787cc6c1a37c35.cloudfront.net (CloudFront)",
         "X-Amz-Cf-Id": "Tj-pd8f_-T9V5wTGWTVnRhdaeR5qRzDfpEFh4LZqv_f_3IUymzJzDQ==",
@@ -52,7 +52,7 @@
             "application/x-www-form-urlencoded"
         ],
         "Host": [
-            "tk64fyptcj.execute-api.eu-west-1.amazonaws.com"
+            "tk64fyptexample.com"
         ],
         "User-Agent": [
             "Slackbot 1.0 (+https://api.slack.com/robots)"
@@ -113,7 +113,7 @@
             "userAgent": "Slackbot 1.0 (+https://api.slack.com/robots)",
             "user": null
         },
-        "domainName": "tk64fyptcj.execute-api.eu-west-1.amazonaws.com",
+        "domainName": "domainNaexample.com",
         "apiId": "tk64fyptcj"
     },
     "body": "token=xxx&team_id=T02RX18RT&team_domain=zmoog&channel_id=DN95R50BA&channel_name=directmessage&user_id=U02RX18RV&user_name=zmoog&command=%2Frefurbished&text=xxx&response_url=https%3A%2F%2Fhooks.slack.com%2Fcommands%2FT02RX18RT%2F1259110897925%2Fd5SwaZxcmWFMt6PiThETmTGW&trigger_id=1266668742004.2881042877.bb5505bc2a9826c27010e72ef9162f7d",
