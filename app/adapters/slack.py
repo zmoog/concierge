@@ -58,7 +58,7 @@ class Route:
     pattern: Optional[Pattern]
 
 
-class SlashCommandHandler:
+class SlashCommandDispatcher:
 
     def __init__(self):
         self.routes = {}
@@ -74,7 +74,7 @@ class SlashCommandHandler:
             return route
         return decorator
 
-    def handle(self, body: str, headers: Dict[str, str]) -> dict:
+    def dispatch(self, body: str, headers: Dict[str, str]) -> dict:
 
         cmd = build_slash_command(body)
 

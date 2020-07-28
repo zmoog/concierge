@@ -14,10 +14,10 @@ whens = {
 }
 
 
-handler = slack.SlashCommandHandler()
+dispatcher = slack.SlashCommandDispatcher()
 
 
-@handler.route(
+@dispatcher.route(
     "/refurbished",
     text_regex="(?P<store>it|us) (?P<product>ipad|iphone|mac)"
 )
@@ -30,7 +30,7 @@ def check_refurbished(store: str, product: str):
     )
 
 
-@handler.route(
+@dispatcher.route(
     "/summarize"
 )
 def summarize():
@@ -73,9 +73,9 @@ def run_slash_command(event, context):
 
         slack.verify_signature(body, headers)
 
-        return handler.handle(body, headers)
+        return dispatcher.dispatch(body, headers)
 
     except slack.InvalidSignature:
         return {
             'statusCode': 401
-        }  
+        }

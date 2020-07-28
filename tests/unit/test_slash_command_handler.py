@@ -1,10 +1,10 @@
-from app.adapters.slack import SlashCommandHandler
+from app.adapters.slack import SlashCommandDispatcher
 
 
-handler = SlashCommandHandler()
+dispatcher = SlashCommandDispatcher()
 
 
-@handler.route(
+@dispatcher.route(
     "/refurbished",
     text_regex="(?P<store>it|us) (?P<product>ipad|iphone|mac)"
 )
@@ -18,6 +18,6 @@ def test_simple_command(from_json):
         'tests/data/aws/lambda/events/api-gateway/slack/slash-commands/dm.json'
     )
 
-    respo = handler.handle(event["body"], event["headers"])
+    respo = dispatcher.dispatch(event["body"], event["headers"])
 
     assert respo['statusCode'] == 200
