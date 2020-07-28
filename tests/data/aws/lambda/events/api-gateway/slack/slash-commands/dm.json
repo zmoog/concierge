@@ -116,6 +116,6 @@
         "domainName": "tk64fyptcj.execute-api.eu-west-1.amazonaws.com",
         "apiId": "tk64fyptcj"
     },
-    "body": "token=jPHXj2pC1hKPcB4DXZ82UsMx&team_id=T02RX18RT&team_domain=zmoog&channel_id=DN95R50BA&channel_name=directmessage&user_id=U02RX18RV&user_name=zmoog&command=%2Frefurbished&text=it+mac&response_url=https%3A%2F%2Fhooks.slack.com%2Fcommands%2FT02RX18RT%2F1287752509456%2FRvnHleL1XCLxuMU2zGDGRbtT&trigger_id=1270097955124.2881042877.121a0b3a9cf1313830907fcdde478152",
+    "body": "token=xxx&team_id=T02RX18RT&team_domain=zmoog&channel_id=DN95R50BA&channel_name=directmessage&user_id=U02RX18RV&user_name=zmoog&command=%2Frefurbished&text=it+mac&response_url=https%3A%2F%2Fhooks.slack.com%2Fcommands%2FT02RX18RT%2F1287752509456%2FRvnHleL1XCLxuMU2zGDGRbtT&trigger_id=1270097955124.2881042877.121a0b3a9cf1313830907fcdde478152",
     "isBase64Encoded": false
 }
