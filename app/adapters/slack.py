@@ -18,8 +18,7 @@ SlackConfig = collections.namedtuple("SlackConfig", "webhook_url")
 @dataclass
 class SlashCommand:
     name: str
-    text: str
-    # response_url: str
+    text: Optional[str]
 
 
 class SlackAdapter:

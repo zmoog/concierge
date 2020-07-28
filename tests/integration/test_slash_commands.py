@@ -55,3 +55,19 @@ Found 1 mac(s):
     slack_adapter.post_message.assert_called_once_with(
         message
     )
+
+
+def test_slash_commands_without_text(
+    mocker,
+    from_json,
+):
+    # setup event from the AWS lambda proxy
+    event = from_json(
+        'tests/data/aws/lambda/events/api-gateway/slack/slash-commands/no-text.json'
+    )
+    mocker.patch.object(slack_adapter, "post_message")
+
+    resp = run_slash_command(event, None)
+
+    assert 'statusCode' in resp
+    assert resp['statusCode'] == 200
