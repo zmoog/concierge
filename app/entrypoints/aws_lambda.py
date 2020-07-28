@@ -74,8 +74,16 @@ def run_slash_command(event, context):
         slack.verify_signature(body, headers)
         cmd = slack.build_slash_command(body)
 
-        return dispatcher.dispatch(cmd)
+        dispatcher.dispatch(cmd)
 
+        return {
+            'statusCode': 200
+        }
+
+    except slack.RouteNotFound:
+        return {
+            'statusCode': 404
+        }
     except slack.InvalidSignature:
         return {
             'statusCode': 401

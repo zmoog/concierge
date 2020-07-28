@@ -73,32 +73,23 @@ class SlashCommandDispatcher:
             return route
         return decorator
 
-    def dispatch(self, cmd: SlashCommand) -> dict:
+    def dispatch(self, cmd: SlashCommand):
 
         if cmd.name not in self.routes:
-            return {
-                'statusCode': 404
-            }
+            raise RouteNotFound()
 
         route = self.routes[cmd.name]
 
         if route.pattern:
             match = route.pattern.match(cmd.text)
             if not match:
-                return {
-                    'statusCode': 404
-                }
+                raise RouteNotFound()
 
             # call the command handler
             route.handler(**match.groupdict())
         else:
             # call the command handler
             route.handler()
-
-        return {
-            'statusCode': 200
-        }
-
 
 
 def build_slash_command(body: str) -> SlashCommand:
@@ -117,6 +108,10 @@ def build_slash_command(body: str) -> SlashCommand:
 
 
 class InvalidSignature(Exception):
+    pass
+
+
+class RouteNotFound(Exception):
     pass
 
 

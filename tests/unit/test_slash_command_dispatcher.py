@@ -18,8 +18,8 @@ def test_simple_command(from_json):
         'tests/data/aws/lambda/events/api-gateway/slack/slash-commands/dm.json'
     )
 
-    respo = dispatcher.dispatch(
+    dispatcher.dispatch(
         build_slash_command(event["body"])
     )
 
-    assert respo['statusCode'] == 200
+    # should not raise any exception
