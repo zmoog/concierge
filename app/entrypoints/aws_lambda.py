@@ -72,8 +72,9 @@ def run_slash_command(event, context):
         body, headers = event['body'], event['headers']
 
         slack.verify_signature(body, headers)
+        cmd = slack.build_slash_command(body)
 
-        return dispatcher.dispatch(body, headers)
+        return dispatcher.dispatch(cmd)
 
     except slack.InvalidSignature:
         return {

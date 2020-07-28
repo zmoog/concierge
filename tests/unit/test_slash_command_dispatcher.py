@@ -1,4 +1,4 @@
-from app.adapters.slack import SlashCommandDispatcher
+from app.adapters.slack import build_slash_command, SlashCommandDispatcher
 
 
 dispatcher = SlashCommandDispatcher()
@@ -18,6 +18,8 @@ def test_simple_command(from_json):
         'tests/data/aws/lambda/events/api-gateway/slack/slash-commands/dm.json'
     )
 
-    respo = dispatcher.dispatch(event["body"], event["headers"])
+    respo = dispatcher.dispatch(
+        build_slash_command(event["body"])
+    )
 
     assert respo['statusCode'] == 200

@@ -54,8 +54,8 @@ class SlackAdapter:
 @dataclass
 class Route:
     id: str
-    handler: Callable
     pattern: Optional[Pattern]
+    handler: Callable
 
 
 class SlashCommandDispatcher:
@@ -74,9 +74,7 @@ class SlashCommandDispatcher:
             return route
         return decorator
 
-    def dispatch(self, body: str, headers: Dict[str, str]) -> dict:
-
-        cmd = build_slash_command(body)
+    def dispatch(self, cmd: SlashCommand) -> dict:
 
         if cmd.name not in self.routes:
             return {
