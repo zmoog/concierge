@@ -31,6 +31,15 @@ def check_refurbished(store: str, product: str):
     )
 
 
+@handler.route(
+    "/summarize"
+)
+def summarize():
+    messagebus.handle(
+        commands.Summarize(day=date.today())
+    )
+
+
 def run_scheduled(event, config):
     print(f'running run_scheduled with event {event}')
     if 'Summarize' in event:
