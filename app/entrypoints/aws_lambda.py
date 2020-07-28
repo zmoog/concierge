@@ -1,3 +1,4 @@
+import json
 from datetime import date
 # from urllib.parse import parse_qs
 
@@ -58,4 +59,5 @@ def run_scheduled(event, config):
 
 
 def run_slash_command(event, context):
+    print(json.dumps(event))
     return handler.handle(event['body'], event['headers'])
