@@ -16,7 +16,7 @@ def summarize(cmd: commands.Summarize, uow: UnitOfWork) -> List[events.Event]:
         text = f"Here's the summary for {x}\n\n---\n\n"
 
         if not summary["data"]:
-            text += "Oooops, there are not entries here ¯\\_(ツ)_/¯\n\n"
+            text += "Oooops, there are no entries here ¯\\_(ツ)_/¯\n\n"
             return [events.TogglEntriesSummarized(text)]
 
         for entry in summary["data"]:
