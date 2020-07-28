@@ -12,7 +12,7 @@
         "CloudFront-Is-Tablet-Viewer": "false",
         "CloudFront-Viewer-Country": "US",
         "Content-Type": "application/x-www-form-urlencoded",
-        "Host": "tk64fyptcj.execute-api.eu-west-1.amazonaws.com",
+        "Host": "example.com",
         "User-Agent": "Slackbot 1.0 (+https://api.slack.com/robots)",
         "Via": "1.1 7f7e359e1c06a914d3d305785359b84d.cloudfront.net (CloudFront)",
         "X-Amz-Cf-Id": "wIHxsLF7aX-vbxGEINWkxUPCA2asRUOyRop5ANYBh7CZ7O6N1gp7iQ==",
@@ -21,7 +21,7 @@
         "X-Forwarded-Port": "443",
         "X-Forwarded-Proto": "https",
         "X-Slack-Request-Timestamp": "1595828273",
-        "X-Slack-Signature": "v0=c879b2a6db36969d897ea4677d22ba7b1422260f98373a4cd6a726f4cd336202"
+        "X-Slack-Signature": "v0=8f62496c1f63b47e0ee797b00500abfc8b08fe01bc1b39a9434e02c56140c508"
     },
     "multiValueHeaders": {
         "Accept": [
@@ -52,7 +52,7 @@
             "application/x-www-form-urlencoded"
         ],
         "Host": [
-            "tk64fyptcj.execute-api.eu-west-1.amazonaws.com"
+            "tk64fyptexample.com"
         ],
         "User-Agent": [
             "Slackbot 1.0 (+https://api.slack.com/robots)"
@@ -79,7 +79,7 @@
             "1595828273"
         ],
         "X-Slack-Signature": [
-            "v0=c879b2a6db36969d897ea4677d22ba7b1422260f98373a4cd6a726f4cd336202"
+            "v0=8f62496c1f63b47e0ee797b00500abfc8b08fe01bc1b39a9434e02c56140c508"
         ]
     },
     "queryStringParameters": null,
@@ -113,7 +113,7 @@
             "userAgent": "Slackbot 1.0 (+https://api.slack.com/robots)",
             "user": null
         },
-        "domainName": "tk64fyptcj.execute-api.eu-west-1.amazonaws.com",
+        "domainName": "example.com",
         "apiId": "tk64fyptcj"
     },
     "body": "token=xxx&team_id=T02RX18RT&team_domain=zmoog&channel_id=DN95R50BA&channel_name=directmessage&user_id=U02RX18RV&user_name=zmoog&command=%2Frefurbished&text=it+mac&response_url=https%3A%2F%2Fhooks.slack.com%2Fcommands%2FT02RX18RT%2F1287752509456%2FRvnHleL1XCLxuMU2zGDGRbtT&trigger_id=1270097955124.2881042877.121a0b3a9cf1313830907fcdde478152",

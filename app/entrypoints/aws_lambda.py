@@ -1,6 +1,5 @@
 import json
 from datetime import date
-# from urllib.parse import parse_qs
 
 from app import bootstrap
 from app.adapters import slack
