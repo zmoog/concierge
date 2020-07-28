@@ -38,7 +38,6 @@ class SlackAdapter:
         """
         Posts the message to to channel configured in the webhook.
         """
-        print(message)
         if self.logger.isEnabledFor(logging.DEBUG):
             self.logger.debug(message)
 
