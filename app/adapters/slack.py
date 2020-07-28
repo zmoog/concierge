@@ -75,39 +75,33 @@ class SlashCommandHandler:
         return decorator
 
     def handle(self, body: str, headers: Dict[str, str]) -> dict:
-        try:
-            verify_signature(body, headers)
 
-            cmd = build_slash_command(body)
+        cmd = build_slash_command(body)
 
-            if cmd.name not in self.routes:
+        if cmd.name not in self.routes:
+            return {
+                'statusCode': 404
+            }
+
+        route = self.routes[cmd.name]
+
+        if route.pattern:
+            match = route.pattern.match(cmd.text)
+            if not match:
                 return {
                     'statusCode': 404
                 }
 
-            route = self.routes[cmd.name]
+            # call the command handler
+            route.handler(**match.groupdict())
+        else:
+            # call the command handler
+            route.handler()
 
-            if route.pattern:
-                match = route.pattern.match(cmd.text)
-                if not match:
-                    return {
-                        'statusCode': 404
-                    }
+        return {
+            'statusCode': 200
+        }
 
-                # call the command handler
-                route.handler(**match.groupdict())
-            else:
-                # call the command handler
-                route.handler()
-
-            return {
-                'statusCode': 200
-            }
-
-        except InvalidSignature:
-            return {
-                'statusCode': 401
-            }    
 
 
 def build_slash_command(body: str) -> SlashCommand:

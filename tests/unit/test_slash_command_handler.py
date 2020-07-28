@@ -21,13 +21,3 @@ def test_simple_command(from_json):
     respo = handler.handle(event["body"], event["headers"])
 
     assert respo['statusCode'] == 200
-
-
-def test_invalid_token(from_json):
-    event = from_json(
-        'tests/data/aws/lambda/events/api-gateway/slack/slash-commands/invalid-token.json'
-    )
-
-    respo = handler.handle(event["body"], event["headers"])
-
-    assert respo['statusCode'] == 401

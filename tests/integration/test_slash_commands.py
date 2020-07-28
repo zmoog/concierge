@@ -6,16 +6,17 @@ from app.entrypoints.aws_lambda import run_slash_command
 from app.bootstrap import refurbished_adapter, slack_adapter
 
 
-# def test_slash_commands_with_a_bad_token(from_json):
-#     # setup event from the AWS lambda proxy
-#     event = from_json(
-#         'tests/data/aws/lambda/events/api-gateway/slack/slash-commands/bad-token.json'
-#     )
+def test_slash_commands_with_an_invalid_token(from_json):
+    # setup event from the AWS lambda proxy
+    event = from_json(
+        'tests/data/aws/lambda/events/api-gateway/slack/slash-commands/\
+invalid-token.json'
+    )
 
-#     resp = run_slash_command(event, None)
+    resp = run_slash_command(event, None)
 
-#     assert 'statusCode' in resp
-#     assert resp['statusCode'] == 403
+    assert 'statusCode' in resp
+    assert resp['statusCode'] == 401
 
 
 def test_slash_commands_from_a_dm(
@@ -63,7 +64,8 @@ def test_slash_commands_without_text(
 ):
     # setup event from the AWS lambda proxy
     event = from_json(
-        'tests/data/aws/lambda/events/api-gateway/slack/slash-commands/no-text.json'
+        'tests/data/aws/lambda/events/api-gateway/slack/slash-commands/\
+no-text.json'
     )
     mocker.patch.object(slack_adapter, "post_message")
 

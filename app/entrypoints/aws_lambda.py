@@ -68,5 +68,15 @@ def run_scheduled(event, config):
 
 
 def run_slash_command(event, context):
-    print(json.dumps(event))
-    return handler.handle(event['body'], event['headers'])
+    try:
+        print(json.dumps(event))
+        body, headers = event['body'], event['headers']
+
+        slack.verify_signature(body, headers)
+
+        return handler.handle(body, headers)
+
+    except slack.InvalidSignature:
+        return {
+            'statusCode': 401
+        }  
