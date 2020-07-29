@@ -66,15 +66,28 @@ def run_scheduled(event, config):
     messagebus.handle(cmd)
 
 
-def run_slash_command(event, context):
+def run_slash_command(event: dict, context):
+    """
+    Handle the AWS Lambda event from the API Gateway carring the
+    HTTP request from Slack for a slash command invoked by a user.
+    """
     try:
+        # dump the event in the log, it will be removed later
+        # or replaced w/ an appropriate log level
         print(json.dumps(event))
+
         body, headers = event['body'], event['headers']
 
+        # Checks if the request really come from Slack, see
+        # https://api.slack.com/authentication/verifying-requests-from-slack
+        # for more details
         slack.verify_signature(body, headers)
-        cmd = slack.build_slash_command(body)
 
-        dispatcher.dispatch(cmd)
+        # dispatch the slash command to invoke the most
+        # appropriate business command
+        dispatcher.dispatch(
+            slack.build_slash_command(body)
+        )
 
         return {
             'statusCode': 200
@@ -82,7 +95,9 @@ def run_slash_command(event, context):
 
     except slack.RouteNotFound:
         return {
-            'statusCode': 404
+            'statusCode': 200,
+            'response_type': 'ephemeral',
+            'text': 'I do\'t know ho to handle your request ¯\\_(ツ)_/¯'
         }
     except slack.InvalidSignature:
         return {
