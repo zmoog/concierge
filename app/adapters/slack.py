@@ -12,6 +12,7 @@ from urllib.parse import parse_qs
 from pydantic.dataclasses import dataclass
 from app import config
 
+logger = logging.getLogger(__name__)
 SlackConfig = collections.namedtuple("SlackConfig", "webhook_url")
 
 
@@ -60,9 +61,11 @@ class Route:
 class SlashCommandDispatcher:
 
     def __init__(self):
-        self.routes = {}
+        self.routes: Dict[str, Route] = {}
 
     def route(self, id: str, text_regex: Optional[str] = None) -> Callable:
+        logger.info(f'adding route {id}')
+
         def decorator(func: Callable) -> Callable:
             route = Route(
                 id=id,
@@ -71,11 +74,13 @@ class SlashCommandDispatcher:
             )
             self.routes[id] = route
             return route
+
         return decorator
 
     def dispatch(self, cmd: SlashCommand):
 
         if cmd.name not in self.routes:
+            logger.error(f'can\'t find a route for cmd {cmd.name}')
             raise RouteNotFound()
 
         route = self.routes[cmd.name]
@@ -83,9 +88,12 @@ class SlashCommandDispatcher:
         if route.pattern:
             match = route.pattern.match(cmd.text)
             if not match:
-                raise RouteNotFound()
+                msg = f'{cmd.text} doesn\'t match {route.pattern}'
+                logger.warning(msg)
+                raise RouteNotFound(msg)
 
             # call the command handler
+            logger.info(f'handing off cmd {cmd.name} to {route.handler}')
             route.handler(**match.groupdict())
         else:
             # call the command handler

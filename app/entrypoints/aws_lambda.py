@@ -1,4 +1,6 @@
 import json
+import logging
+
 from datetime import date
 
 from app import bootstrap
@@ -74,7 +76,7 @@ def run_slash_command(event: dict, context):
     try:
         # dump the event in the log, it will be removed later
         # or replaced w/ an appropriate log level
-        print(json.dumps(event))
+        logging.debug(json.dumps(event))
 
         body, headers = event['body'], event['headers']
 
@@ -97,7 +99,7 @@ def run_slash_command(event: dict, context):
         return {
             'statusCode': 200,
             'response_type': 'ephemeral',
-            'text': 'I do\'t know ho to handle your request ¯\\_(ツ)_/¯'
+            'text': 'I do\'t know how to handle your request ¯\\_(ツ)_/¯'
         }
     except slack.InvalidSignature:
         return {
