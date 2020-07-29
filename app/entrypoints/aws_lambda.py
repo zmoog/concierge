@@ -7,6 +7,8 @@ from app import bootstrap
 from app.adapters import slack
 from app.domain import commands, model
 
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.INFO)
 
 messagebus = bootstrap.for_lambda()
 
@@ -14,7 +16,6 @@ whens = {
     'today': date.today,
     'previous_business_day': model.find_previous_business_day
 }
-
 
 dispatcher = slack.SlashCommandDispatcher()
 
@@ -76,7 +77,7 @@ def run_slash_command(event: dict, context):
     try:
         # dump the event in the log, it will be removed later
         # or replaced w/ an appropriate log level
-        logging.debug(json.dumps(event))
+        logging.info(json.dumps(event))
 
         body, headers = event['body'], event['headers']
 
@@ -91,17 +92,29 @@ def run_slash_command(event: dict, context):
             slack.build_slash_command(body)
         )
 
-        return {
-            'statusCode': 200
-        }
+        return build_proxy_response(200)
 
-    except slack.RouteNotFound:
-        return {
-            'statusCode': 200,
-            'response_type': 'ephemeral',
-            'text': 'I do\'t know how to handle your request ¯\\_(ツ)_/¯'
-        }
+    except slack.RouteNotFound as e:
+        logger.warning(e)
+        return build_proxy_response(
+            200,
+            body={
+                'response_type': 'ephemeral',
+                'text': 'I don\'t know how to handle your request ¯\\_(ツ)_/¯'
+            }
+        )
     except slack.InvalidSignature:
-        return {
-            'statusCode': 401
-        }
+        return build_proxy_response(401)
+
+
+def build_proxy_response(
+    status_code: int,
+    body=None
+):
+    resp = {
+        'statusCode': status_code
+    }
+    if body:
+        resp['body'] = json.dumps(body)
+
+    return resp

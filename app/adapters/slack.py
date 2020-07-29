@@ -137,4 +137,7 @@ def verify_signature(body: str, headers: Dict[str, str]):
         ).hexdigest()
 
     if not hmac.compare_digest(request_hash, signature):
+        if logger.isEnabledFor(logging.DEBUG):
+            logger.debug(f'expected: {signature}')
+            logger.debug(f'actual: {request_hash}')
         raise InvalidSignature()

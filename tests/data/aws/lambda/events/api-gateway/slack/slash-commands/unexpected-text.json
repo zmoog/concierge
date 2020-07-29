@@ -21,7 +21,7 @@
         "X-Forwarded-Port": "443",
         "X-Forwarded-Proto": "https",
         "X-Slack-Request-Timestamp": "1595997709",
-        "X-Slack-Signature": "v0=04b5572d9680dd36c974ff41c65d7a2408af6e14dd09692752cb4ff523662886"
+        "X-Slack-Signature": "v0=56ef64275df0d7663f41d4232a57572baebe340b6d4cbcb48e2433b35b627599"
     },
     "multiValueHeaders": {
         "Accept": [
@@ -79,7 +79,7 @@
             "1595997709"
         ],
         "X-Slack-Signature": [
-            "v0=04b5572d9680dd36c974ff41c65d7a2408af6e14dd09692752cb4ff523662886"
+            "v0=56ef64275df0d7663f41d4232a57572baebe340b6d4cbcb48e2433b35b627599"
         ]
     },
     "queryStringParameters": null,
@@ -116,6 +116,6 @@
         "domainName": "tk64fyptcj.execute-api.eu-west-1.amazonaws.com",
         "apiId": "tk64fyptcj"
     },
-    "body": "token=jPHXj2pC1hKPcB4DXZ82UsMx&team_id=T02RX18RT&team_domain=zmoog&channel_id=C02RX18S3&channel_name=general&user_id=U02RX18RV&user_name=zmoog&command=%2Frefurbished&text=barzobao&response_url=https%3A%2F%2Fhooks.slack.com%2Fcommands%2FT02RX18RT%2F1281467451361%2F5TBecqjNyBG7jGlgckVTKWyZ&trigger_id=1269048448963.2881042877.511721d59a9d4f87f4f847ec4f6a9354",
+    "body": "token=xxx&team_id=T02RX18RT&team_domain=zmoog&channel_id=C02RX18S3&channel_name=general&user_id=U02RX18RV&user_name=zmoog&command=%2Frefurbished&text=barzobao&response_url=https%3A%2F%2Fhooks.slack.com%2Fcommands%2FT02RX18RT%2F1281467451361%2F5TBecqjNyBG7jGlgckVTKWyZ&trigger_id=1269048448963.2881042877.511721d59a9d4f87f4f847ec4f6a9354",
     "isBase64Encoded": false
 }

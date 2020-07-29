@@ -80,7 +80,7 @@ no-text.json'
     assert resp['statusCode'] == 200
 
 
-def test_slash_commands_with_garbage_text(
+def test_slash_commands_with_unexpected_text(
     mocker,
     from_json,
     caplog,
@@ -90,7 +90,7 @@ def test_slash_commands_with_garbage_text(
     # setup event from the AWS lambda proxy
     event = from_json(
         'tests/data/aws/lambda/events/api-gateway/slack/slash-commands/\
-garbage_text.json'
+unexpected-text.json'
     )
 
     # setup fake response for Slack adapter
@@ -101,4 +101,9 @@ garbage_text.json'
 
     assert 'statusCode' in resp
     assert resp['statusCode'] == 200
-    assert resp['text'] == 'I do\'t know how to handle your request ¯\\_(ツ)_/¯'
+    assert 'body' in resp
+    assert resp['body'] == '{\
+"response_type": "ephemeral", \
+"text": "I don\'t know how to handle your request \
+\\u00af\\\\_(\\u30c4)_/\\u00af\
+"}'
