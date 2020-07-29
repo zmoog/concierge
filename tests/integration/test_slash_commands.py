@@ -1,4 +1,5 @@
 import decimal
+import logging
 
 from refurbished.parser import Product
 
@@ -22,7 +23,10 @@ invalid-token.json'
 def test_slash_commands_from_a_dm(
     mocker,
     from_json,
+    caplog,
 ):
+    caplog.set_level(logging.INFO)
+
     # setup event from the AWS lambda proxy
     event = from_json(
         'tests/data/aws/lambda/events/api-gateway/slack/slash-commands/dm.json'
@@ -31,6 +35,7 @@ def test_slash_commands_from_a_dm(
     # setup fake response from Apple Store and spy on Slack adapters
     # spy = mocker.spy(slack_adapter, "post_message")
     mocker.patch.object(slack_adapter, "post_message")
+    slack_adapter.post_message.side_effect = [None]
     mocker.patch.object(refurbished_adapter, "search")
     refurbished_adapter.search.side_effect = [[
         Product(
@@ -73,3 +78,27 @@ no-text.json'
 
     assert 'statusCode' in resp
     assert resp['statusCode'] == 200
+
+
+def test_slash_commands_with_garbage_text(
+    mocker,
+    from_json,
+    caplog,
+):
+    caplog.set_level(logging.INFO)
+
+    # setup event from the AWS lambda proxy
+    event = from_json(
+        'tests/data/aws/lambda/events/api-gateway/slack/slash-commands/\
+garbage_text.json'
+    )
+
+    # setup fake response for Slack adapter
+    mocker.patch.object(slack_adapter, "post_message")
+
+    # run the command
+    resp = run_slash_command(event, None)
+
+    assert 'statusCode' in resp
+    assert resp['statusCode'] == 200
+    assert resp['text'] == 'I do\'t know how to handle your request ¯\\_(ツ)_/¯'
