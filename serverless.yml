@@ -57,6 +57,7 @@ provider:
     IFQ_USERNAME: ${ssm:/concierge/dev/ifq-username}
     IFQ_PASSWORD: ${ssm:/concierge/dev/ifq-password}
     SLACK_WEBHOOK_URL: ${ssm:/concierge/dev/slack-webhook-url}
+    SLACK_SIGNING_SECRET: ${ssm:/concierge/dev/slack-signing-secret}
     TOGGL_API_TOKEN: ${ssm:/concierge/dev/toggl-api-token}
     TOGGL_USER_AGENT: ${ssm:/concierge/dev/toggl-user-agent}
     TOGGL_WORKSPACE_ID: ${ssm:/concierge/dev/toggl-workspace-id}
@@ -67,6 +68,7 @@ package:
    - app/**
  exclude:
    - "**"
+ individually: false
 
 custom:
   pythonRequirements:
@@ -74,8 +76,15 @@ custom:
 
 functions:
 
+  run-slash-command:
+    handler: app/entrypoints/aws_lambda.run_slash_command
+    events:
+      - http:
+          path: v1/integrations/slack/slash-commands
+          method: POST 
+
   run-scheduled:
-    handler: app/entrypoints/lambda.run_scheduled
+    handler: app/entrypoints/aws_lambda.run_scheduled
     timeout: 30 # download a 8M file from the IFQ site may require some time ..
     events:
       - schedule:

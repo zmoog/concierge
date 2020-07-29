@@ -1,0 +1,121 @@
+{
+    "resource": "/v1/integrations/slack/slash-commands",
+    "path": "/v1/integrations/slack/slash-commands",
+    "httpMethod": "POST",
+    "headers": {
+        "Accept": "application/json,*/*",
+        "Accept-Encoding": "gzip,deflate",
+        "CloudFront-Forwarded-Proto": "https",
+        "CloudFront-Is-Desktop-Viewer": "true",
+        "CloudFront-Is-Mobile-Viewer": "false",
+        "CloudFront-Is-SmartTV-Viewer": "false",
+        "CloudFront-Is-Tablet-Viewer": "false",
+        "CloudFront-Viewer-Country": "US",
+        "Content-Type": "application/x-www-form-urlencoded",
+        "Host": "example.com",
+        "User-Agent": "Slackbot 1.0 (+https://api.slack.com/robots)",
+        "Via": "1.1 99baebf4b5bb631267dcfa82456151cc.cloudfront.net (CloudFront)",
+        "X-Amz-Cf-Id": "Yi7eLZtZCGcIYz3duJjjSWiGlKzOkoMMc5M9O7W1jmyI7SN54C__vw==",
+        "X-Amzn-Trace-Id": "Root=1-5f19c423-bd9bf4a807f114204a99f190",
+        "X-Forwarded-For": "3.81.53.73, 70.132.33.92",
+        "X-Forwarded-Port": "443",
+        "X-Forwarded-Proto": "https",
+        "X-Slack-Request-Timestamp": "1595524130",
+        "X-Slack-Signature": "v0=be4bc98b565ec4b36ae08da0d168893e46469fd0034c375da0530bc24aba4ea0"
+    },
+    "multiValueHeaders": {
+        "Accept": [
+            "application/json,*/*"
+        ],
+        "Accept-Encoding": [
+            "gzip,deflate"
+        ],
+        "CloudFront-Forwarded-Proto": [
+            "https"
+        ],
+        "CloudFront-Is-Desktop-Viewer": [
+            "true"
+        ],
+        "CloudFront-Is-Mobile-Viewer": [
+            "false"
+        ],
+        "CloudFront-Is-SmartTV-Viewer": [
+            "false"
+        ],
+        "CloudFront-Is-Tablet-Viewer": [
+            "false"
+        ],
+        "CloudFront-Viewer-Country": [
+            "US"
+        ],
+        "Content-Type": [
+            "application/x-www-form-urlencoded"
+        ],
+        "Host": [
+            "example.com"
+        ],
+        "User-Agent": [
+            "Slackbot 1.0 (+https://api.slack.com/robots)"
+        ],
+        "Via": [
+            "1.1 99baebf4b5bb631267dcfa82456151cc.cloudfront.net (CloudFront)"
+        ],
+        "X-Amz-Cf-Id": [
+            "Yi7eLZtZCGcIYz3duJjjSWiGlKzOkoMMc5M9O7W1jmyI7SN54C__vw=="
+        ],
+        "X-Amzn-Trace-Id": [
+            "Root=1-5f19c423-bd9bf4a807f114204a99f190"
+        ],
+        "X-Forwarded-For": [
+            "3.81.53.73, 70.132.33.92"
+        ],
+        "X-Forwarded-Port": [
+            "443"
+        ],
+        "X-Forwarded-Proto": [
+            "https"
+        ],
+        "X-Slack-Request-Timestamp": [
+            "1595524130"
+        ],
+        "X-Slack-Signature": [
+            "v0=be4bc98b565ec4b36ae08da0d168893e46469fd0034c375da0530bc24aba4ea0"
+        ]
+    },
+    "queryStringParameters": null,
+    "multiValueQueryStringParameters": null,
+    "pathParameters": null,
+    "stageVariables": null,
+    "requestContext": {
+        "resourceId": "z6ya6r",
+        "resourcePath": "/v1/integrations/slack/slash-commands",
+        "httpMethod": "POST",
+        "extendedRequestId": "QIuVgF59joEFePw=",
+        "requestTime": "23/Jul/2020:17:08:51 +0000",
+        "path": "/dev/v1/integrations/slack/slash-commands",
+        "accountId": "418425532336",
+        "protocol": "HTTP/1.1",
+        "stage": "dev",
+        "domainPrefix": "tk64fyptcj",
+        "requestTimeEpoch": 1595524131105,
+        "requestId": "0f51d8a4-3042-4f6a-a3e8-77102ee06a42",
+        "identity": {
+            "cognitoIdentityPoolId": null,
+            "accountId": null,
+            "cognitoIdentityId": null,
+            "caller": null,
+            "sourceIp": "3.81.53.73",
+            "principalOrgId": null,
+            "accessKey": null,
+            "cognitoAuthenticationType": null,
+            "cognitoAuthenticationProvider": null,
+            "userArn": null,
+            "userAgent": "Slackbot 1.0 (+https://api.slack.com/robots)",
+            "user": null
+        },
+        "domainName": "example.com",
+        "apiId": "tk64fyptcj"
+    },
+    "body": "token=xxx&team_id=T02RX18RT&team_domain=zmoog&channel_id=C02RX18S3&channel_name=general&user_id=U02RX18RV&user_name=zmoog&command=%2Frefurbished&text=ipad&response_url=https%3A%2F%2Fhooks.slack.com%2Fcommands%2FT02RX18RT%2F1258012719589%2FnYhMyqSKcJhx8TjF5Wn9rWBS&trigger_id=1265570558804.2881042877.c2f39a1bb7f9782b7e265c41c1adbc69",
+    "isBase64Encoded": false
+}

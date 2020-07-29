@@ -16,7 +16,7 @@ Here's the summary for Thursday, June 25 2020
 
 ---
 
-Oooops, there are not entries here ¯\\_(ツ)_/¯
+Oooops, there are no entries here ¯\\_(ツ)_/¯
 
 """)]
 
