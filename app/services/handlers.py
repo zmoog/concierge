@@ -1,9 +1,10 @@
 import datetime
+import traceback
 from typing import List
 
 from humanize import naturaldelta
 
-from app.adapters import terminal
+from app.adapters import ifq, terminal
 from app.domain import commands, events
 from app.services.unit_of_work import UnitOfWork
 
@@ -73,7 +74,6 @@ def download_ifq(
         filename = cmd.day.strftime(FILENAME_PATTERN)
 
         if uow.dropbox.exists(filename):
-            # print(f'wow, the file {filename} already exists')
             return [events.IFQIssueAlreadyExists(filename)]
 
         local_file_path = uow.ifq.download_pdf(cmd.day)
@@ -81,8 +81,14 @@ def download_ifq(
         uow.dropbox.put_file(local_file_path, filename)
 
         return [events.IFQIssueDownloaded(filename)]
+    # except ifq.IssueNotAvailable as error:
+    #     return [events.ifq]
     except Exception as error:
-        return [events.IFQIssueDownloadFailed(error)]
+        return [events.IFQIssueDownloadFailed(
+            filename,
+            error,
+            traceback.format_exc(),
+        )]
 
 
 def log_entries_summarized(
