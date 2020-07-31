@@ -38,26 +38,45 @@ command_handlers = {
     commands.Summarize: handlers.summarize,
 }
 
+event_handlers = {
+    events.RefurbishedProductAvailable: [
+        handlers.notify_refurbished_product_available
+    ],
+    events.TogglEntriesSummarized: [
+        handlers.notify_entries_summarized,
+    ],
+    events.IFQIssueAlreadyExists: [
+        handlers.log_event,
+        handlers.notify_ifq_issue_already_available,
+    ],
+    events.IFQIssueDownloaded: [
+        handlers.log_event,
+        handlers.notify_ifq_issue_downloaded,
+    ],
+    events.IFQIssueDownloadFailed: [
+        handlers.log_event,
+        handlers.notify_ifq_issue_download_failed,
+    ],
+}
+
 
 def for_cli():
     event_handlers = {
-        # events.EntriesSummarized: lambda event, uow: print(event.summary)
-        events.TogglEntriesSummarized: [handlers.log_entries_summarized],
-        events.IFQIssueAlreadyExists: [handlers.log_event],
-        events.IFQIssueDownloaded: [handlers.log_event],
-        events.IFQIssueDownloadFailed: [handlers.log_event],
+        events.TogglEntriesSummarized: [
+            handlers.log_entries_summarized,
+        ],
+        events.IFQIssueAlreadyExists: [
+            handlers.log_event,
+        ],
+        events.IFQIssueDownloaded: [
+            handlers.log_event,
+        ],
+        events.IFQIssueDownloadFailed: [
+            handlers.log_event,
+        ],
     }
     return MessageBus(uow, event_handlers, command_handlers)
 
 
 def for_lambda():
-    event_handlers = {
-        events.RefurbishedProductAvailable: [
-            handlers.notify_refurbished_product_available
-        ],
-        events.TogglEntriesSummarized: [handlers.notify_entries_summarized],
-        events.IFQIssueAlreadyExists: [handlers.log_event],
-        events.IFQIssueDownloaded: [handlers.log_event],
-        events.IFQIssueDownloadFailed: [handlers.log_event],
-    }
     return MessageBus(uow, event_handlers, command_handlers)

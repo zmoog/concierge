@@ -128,3 +128,40 @@ def notify_refurbished_product_available(
 {event.text}
 """
     })
+
+
+def notify_ifq_issue_already_available(
+    event: events.IFQIssueAlreadyExists,
+    uow: UnitOfWork
+):
+    """Notify the event in a Slack channel"""
+
+    uow.slack.post_message({
+        'text': f'Hey, the IFQ issue named`{event.filename}`'
+        ' is already available.'
+    })
+
+
+def notify_ifq_issue_downloaded(
+    event: events.IFQIssueDownloaded,
+    uow: UnitOfWork
+):
+    """Notify the event in a Slack channel"""
+
+    uow.slack.post_message({
+        'text': f'Hey, the IFQ issue named `{event.filename}`'
+        ' has been downloaded successfully! 🎉'
+    })
+
+
+def notify_ifq_issue_download_failed(
+    event: events.IFQIssueDownloadFailed,
+    uow: UnitOfWork
+):
+    """Notify the event in a Slack channel"""
+
+    uow.slack.post_message({
+        'text': f"Hey, the download of the IFQ issue "
+        f"named `{event.filename}` is failed"
+        f" (`{event.error!r}`)."
+    })

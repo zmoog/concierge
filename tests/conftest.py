@@ -1,10 +1,14 @@
-import os
 import json
 import pytest
 
-from app.adapters import apple, dropbox, ifq, slack, toggl
 from app import config
+from app.domain import events
+from app.adapters import apple, dropbox, ifq, slack, toggl
+from app.services import handlers
+from app.services.messagebus import MessageBus
 from app.services.unit_of_work import UnitOfWork
+from app import bootstrap
+
 
 # @pytest.fixture(scope="session")
 # def tmp_dir(tmpdir_factory):
@@ -95,6 +99,15 @@ def uow(toggl_adapter,
         dropbox_adapter,
         slack_adapter,
         refurbished_adapter
+    )
+
+
+@pytest.fixture(scope="function")
+def messagebus(uow):
+    return MessageBus(
+        uow,
+        bootstrap.event_handlers,
+        bootstrap.command_handlers,
     )
 
 
