@@ -16,9 +16,9 @@ def run_summarize(day):
 
     cmd = Summarize(day=day)
 
-    messagebus = bootstrap.cli()
+    messagebus = bootstrap.for_cli()
     messagebus.handle(cmd)
 
 
 if __name__ == '__main__':
-run_summarize()
+    run_summarize()
