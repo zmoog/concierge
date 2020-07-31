@@ -73,6 +73,7 @@ def test_slash_commands_without_text(
 no-text.json'
     )
     mocker.patch.object(slack_adapter, "post_message")
+    slack_adapter.post_message.side_effect = [None]
 
     resp = run_slash_command(event, None)
 

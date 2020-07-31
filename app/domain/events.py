@@ -24,6 +24,7 @@ class IFQIssueAlreadyExists(Event):
 class IFQIssueDownloadFailed(Event):
     filename: str
     error: Exception
+    traceback: str
 
 
 @dataclass
