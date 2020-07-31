@@ -16,7 +16,7 @@ def run_ifq_download(day):
 
     cmd = DownloadIFQ(day)
 
-    messagebus = bootstrap.cli()
+    messagebus = bootstrap.for_cli()
     messagebus.handle(cmd)
 
 
