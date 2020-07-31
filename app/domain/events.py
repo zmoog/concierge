@@ -30,3 +30,9 @@ class IFQIssueDownloadFailed(Event):
 @dataclass
 class RefurbishedProductAvailable(Event):
     text: str
+
+
+@dataclass
+class RefurbishedProductNotAvailable(Event):
+    store: str
+    product: str

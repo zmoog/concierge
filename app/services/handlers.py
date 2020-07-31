@@ -52,6 +52,10 @@ def check_refurbished(
         for product in cmd.products:
             products = uow.refurbished.search(cmd.store, product)
             if not products:
+                _events.append(events.RefurbishedProductNotAvailable(
+                    store=cmd.store,
+                    product=product,
+                ))
                 continue
 
             text = f"Found {len(products)} {product}(s):\n\n"
@@ -133,6 +137,18 @@ def notify_refurbished_product_available(
         'text': f"""
 {event.text}
 """
+    })
+
+
+def notify_refurbished_product_not_available(
+    event: events.RefurbishedProductNotAvailable,
+    uow: UnitOfWork
+):
+    """Notify the event in a Slack channel"""
+
+    uow.slack.post_message({
+        'text': f"Hey, can't find any '{event.product}' "
+        f"in the '{event.store}' store now 🤔"
     })
 
 

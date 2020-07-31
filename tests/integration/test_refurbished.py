@@ -4,9 +4,9 @@ import decimal
 
 from refurbished.parser import Product
 
-from app.adapters import apple
+from app.adapters import apple, slack
 from app.domain import commands, events
-from app.services import handlers
+from app.services import handlers, messagebus
 
 
 # @pytest.fixture
@@ -50,3 +50,27 @@ Found 2 ipad(s):
 - iPad Wi-Fi + Cellular 128GB ricondizionato at ~579.00~ *499.00* (-80.00)
 """)]
     assert actual_events == expected_events
+
+
+def test_unavailable_products(
+    mocker,
+    messagebus: messagebus.MessageBus,
+    refurbished_adapter: apple.RefurbishedStoreAdapter,
+    slack_adapter: slack.SlackAdapter,
+):
+    mocker.patch.object(refurbished_adapter, "search")
+    refurbished_adapter.search.side_effect = [[]]
+
+    mocker.patch.object(slack_adapter, 'post_message')
+    slack_adapter.post_message.side_effect = [None]
+
+    cmd = commands.CheckRefurbished(store='it', products=['ipad'])
+
+    messagebus.handle(cmd)
+
+    message = {
+        'text': "Hey, can't find any 'ipad' in the 'it' store now 🤔"
+    }
+    slack_adapter.post_message.assert_called_once_with(
+        message
+    )

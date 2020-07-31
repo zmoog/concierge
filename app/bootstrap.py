@@ -40,7 +40,10 @@ command_handlers = {
 
 event_handlers = {
     events.RefurbishedProductAvailable: [
-        handlers.notify_refurbished_product_available
+        handlers.notify_refurbished_product_available,
+    ],
+    events.RefurbishedProductNotAvailable: [
+        handlers.notify_refurbished_product_not_available,
     ],
     events.TogglEntriesSummarized: [
         handlers.notify_entries_summarized,
