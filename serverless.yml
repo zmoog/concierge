@@ -54,8 +54,7 @@ provider:
     TOGGL_API_TOKEN: ${ssm:/concierge/${self:provider.stage}/toggl-api-token}
     TOGGL_USER_AGENT: ${ssm:/concierge/${self:provider.stage}/toggl-user-agent}
     TOGGL_WORKSPACE_ID: ${ssm:/concierge/${self:provider.stage}/toggl-workspace-id}
-    # SNS_COMMANDS_TOPIC_ARN: ${self:custom.CommandsTopicArn}
-    SNS_COMMANDS_TOPIC_ARN: arn:aws:sns:eu-west-1:418425532336:concierge-commands-topic-dev
+    SNS_COMMANDS_TOPIC_ARN: !Ref CommandTopic 
 
 
 # you can add packaging information here
