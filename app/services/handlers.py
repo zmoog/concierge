@@ -4,7 +4,7 @@ from typing import List
 
 from humanize import naturaldelta
 
-from app.adapters import ifq, terminal
+from app.adapters import terminal
 from app.domain import commands, events
 from app.services.unit_of_work import UnitOfWork
 
