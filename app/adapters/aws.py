@@ -21,14 +21,18 @@ class SNSCommandPublisher:
     to a SNS topic for async processing.
     """
 
-    def __init__(self, topic: str):
-        self.topic = topic
+    def __init__(self, topic_arn: str):
+        """
+        The ``topic_arn`` is the ARN of the SNS topic to publish the
+        commands into.
+        """
+        self.topic_arn = topic_arn
 
     def publish(self, cmd: commands.Command):
         """Publish a ``cmd`` command into the command SNS topic."""
         msg = dict(
-            TopicArn=self.topic,
-            Message=cmd.json(),
+            TopicArn=self.topic_arn,
+            Message=cmd.json(),  # command as JSON
             MessageAttributes={
                 'type-command': {
                     'DataType': 'String',
