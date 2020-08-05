@@ -1,75 +1,50 @@
 import json
 import logging
+from typing import Any
 
 from datetime import date
 
-from app import bootstrap
-from app.adapters import slack
-from app.domain import commands, model
+from app import config
+from app.adapters import aws, slack
+from app.domain import commands
+
+app_logger = logging.getLogger()
+app_logger.setLevel(config.LOG_LEVEL)
 
 logger = logging.getLogger(__name__)
-logger.setLevel(logging.INFO)
 
-messagebus = bootstrap.for_lambda()
-
-whens = {
-    'today': date.today,
-    'previous_business_day': model.find_previous_business_day
-}
 
 dispatcher = slack.SlashCommandDispatcher()
+sns = aws.SNSCommandPublisher(
+    config.SNS_COMMANDS_TOPIC_ARN,
+)
 
 
 @dispatcher.route(
     "/refurbished",
-    text_regex="(?P<store>it|us) (?P<product>ipad|iphone|mac)"
+    text_regex="(?P<store>it|us|uk|au) (?P<product>ipad|iphone|mac)"
 )
 def check_refurbished(store: str, product: str):
-    messagebus.handle(
+    resp = sns.publish(
         commands.CheckRefurbished(
             store=store,
             products=[product]
         )
     )
+    logger.info(f'publish: {resp}')
 
 
 @dispatcher.route(
     "/summarize"
 )
 def summarize():
-    messagebus.handle(
+    resp = sns.publish(
         commands.Summarize(day=date.today())
     )
+    logger.info(f'publish: {resp}')
 
 
-def run_scheduled(event, config):
-    print(f'running run_scheduled with event {event}')
-    if 'Summarize' in event:
-        when = event['Summarize'].get('when', 'today')
-
-        if when not in whens:
-            print(f'"{when}" is not a supported "when" value ({whens.keys()})')
-            return
-
-        day = whens[when]()
-        print(f'summarizing {day}')
-        cmd = commands.Summarize(day=day)
-    elif 'CheckRefurbished' in event:
-        cmd = commands.CheckRefurbished(
-            store=event['CheckRefurbished'].get('store', 'it'),
-            products=event['CheckRefurbished']['products']
-        )
-    elif 'DownloadIFQ' in event:
-        cmd = commands.DownloadIFQ(
-            day=date.today()
-        )
-    else:
-        return
-
-    messagebus.handle(cmd)
-
-
-def run_slash_command(event: dict, context):
+def dispatch(event: dict, context: Any = None):
     """
     Handle the AWS Lambda event from the API Gateway carring the
     HTTP request from Slack for a slash command invoked by a user.
@@ -77,7 +52,7 @@ def run_slash_command(event: dict, context):
     try:
         # dump the event in the log, it will be removed later
         # or replaced w/ an appropriate log level
-        logging.info(json.dumps(event))
+        # logging.info(json.dumps(event))
 
         body, headers = event['body'], event['headers']
 
@@ -86,13 +61,15 @@ def run_slash_command(event: dict, context):
         # for more details
         slack.verify_signature(body, headers)
 
-        # dispatch the slash command to invoke the most
-        # appropriate business command
-        dispatcher.dispatch(
-            slack.build_slash_command(body)
-        )
+        # create a new /command using the payload
+        # from Slack
+        slash_command = slack.build_slash_command(body)
 
-        return build_proxy_response(200)
+        # dispatch the /command to invoke the most
+        # appropriate business command
+        dispatcher.dispatch(slash_command)
+
+        return build_proxy_response(200, body={'text': 'On it!'})
 
     except slack.RouteNotFound as e:
         logger.warning(e)

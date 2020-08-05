@@ -1,0 +1,27 @@
+{
+    "Records": [
+        {
+            "EventSource": "aws:sns",
+            "EventVersion": "1.0",
+            "EventSubscriptionArn": "arn:aws:sns:eu-west-1:418425532336:concierge-commands-topic-dev:80625260-5bfb-4393-bedb-c0f6a5d72a3a",
+            "Sns": {
+                "Type": "Notification",
+                "MessageId": "309ef764-38a9-5a77-ab12-a0fb3e19bdf5",
+                "TopicArn": "arn:aws:sns:eu-west-1:418425532336:concierge-commands-topic-dev",
+                "Subject": "summarise",
+                "Message": "{\"message\": \"hey\"}",
+                "Timestamp": "2020-08-01T05:58:08.219Z",
+                "SignatureVersion": "1",
+                "Signature": "Cd13p43+SxS52dZNXPCkxwct+dyfVal7oYiG/vYSoaV01SQ3cb8gVwr28hBOqEdDGHQt2ULChgHzeXiMVhiZHj6dB/tRHD//HIMYGRyyAReeswNqA8dC3k55AR3LbqRnIrBTvFR1RNIXuxeqbJQC3CxnSQlzAdz5D1XTF+X3Y/vAY61Uxhqc/GhJ+yEdWUGsURRXBh5Ib66KIwKbBKHmzqBeKdUva1aBpn/ChEvDw+IL8ouNWzNlWBYi7TwQIVS03OSMjJrzVeiHkTHQRnrT0H+PgZk4WJca0CejI5Hcp28b99PoYE/zzwQx9Bo7h76UQ8LL8FczWhMrTvMRO6oXxA==",
+                "SigningCertUrl": "https://sns.eu-west-1.amazonaws.com/SimpleNotificationService-a86cb10b4e1f29c941702d737128f7b6.pem",
+                "UnsubscribeUrl": "https://sns.eu-west-1.amazonaws.com/?Action=Unsubscribe&SubscriptionArn=arn:aws:sns:eu-west-1:418425532336:concierge-commands-topic-dev:80625260-5bfb-4393-bedb-c0f6a5d72a3a",
+                "MessageAttributes": {
+                    "command-name": {
+                        "Type": "String",
+                        "Value": "summarize"
+                    }
+                }
+            }
+        }
+    ]
+}

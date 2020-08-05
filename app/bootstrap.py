@@ -68,6 +68,12 @@ def for_cli():
         events.TogglEntriesSummarized: [
             handlers.log_entries_summarized,
         ],
+        events.RefurbishedProductAvailable: [
+            handlers.log_event,
+        ],
+        events.RefurbishedProductNotAvailable: [
+            handlers.log_event,
+        ],
         events.IFQIssueAlreadyExists: [
             handlers.log_event,
         ],

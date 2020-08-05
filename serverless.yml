@@ -20,9 +20,10 @@ service: concierge
 # frameworkVersion: "=X.X.X"
 
 plugins:
-  - serverless-python-requirements
-  - serverless-step-functions
   - serverless-pseudo-parameters
+  - serverless-python-requirements
+  # - serverless-pseudo-parameters
+  # - serverless-step-functions
 
 provider:
   name: aws
@@ -33,34 +34,28 @@ provider:
   stage: dev
   region: eu-west-1
 
-# you can add statements to the Lambda function's IAM Role here
-#  iamRoleStatements:
-#    - Effect: "Allow"
-#      Action:
-#        - "s3:ListBucket"
-#      Resource: { "Fn::Join" : ["", ["arn:aws:s3:::", { "Ref" : "ServerlessDeploymentBucket" } ] ]  }
-#    - Effect: "Allow"
-#      Action:
-#        - "s3:PutObject"
-#      Resource:
-#        Fn::Join:
-#          - ""
-#          - - "arn:aws:s3:::"
-#            - "Ref" : "ServerlessDeploymentBucket"
-#            - "/*"
+  # you can add statements to the Lambda function's IAM Role here
+  iamRoleStatements:
+    - Effect: "Allow"
+      Action:
+        - "SNS:Publish"
+      Resource:
+        - !Ref CommandTopic 
 
   # you can define service wide environment variables here
   environment:
     LOG_LEVEL: INFO
-    DROPBOX_ROOT_FOLDER: ${ssm:/concierge/dev/dropbox-root-folder}
-    DROPBOX_ACCESS_TOKEN: ${ssm:/concierge/dev/dropbox-access-token}
-    IFQ_USERNAME: ${ssm:/concierge/dev/ifq-username}
-    IFQ_PASSWORD: ${ssm:/concierge/dev/ifq-password}
-    SLACK_WEBHOOK_URL: ${ssm:/concierge/dev/slack-webhook-url}
-    SLACK_SIGNING_SECRET: ${ssm:/concierge/dev/slack-signing-secret}
-    TOGGL_API_TOKEN: ${ssm:/concierge/dev/toggl-api-token}
-    TOGGL_USER_AGENT: ${ssm:/concierge/dev/toggl-user-agent}
-    TOGGL_WORKSPACE_ID: ${ssm:/concierge/dev/toggl-workspace-id}
+    DROPBOX_ROOT_FOLDER: ${ssm:/concierge/${self:provider.stage}/dropbox-root-folder}
+    DROPBOX_ACCESS_TOKEN: ${ssm:/concierge/${self:provider.stage}/dropbox-access-token}
+    IFQ_USERNAME: ${ssm:/concierge/${self:provider.stage}/ifq-username}
+    IFQ_PASSWORD: ${ssm:/concierge/${self:provider.stage}/ifq-password}
+    SLACK_WEBHOOK_URL: ${ssm:/concierge/${self:provider.stage}/slack-webhook-url}
+    SLACK_SIGNING_SECRET: ${ssm:/concierge/${self:provider.stage}/slack-signing-secret}
+    TOGGL_API_TOKEN: ${ssm:/concierge/${self:provider.stage}/toggl-api-token}
+    TOGGL_USER_AGENT: ${ssm:/concierge/${self:provider.stage}/toggl-user-agent}
+    TOGGL_WORKSPACE_ID: ${ssm:/concierge/${self:provider.stage}/toggl-workspace-id}
+    SNS_COMMANDS_TOPIC_ARN: !Ref CommandTopic 
+
 
 # you can add packaging information here
 package:
@@ -71,20 +66,31 @@ package:
  individually: false
 
 custom:
+  # CommandsTopicArn: "#{CommandTopic.Arn}"
+  CommandsTopicName: ${self:service}-commands-topic-${self:provider.stage}
   pythonRequirements:
     dockerizePip: non-linux
 
 functions:
 
-  run-slash-command:
-    handler: app/entrypoints/aws_lambda.run_slash_command
+  dispatch-command:
+    handler: app/entrypoints/aws/sns/message.dispatch_command
+    events:
+    - sns:
+        arn: !Ref CommandTopic
+        topicName: ${self:custom.CommandsTopicName}
+    # environment:
+      # SNS_COMMANDS_TOPIC_ARN: ""#{CommandTopic.Arn}""
+
+  dispatch-slash-command:
+    handler: app/entrypoints/aws/api_gateway/slash_commands.dispatch
     events:
       - http:
           path: v1/integrations/slack/slash-commands
           method: POST 
 
   run-scheduled:
-    handler: app/entrypoints/aws_lambda.run_scheduled
+    handler: app/entrypoints/aws/cloudwatch/events.run_scheduled
     timeout: 30 # download a 8M file from the IFQ site may require some time ..
     events:
       - schedule:
@@ -118,3 +124,10 @@ functions:
           input:
             DownloadIFQ:
               when: today
+
+resources:
+  Resources:
+    CommandTopic:
+      Type: AWS::SNS::Topic
+      Properties:
+        TopicName: ${self:custom.CommandsTopicName}

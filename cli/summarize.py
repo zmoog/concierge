@@ -10,7 +10,7 @@ from app import bootstrap
     type=click.DateTime(),
     required=True,
     help='The day to summarize')
-def run_summarize(day):
+def run_command(day):
     """Summarize the time tracking entries for a specific day"""
     print(f'summarizing {day}')
 
@@ -21,4 +21,4 @@ def run_summarize(day):
 
 
 if __name__ == '__main__':
-    run_summarize()
+    run_command()

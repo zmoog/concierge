@@ -20,7 +20,7 @@ Oooops, there are no entries here ¯\\_(ツ)_/¯
 
 """)]
 
-    cmd = Summarize(date(2020, 6, 25))
+    cmd = Summarize(day=date(2020, 6, 25))
 
     actual_events = summarize(cmd, uow)
 
@@ -56,7 +56,7 @@ Here's the summary for Thursday, June 25 2020
 
 """)]
 
-    cmd = Summarize(date(2020, 6, 25))
+    cmd = Summarize(day=date(2020, 6, 25))
 
     actual_events = summarize(cmd, uow)
 

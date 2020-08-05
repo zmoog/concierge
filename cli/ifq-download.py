@@ -10,15 +10,15 @@ from app import bootstrap
     type=click.DateTime(),
     required=True,
     help='The day to summarize')
-def run_ifq_download(day):
+def run_command(day):
     """Downloads the IFQ issue for a specific day"""
     print(f'downloading IFQ for {day}')
 
-    cmd = DownloadIFQ(day)
+    cmd = DownloadIFQ(day=day)
 
     messagebus = bootstrap.for_cli()
     messagebus.handle(cmd)
 
 
 if __name__ == '__main__':
-    run_ifq_download()
+    run_command()

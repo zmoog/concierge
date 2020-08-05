@@ -3,24 +3,25 @@ from datetime import date
 from typing import List  # Optional
 # from dataclasses import dataclass
 # from pydantic import BaseModel
-from pydantic.dataclasses import dataclass
+# from pydantic.dataclasses import dataclass
+from pydantic import BaseModel
 
 
-class Command:
+class Command(BaseModel):
     pass
 
 
-@dataclass
+# @dataclass
 class Summarize(Command):
     day: date
 
 
-@dataclass
+# @dataclass
 class DownloadIFQ(Command):
     day: date
 
 
-@dataclass
+# @dataclass
 class CheckRefurbished(Command):
     store: str
     products: List[str]
