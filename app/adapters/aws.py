@@ -17,18 +17,18 @@ sns_client = boto3.client('sns')
 
 
 class SNSCommandPublisher:
+    """SNSCommandPublisher handle the publishing of application commands
+    to a SNS topic for async processing.
+    """
 
     def __init__(self, topic: str):
         self.topic = topic
 
     def publish(self, cmd: commands.Command):
-        # logger.info(f'topic: {config.SNS_COMMANDS_TOPIC_ARN}')
+        """Publish a ``cmd`` command into the command SNS topic."""
         msg = dict(
-            # TopicArn=config.SNS_COMMANDS_TOPIC_ARN,
             TopicArn=self.topic,
-            # Message="Pippero",
             Message=cmd.json(),
-            # MessageStructure='JSON',
             MessageAttributes={
                 'type-command': {
                     'DataType': 'String',
@@ -41,11 +41,18 @@ class SNSCommandPublisher:
 
 
 class SNSMessageHandler:
-
+    """SNSMessageHandler handles the process of an event received
+    from a SNS topic subscription."""
     def __init__(self, bus: messagebus.MessageBus):
         self.messagebus = bus
 
     def dispatch(self, event: dict):
+        """Extract the commands from the record contained in the event
+        received from the SNS topic.
+
+        Each record is examined looking for a command. All the commands found
+        are dispatched for execution.
+        """
         records = event.get('Records', [])
         logger.info(f'received {len(records)} records')
 
