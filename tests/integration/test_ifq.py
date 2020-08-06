@@ -19,14 +19,14 @@ def test_issue_is_already_available(
 
     cmd = commands.DownloadIFQ(day=date(2020, 7, 30))
 
-    messagebus.handle(cmd)
+    messagebus.handle(cmd, {})
 
     message = {
         'text': "Hey, the IFQ issue named`ilfatto-20200730.pdf`"
         " is already available."
     }
     slack_adapter.post_message.assert_called_once_with(
-        message
+        message, {}
     )
 
 
@@ -49,14 +49,14 @@ def test_ifq_issue_downloaded(
 
     cmd = commands.DownloadIFQ(day=date(2020, 7, 30))
 
-    messagebus.handle(cmd)
+    messagebus.handle(cmd, {})
 
     message = {
         'text': "Hey, the IFQ issue named `ilfatto-20200730.pdf` "
         "has been downloaded successfully! 🎉"
     }
     slack_adapter.post_message.assert_called_once_with(
-        message
+        message, {}
     )
 
 
@@ -74,7 +74,7 @@ def test_ifq_issue_download_failed(
 
     cmd = commands.DownloadIFQ(day=date(2020, 7, 30))
 
-    messagebus.handle(cmd)
+    messagebus.handle(cmd, {})
 
     message = {
         'text': "Hey, the download of the IFQ issue "
@@ -82,5 +82,5 @@ def test_ifq_issue_download_failed(
         " (`Exception('ka-booom!')`)."
     }
     slack_adapter.post_message.assert_called_once_with(
-        message
+        message, {}
     )

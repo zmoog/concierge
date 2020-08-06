@@ -33,5 +33,5 @@ def test_check_refurbished_products_triggered_by_a_sns_notification(
         'text': "Hey, can't find any 'ipad' in the 'it' store now 🤔"
     }
     slack_adapter.post_message.assert_called_once_with(
-        message
+        message, {}
     )

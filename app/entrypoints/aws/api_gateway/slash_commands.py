@@ -1,6 +1,6 @@
 import json
 import logging
-from typing import Any
+from typing import Any, Dict
 
 from datetime import date
 
@@ -24,12 +24,13 @@ sns = aws.SNSCommandPublisher(
     "/refurbished",
     text_regex="(?P<store>it|us|uk|au) (?P<product>ipad|iphone|mac)"
 )
-def check_refurbished(store: str, product: str):
+def check_refurbished(context: Dict[str, Any], store: str, product: str):
     resp = sns.publish(
         commands.CheckRefurbished(
             store=store,
             products=[product]
-        )
+        ),
+        context,
     )
     logger.info(f'publish: {resp}')
 
@@ -37,9 +38,12 @@ def check_refurbished(store: str, product: str):
 @dispatcher.route(
     "/summarize"
 )
-def summarize():
+def summarize(context: Dict[str, Any]):
     resp = sns.publish(
-        commands.Summarize(day=date.today())
+        commands.Summarize(
+            day=date.today()
+        ),
+        context,
     )
     logger.info(f'publish: {resp}')
 
@@ -67,7 +71,11 @@ def dispatch(event: dict, context: Any = None):
 
         # dispatch the /command to invoke the most
         # appropriate business command
-        dispatcher.dispatch(slash_command)
+        dispatcher.dispatch(slash_command, {
+            "slack": {
+                "response_url": slash_command.response_url,
+            }
+        })
 
         return build_proxy_response(200, body={'text': 'On it!'})
 

@@ -22,7 +22,7 @@ Oooops, there are no entries here ¯\\_(ツ)_/¯
 
     cmd = Summarize(day=date(2020, 6, 25))
 
-    actual_events = summarize(cmd, uow)
+    actual_events = summarize(cmd, uow, {})
 
     assert len(actual_events) == len(expected_events)
     assert actual_events[0].summary == expected_events[0].summary
@@ -58,7 +58,7 @@ Here's the summary for Thursday, June 25 2020
 
     cmd = Summarize(day=date(2020, 6, 25))
 
-    actual_events = summarize(cmd, uow)
+    actual_events = summarize(cmd, uow, {})
 
     assert len(actual_events) == len(expected_events)
     assert actual_events[0].summary == expected_events[0].summary

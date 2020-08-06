@@ -1,6 +1,6 @@
 import datetime
 import traceback
-from typing import List
+from typing import Any, Dict, List
 
 from humanize import naturaldelta
 
@@ -9,7 +9,11 @@ from app.domain import commands, events
 from app.services.unit_of_work import UnitOfWork
 
 
-def summarize(cmd: commands.Summarize, uow: UnitOfWork) -> List[events.Event]:
+def summarize(
+    cmd: commands.Summarize,
+    uow: UnitOfWork,
+    context: Dict[str, Any],
+) -> List[events.Event]:
     """Summarize the toggl entries for a given day"""
     with uow:
         summary = uow.toggl.summary(cmd.day, cmd.day)
@@ -44,7 +48,8 @@ def summarize(cmd: commands.Summarize, uow: UnitOfWork) -> List[events.Event]:
 
 def check_refurbished(
     cmd: commands.CheckRefurbished,
-    uow: UnitOfWork
+    uow: UnitOfWork,
+    context: Dict[str, Any],
 ) -> List[events.Event]:
     """Checks the refurbished section of the Apple Store looking for deals."""
     with uow:
@@ -71,7 +76,8 @@ def check_refurbished(
 
 def download_ifq(
     cmd: commands.DownloadIFQ,
-    uow: UnitOfWork
+    uow: UnitOfWork,
+    context: Dict[str, Any],
 ) -> List[events.Event]:
     FILENAME_PATTERN = 'ilfatto-%Y%m%d.pdf'
     try:
@@ -97,7 +103,8 @@ def download_ifq(
 
 def log_entries_summarized(
     event: events.TogglEntriesSummarized,
-    uow: UnitOfWork
+    uow: UnitOfWork,
+    context: Dict[str, Any],
 ):
     """Logs the event in the termimal"""
     terminal.log(event.summary)
@@ -105,7 +112,8 @@ def log_entries_summarized(
 
 def log_event(
     event: events.Event,
-    uow: UnitOfWork
+    uow: UnitOfWork,
+    context: Dict[str, Any],
 ):
     """"Logs events"""
     text = str(event)
@@ -114,7 +122,8 @@ def log_event(
 
 def notify_entries_summarized(
     event: events.TogglEntriesSummarized,
-    uow: UnitOfWork
+    uow: UnitOfWork,
+    context: Dict[str, Any],
 ):
     """Notify the event in a Slack channel"""
 
@@ -124,12 +133,13 @@ def notify_entries_summarized(
 {event.summary}
 ```
 """
-    })
+    }, context)
 
 
 def notify_refurbished_product_available(
     event: events.RefurbishedProductAvailable,
-    uow: UnitOfWork
+    uow: UnitOfWork,
+    context: Dict[str, Any],
 ):
     """Notify the event in a Slack channel"""
 
@@ -137,48 +147,52 @@ def notify_refurbished_product_available(
         'text': f"""
 {event.text}
 """
-    })
+    }, context)
 
 
 def notify_refurbished_product_not_available(
     event: events.RefurbishedProductNotAvailable,
-    uow: UnitOfWork
+    uow: UnitOfWork,
+    context: Dict[str, Any],
 ):
     """Notify the event in a Slack channel"""
 
     uow.slack.post_message({
         'text': f"Hey, can't find any '{event.product}' "
         f"in the '{event.store}' store now 🤔"
-    })
+    }, context)
 
 
 def notify_ifq_issue_already_available(
     event: events.IFQIssueAlreadyExists,
-    uow: UnitOfWork
+    uow: UnitOfWork,
+    context: Dict[str, Any],
 ):
     """Notify the event in a Slack channel"""
 
     uow.slack.post_message({
         'text': f'Hey, the IFQ issue named`{event.filename}`'
         ' is already available.'
-    })
+    }, context)
 
 
 def notify_ifq_issue_downloaded(
     event: events.IFQIssueDownloaded,
-    uow: UnitOfWork
+    uow: UnitOfWork,
+    context: Dict[str, Any],
 ):
     """Notify the event in a Slack channel"""
 
     uow.slack.post_message({
         'text': f'Hey, the IFQ issue named `{event.filename}`'
         ' has been downloaded successfully! 🎉'
-    })
+    }, context)
 
 
 def notify_ifq_issue_download_failed(
     event: events.IFQIssueDownloadFailed,
-    uow: UnitOfWork
+    uow: UnitOfWork,
+    context: Dict[str, Any],
 ):
     """Notify the event in a Slack channel"""
 
@@ -186,4 +200,4 @@ def notify_ifq_issue_download_failed(
         'text': f"Hey, the download of the IFQ issue "
         f"named `{event.filename}` is failed"
         f" (`{event.error!r}`)."
-    })
+    }, context)

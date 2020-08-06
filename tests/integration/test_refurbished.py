@@ -38,7 +38,7 @@ def test_available_products(
 
     # bus.add_event_handler(type(cmd))
     cmd = commands.CheckRefurbished(store='it', products=['ipad'])
-    actual_events = handlers.check_refurbished(cmd, uow)
+    actual_events = handlers.check_refurbished(cmd, uow, {})
 
     # print('actual_events', actual_events)
     assert actual_events, "no events generated"
@@ -66,11 +66,11 @@ def test_unavailable_products(
 
     cmd = commands.CheckRefurbished(store='it', products=['ipad'])
 
-    messagebus.handle(cmd)
+    messagebus.handle(cmd, {})
 
     message = {
         'text': "Hey, can't find any 'ipad' in the 'it' store now 🤔"
     }
     slack_adapter.post_message.assert_called_once_with(
-        message
+        message, {}
     )
