@@ -1,7 +1,9 @@
+from datetime import date
 import logging
 
 from app.entrypoints.aws.api_gateway.slash_commands import dispatch, sns
 from app.bootstrap import slack_adapter
+from app.domain import commands
 
 
 def test_slash_commands_with_an_invalid_token(from_json):
@@ -109,3 +111,70 @@ unexpected-text.json'
 "text": "I don\'t know how to handle your request \
 \\u00af\\\\_(\\u30c4)_/\\u00af\
 "}'
+
+
+def test_when_i_summarize_an_additional_date(
+    mocker,
+    from_json,
+    caplog,
+):
+    caplog.set_level(logging.INFO)
+
+    # the event contains a slash command with a specific date (2020-08-06)
+    event = from_json(
+        'tests/data/aws/lambda/events/'
+        'api-gateway/slack/slash-commands/summarize-with-date.json'
+    )
+
+    mocker.patch.object(sns, "publish")
+    sns.publish.side_effect = [None]
+
+    resp = dispatch(event)
+
+    assert 'statusCode' in resp
+    assert resp['statusCode'] == 200
+    assert resp['body'] == '{"text": "On it!"}'
+
+    sns.publish.assert_called_once_with(
+        commands.Summarize(day=date(2020, 8, 6)),
+        {
+            'slack': {
+                'response_url': 'https://hooks.slack.com/commands/'
+                'T02RX18RT/1287752509456/RvnHleL1XCLxuMU2zGDGRbtT'
+            }
+        }
+    )
+
+
+def test_when_i_summarize_without_a_specific_date(
+    mocker,
+    from_json,
+    caplog,
+):
+    caplog.set_level(logging.INFO)
+
+    # the event contains a slash command without any date, in this case
+    # the date use should be today
+    event = from_json(
+        'tests/data/aws/lambda/events/'
+        'api-gateway/slack/slash-commands/summarize-without-date.json'
+    )
+
+    mocker.patch.object(sns, "publish")
+    sns.publish.side_effect = [None]
+
+    resp = dispatch(event)
+
+    assert 'statusCode' in resp
+    assert resp['statusCode'] == 200
+    assert resp['body'] == '{"text": "On it!"}'
+
+    sns.publish.assert_called_once_with(
+        commands.Summarize(day=date.today()),
+        {
+            'slack': {
+                'response_url': 'https://hooks.slack.com/commands/'
+                'T02RX18RT/1287752509456/RvnHleL1XCLxuMU2zGDGRbtT'
+            }
+        }
+    )

@@ -41,4 +41,4 @@ def run_scheduled(event, config):
     else:
         return
 
-    messagebus.handle(cmd)
+    messagebus.handle(cmd, {})
