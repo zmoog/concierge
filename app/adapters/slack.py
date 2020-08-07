@@ -6,7 +6,7 @@ import json
 import re
 import requests
 
-from typing import Callable, Dict, Optional, Pattern
+from typing import Any, Callable, Dict, Optional, Pattern
 
 from urllib.parse import parse_qs
 from pydantic.dataclasses import dataclass
@@ -18,8 +18,20 @@ SlackConfig = collections.namedtuple("SlackConfig", "webhook_url")
 
 @dataclass
 class SlashCommand:
+    """
+    https://api.slack.com/interactivity/slash-commands#responding_to_commands
+    """
     name: str
     text: Optional[str]
+    team_id: str
+    team_domain: str
+    channel_id: str
+    channel_name: str
+    user_id: str
+    user_name: str
+    # A temporary webhook URL that you can use to generate messages responses.
+    response_url: str
+    trigger_id: str
 
 
 class SlackAdapter:
@@ -35,15 +47,22 @@ class SlackAdapter:
         self.logger = logging.getLogger(__name__)
         self.config = config
 
-    def post_message(self, message: dict):
+    def post_message(self, message: dict, context: dict):
         """
         Posts the message to to channel configured in the webhook.
         """
+
+        slack_ctx = context.get('slack', {})
+        logger.info(slack_ctx)
+
+        url = slack_ctx.get("response_url", self.config.webhook_url)
+
         if self.logger.isEnabledFor(logging.DEBUG):
             self.logger.debug(message)
 
         requests.post(
-            self.config.webhook_url,
+            # self.config.webhook_url,
+            url,
             headers={
                 "Content-type": "application/json"
             },
@@ -77,7 +96,7 @@ class SlashCommandDispatcher:
 
         return decorator
 
-    def dispatch(self, cmd: SlashCommand):
+    def dispatch(self, cmd: SlashCommand, context: Dict[str, Any]):
 
         if cmd.name not in self.routes:
             logger.error(f'can\'t find a route for cmd {cmd.name}')
@@ -93,24 +112,42 @@ class SlashCommandDispatcher:
                 raise RouteNotFound(msg)
 
             # call the command handler
-            logger.info(f'handing off cmd {cmd.name} to {route.handler}')
-            route.handler(**match.groupdict())
+            args = match.groupdict()
+            logger.info(f'handing off cmd {cmd.name} to {route.handler} with context {context} args {args}')
+            route.handler(context, **args)
         else:
             # call the command handler
-            route.handler()
+            route.handler(context)
 
 
-def build_slash_command(body: str) -> SlashCommand:
+def build_slash_command(qs: str) -> SlashCommand:
+    """
+    Build a new ``SlashCommand`` from a query string, usually sent by Slack
+    as a slash command.
 
-    cmd = parse_qs(body)
+        Arguments:
 
-    if 'text' in cmd:
-        text = cmd['text'][0]
-    else:
-        text = None
+        qs: percent-encoded query string to be parsed
+    """
+
+    dictionary = parse_qs(qs)
+
+    # if 'text' in dictionary:
+    #     text = dictionary['text'][0] if 'text' in dictionary else None
+    # else:
+    #     text = None
+    text = dictionary['text'][0] if 'text' in dictionary else None
 
     return SlashCommand(
-        name=cmd['command'][0],
+        name=dictionary['command'][0],
+        team_id=dictionary['team_id'][0],
+        team_domain=dictionary['team_domain'][0],
+        channel_id=dictionary['channel_id'][0],
+        channel_name=dictionary['channel_name'][0],
+        user_id=dictionary['user_id'][0],
+        user_name=dictionary['user_name'][0],
+        response_url=dictionary['response_url'][0],
+        trigger_id=dictionary['trigger_id'][0],
         text=text,
     )
 
@@ -131,10 +168,10 @@ def verify_signature(body: str, headers: Dict[str, str]):
     req = str.encode(f'v0:{timestamp}:{body}')
 
     request_hash = 'v0=' + hmac.new(
-            str.encode(config.SLACK_SIGNING_SECRET),
-            req,
-            hashlib.sha256
-        ).hexdigest()
+        str.encode(config.SLACK_SIGNING_SECRET),
+        req,
+        hashlib.sha256
+    ).hexdigest()
 
     if not hmac.compare_digest(request_hash, signature):
         if logger.isEnabledFor(logging.DEBUG):

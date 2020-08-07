@@ -17,7 +17,7 @@ def run_command(day):
     cmd = DownloadIFQ(day=day)
 
     messagebus = bootstrap.for_cli()
-    messagebus.handle(cmd)
+    messagebus.handle(cmd, {})
 
 
 if __name__ == '__main__':

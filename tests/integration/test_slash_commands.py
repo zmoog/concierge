@@ -1,10 +1,7 @@
-import decimal
 import logging
 
-from refurbished.parser import Product
-
 from app.entrypoints.aws.api_gateway.slash_commands import dispatch, sns
-from app.bootstrap import refurbished_adapter, slack_adapter
+from app.bootstrap import slack_adapter
 
 
 def test_slash_commands_with_an_invalid_token(from_json):

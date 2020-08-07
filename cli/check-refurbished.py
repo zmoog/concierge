@@ -22,7 +22,7 @@ def run_command(store: str, product: str):
     )
 
     messagebus = bootstrap.for_cli()
-    messagebus.handle(cmd)
+    messagebus.handle(cmd, {})
 
 
 if __name__ == '__main__':

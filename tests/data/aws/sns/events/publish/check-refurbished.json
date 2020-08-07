@@ -19,6 +19,10 @@
                     "type-command": {
                         "Type": "String",
                         "Value": "CheckRefurbished"
+                    },
+                    "context": {
+                        "Type": "String",
+                        "Value": "{}"
                     }
                 }
             }
