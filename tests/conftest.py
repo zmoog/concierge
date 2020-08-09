@@ -100,13 +100,16 @@ def uow(toggl_adapter,
         ifq_adapter,
         dropbox_adapter,
         slack_adapter,
-        refurbished_adapter):
+        refurbished_adapter,
+        telegram_adapter,
+):
     return UnitOfWork(
         toggl_adapter,
         ifq_adapter,
         dropbox_adapter,
         slack_adapter,
-        refurbished_adapter
+        refurbished_adapter,
+        telegram_adapter,
     )
 
 

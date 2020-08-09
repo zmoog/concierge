@@ -34,7 +34,8 @@ uow = UnitOfWork(
     ifq_adapter,
     dropbox_adapter,
     slack_adapter,
-    refurbished_adapter
+    refurbished_adapter,
+    telegram_adapter,
 )
 
 command_handlers = {
