@@ -65,9 +65,15 @@ def check_refurbished(
 
             text = f"Found {len(products)} {product}(s):\n\n"
             for p in products:
-                text += \
-                    f"- {p.name} at ~{p.previous_price}~ \
-*{p.price}* (-{p.savings_price})\n"
+                text += f"- {p.name} at "
+                if p.savings_price > 0:
+                    text += str(
+                        f"~{p.previous_price}~ *{p.price}* "
+                        f"(-{p.savings_price})\n"
+                    )
+                else:
+                    text += f"*{p.price}*\n"
+
             _events.append(
                 events.RefurbishedProductAvailable(text=text)
             )

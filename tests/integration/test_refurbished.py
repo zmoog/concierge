@@ -52,6 +52,35 @@ Found 2 ipad(s):
     assert actual_events == expected_events
 
 
+def test_available_products_with_zero_savings_price(
+    mocker,
+    uow,
+    refurbished_adapter: apple.RefurbishedStoreAdapter
+):
+    mocker.patch.object(refurbished_adapter, "search")
+    refurbished_adapter.search.side_effect = [[
+        Product(
+            name='iPad Wi-Fi + Cellular 128GB ricondizionato',
+            price=decimal.Decimal('499.00'),
+            previous_price=decimal.Decimal('0'),
+            savings_price=decimal.Decimal('0')
+        )]]
+
+    # bus.add_event_handler(type(cmd))
+    cmd = commands.CheckRefurbished(store='it', products=['ipad'])
+    actual_events = handlers.check_refurbished(cmd, uow, {})
+
+    # print('actual_events', actual_events)
+    assert actual_events, "no events generated"
+
+    expected_events = [events.RefurbishedProductAvailable(text="""\
+Found 1 ipad(s):
+
+- iPad Wi-Fi + Cellular 128GB ricondizionato at *499.00*
+""")]
+    assert actual_events == expected_events
+
+
 def test_unavailable_products(
     mocker,
     messagebus: messagebus.MessageBus,
