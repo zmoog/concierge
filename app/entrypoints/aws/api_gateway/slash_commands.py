@@ -2,7 +2,7 @@ import json
 import logging
 from typing import Any, Dict
 
-from datetime import date
+from datetime import date, datetime
 
 from app import config
 from app.adapters import aws, slack
@@ -24,7 +24,11 @@ sns = aws.SNSCommandPublisher(
     "/refurbished",
     text_regex="(?P<store>it|us|uk|au) (?P<product>ipad|iphone|mac)"
 )
-def check_refurbished(context: Dict[str, Any], store: str, product: str):
+def check_refurbished(
+    context: Dict[str, Any],
+    store: str,
+    product: str
+):
     resp = sns.publish(
         commands.CheckRefurbished(
             store=store,
@@ -38,10 +42,13 @@ def check_refurbished(context: Dict[str, Any], store: str, product: str):
 @dispatcher.route(
     "/summarize"
 )
-def summarize(context: Dict[str, Any]):
+def summarize(context: Dict[str, Any], text: str = None):
+
+    day = datetime.strptime(text, '%Y-%m-%d') if text else date.today()
+
     resp = sns.publish(
         commands.Summarize(
-            day=date.today()
+            day=day
         ),
         context,
     )

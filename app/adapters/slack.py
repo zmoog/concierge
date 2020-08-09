@@ -113,11 +113,14 @@ class SlashCommandDispatcher:
 
             # call the command handler
             args = match.groupdict()
-            logger.info(f'handing off cmd {cmd.name} to {route.handler} with context {context} args {args}')
+            logger.info(
+                f'handing off cmd {cmd.name} to {route.handler}'
+                f' with context {context} args {args}'
+            )
             route.handler(context, **args)
         else:
-            # call the command handler
-            route.handler(context)
+            # call the command handler passing the text
+            route.handler(context, cmd.text)
 
 
 def build_slash_command(qs: str) -> SlashCommand:
@@ -174,7 +177,6 @@ def verify_signature(body: str, headers: Dict[str, str]):
     ).hexdigest()
 
     if not hmac.compare_digest(request_hash, signature):
-        if logger.isEnabledFor(logging.DEBUG):
-            logger.debug(f'expected: {signature}')
-            logger.debug(f'actual: {request_hash}')
+        logger.warning(f'expected: {signature}')
+        logger.warning(f'actual: {request_hash}')
         raise InvalidSignature()
