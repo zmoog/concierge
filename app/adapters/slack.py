@@ -115,7 +115,7 @@ class SlashCommandDispatcher:
             args = match.groupdict()
             logger.info(
                 f'handing off cmd {cmd.name} to {route.handler}'
-                ' with context {context} args {args}'
+                f' with context {context} args {args}'
             )
             route.handler(context, **args)
         else:
