@@ -2,7 +2,7 @@ from app.domain import commands, events
 from app.services.unit_of_work import UnitOfWork
 from app.services.messagebus import MessageBus
 from app.services import handlers
-from app.adapters import apple, dropbox, ifq, slack, toggl
+from app.adapters import apple, dropbox, ifq, slack, telegram, toggl
 from app import config
 
 
@@ -19,6 +19,11 @@ ifq_adapter = ifq.IFQAdapter(
 slack_adapter = slack.SlackAdapter(slack.SlackConfig(
     webhook_url=config.SLACK_WEBHOOK_URL
 ))
+
+telegram_adapter = telegram.TelegramAdapter(
+    token=config.TELEGRAM_API_TOKEN,
+    default_chat_id=config.TELEGRAM_DEFAULT_CHAT_ID,
+)
 
 toggl_adapter = toggl.TogglAdapter()
 

@@ -51,6 +51,8 @@ provider:
     IFQ_PASSWORD: ${ssm:/concierge/${self:provider.stage}/ifq-password}
     SLACK_WEBHOOK_URL: ${ssm:/concierge/${self:provider.stage}/slack-webhook-url}
     SLACK_SIGNING_SECRET: ${ssm:/concierge/${self:provider.stage}/slack-signing-secret}
+    TELEGRAM_API_TOKEN: ${ssm:/concierge/${self:provider.stage}/telegram-api-token}
+    TELEGRAM_DEFAULT_CHAT_ID: ${ssm:/concierge/${self:provider.stage}/telegram-default-chat-id}
     TOGGL_API_TOKEN: ${ssm:/concierge/${self:provider.stage}/toggl-api-token}
     TOGGL_USER_AGENT: ${ssm:/concierge/${self:provider.stage}/toggl-user-agent}
     TOGGL_WORKSPACE_ID: ${ssm:/concierge/${self:provider.stage}/toggl-workspace-id}

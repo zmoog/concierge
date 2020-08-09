@@ -2,9 +2,9 @@ import json
 import pytest
 
 from app import config
-from app.domain import events
-from app.adapters import apple, dropbox, ifq, slack, toggl
-from app.services import handlers
+# from app.domain import events
+from app.adapters import apple, dropbox, ifq, slack, telegram, toggl
+# from app.services import handlers
 from app.services.messagebus import MessageBus
 from app.services.unit_of_work import UnitOfWork
 from app import bootstrap
@@ -85,6 +85,14 @@ def toggl_adapter():
 @pytest.fixture(scope="function")
 def refurbished_adapter():
     return apple.RefurbishedStoreAdapter()
+
+
+@pytest.fixture(scope="function")
+def telegram_adapter():
+    return telegram.TelegramAdapter(
+        token=config.TELEGRAM_API_TOKEN,
+        default_chat_id=config.TELEGRAM_DEFAULT_CHAT_ID,
+    )
 
 
 @pytest.fixture(scope="function")

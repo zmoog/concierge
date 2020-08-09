@@ -196,8 +196,8 @@ def notify_ifq_issue_download_failed(
 ):
     """Notify the event in a Slack channel"""
 
-    uow.slack.post_message({
-        'text': f"Hey, the download of the IFQ issue "
-        f"named `{event.filename}` is failed"
-        f" (`{event.error!r}`)."
-    }, context)
+    msg = "Hey, the download of the IFQ issue "
+    f"named `{event.filename}` is failed"
+    f" (`{event.error!r}`)."
+
+    uow.slack.post_message({'text': msg}, context)

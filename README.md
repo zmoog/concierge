@@ -48,6 +48,13 @@ $ aws ssm put-parameter --name /concierge/dev/slack-webhook-url --type String --
 $ aws ssm put-parameter --name /concierge/dev/slack-signing-secret --type String --value 'xyz'
 ```
 
+### Telegram
+
+```bash
+$ aws ssm put-parameter --name /concierge/dev/telegram-api-token --type String --value 'xyz'
+$ aws ssm put-parameter --name /concierge/dev/telegram-default-chat-id --type String --value 'xyz'
+```
+
 ### Toggl
 
 ```bash

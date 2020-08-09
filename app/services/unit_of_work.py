@@ -1,4 +1,4 @@
-from app.adapters import apple, dropbox, ifq, slack, toggl
+from app.adapters import apple, dropbox, ifq, slack, telegram, toggl
 
 
 class UnitOfWork:
@@ -10,12 +10,14 @@ class UnitOfWork:
         dropbox: dropbox.DropboxAdapter,
         slack: slack.SlackAdapter,
         refurbished: apple.RefurbishedStoreAdapter,
+        telegram: telegram.TelegramAdapter,
     ):
         self.dropbox = dropbox
         self.ifq = ifq
         self.toggl = toggl
         self.slack = slack
         self.refurbished = refurbished
+        self.telegram = telegram
 
     def __enter__(self):
         pass
