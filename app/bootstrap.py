@@ -1,9 +1,9 @@
-from app.domain import commands, events
-from app.services.unit_of_work import UnitOfWork
-from app.services.messagebus import MessageBus
-from app.services import handlers
-from app.adapters import apple, dropbox, ifq, slack, telegram, toggl
 from app import config
+from app.adapters import apple, dropbox, ifq, slack, telegram, toggl
+from app.domain import commands, events
+from app.services import handlers
+from app.services.messagebus import MessageBus
+from app.services.unit_of_work import UnitOfWork
 
 
 dropbox_adapter = dropbox.DropboxAdapter(
