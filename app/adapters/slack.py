@@ -119,11 +119,8 @@ class SlashCommandDispatcher:
             )
             route.handler(context, **args)
         else:
-            # call the command handler
-            if cmd.text:
-                route.handler(context, cmd.text) 
-            else:
-                route.handler(context)
+            # call the command handler passing the text
+            route.handler(context, cmd.text)
 
 
 def build_slash_command(qs: str) -> SlashCommand:
