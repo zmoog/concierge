@@ -34,8 +34,8 @@ def test_available_products(
             name='iPad Wi-Fi + Cellular 128GB ricondizionato',
             url='https://www.apple.com/it/ipad-wifi-cellular-128gb',
             price=decimal.Decimal('499.00'),
-            previous_price=decimal.Decimal('579.00'),
-            savings_price=decimal.Decimal('80.00')
+            previous_price=decimal.Decimal('0.00'),
+            savings_price=decimal.Decimal('0.00')
         )]]
 
     # bus.add_event_handler(type(cmd))
@@ -49,7 +49,7 @@ def test_available_products(
 Found 2 ipad(s):
 
 - <https://www.apple.com/it/ipad-wifi-32gb|iPad Wi-Fi + Cellular 32GB ricondizionato> at ~489.00~ *419.00* (-70.00)
-- <https://www.apple.com/it/ipad-wifi-cellular-128gb|iPad Wi-Fi + Cellular 128GB ricondizionato> at ~579.00~ *499.00* (-80.00)
+- <https://www.apple.com/it/ipad-wifi-cellular-128gb|iPad Wi-Fi + Cellular 128GB ricondizionato> at *499.00*
 """)]
     assert actual_events == expected_events
 
