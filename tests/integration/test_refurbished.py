@@ -48,8 +48,8 @@ def test_available_products(
     expected_events = [events.RefurbishedProductAvailable(text="""\
 Found 2 ipad(s):
 
-- iPad Wi-Fi + Cellular 32GB ricondizionato at ~489.00~ *419.00* (-70.00)
-- iPad Wi-Fi + Cellular 128GB ricondizionato at ~579.00~ *499.00* (-80.00)
+- [iPad Wi-Fi + Cellular 32GB ricondizionato](https://www.apple.com/it/ipad-wifi-32gb) at ~489.00~ *419.00* (-70.00)
+- [iPad Wi-Fi + Cellular 128GB ricondizionato](https://www.apple.com/it/ipad-wifi-cellular-128gb) at ~579.00~ *499.00* (-80.00)
 """)]
     assert actual_events == expected_events
 
