@@ -25,12 +25,14 @@ def test_available_products(
     refurbished_adapter.search.side_effect = [[
         Product(
             name='iPad Wi-Fi + Cellular 32GB ricondizionato',
+            url='https://www.apple.com/it/ipad-wifi-32gb',
             price=decimal.Decimal('419.00'),
             previous_price=decimal.Decimal('489.00'),
             savings_price=decimal.Decimal('70.00')
         ), 
         Product(
             name='iPad Wi-Fi + Cellular 128GB ricondizionato',
+            url='https://www.apple.com/it/ipad-wifi-cellular-128gb',
             price=decimal.Decimal('499.00'),
             previous_price=decimal.Decimal('579.00'),
             savings_price=decimal.Decimal('80.00')
@@ -46,8 +48,8 @@ def test_available_products(
     expected_events = [events.RefurbishedProductAvailable(text="""\
 Found 2 ipad(s):
 
-- iPad Wi-Fi + Cellular 32GB ricondizionato at ~489.00~ *419.00* (-70.00)
-- iPad Wi-Fi + Cellular 128GB ricondizionato at ~579.00~ *499.00* (-80.00)
+- <https://www.apple.com/it/ipad-wifi-32gb|iPad Wi-Fi + Cellular 32GB ricondizionato> at ~489.00~ *419.00* (-70.00)
+- <https://www.apple.com/it/ipad-wifi-cellular-128gb|iPad Wi-Fi + Cellular 128GB ricondizionato> at ~579.00~ *499.00* (-80.00)
 """)]
     assert actual_events == expected_events
 
