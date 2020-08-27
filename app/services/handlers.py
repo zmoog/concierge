@@ -106,7 +106,7 @@ def download_ifq(
         )]
 
 
-def log_entries_summarized(
+def log_summarized_entries(
     event: events.TogglEntriesSummarized,
     uow: UnitOfWork,
     context: Dict[str, Any],
@@ -121,7 +121,7 @@ def log_event(
     context: Dict[str, Any],
 ):
     """"Logs events"""
-    text = str(event)
+    text = repr(event)
     terminal.log(text)
 
 
@@ -159,6 +159,26 @@ def notify_refurbished_product_available(
     text += '\n'
 
     uow.slack.post_message({'text': text}, context)
+
+
+def log_refurbished_product_available(
+    event: events.RefurbishedProductAvailable,
+    uow: UnitOfWork,
+    context: Dict[str, Any],
+):
+    """Log the event to the terminal"""
+
+    text = f"\nFound {len(event.products)} {event.product}(s):\n\n"
+    for p in event.products:
+
+        if p.savings_price == 0:
+            text += f"- {p.name} at *{p.price}*\n"
+        else:
+            text += \
+                f"- {p.name} at *{p.price}* (-{p.savings_price})\n"
+    text += '\n'
+
+    terminal.log(text)
 
 
 def notify_refurbished_product_not_available(
