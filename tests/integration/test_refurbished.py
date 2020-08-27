@@ -1,26 +1,18 @@
 import decimal
-# import pytest
-# from app import bootstrap
 
 from refurbished.parser import Product
 
 from app.adapters import apple, slack
-from app.domain import commands, events
-from app.services import handlers, messagebus
-
-
-# @pytest.fixture
-# def bus():
-#     bus = bootstrap.for_cli()
-#     yield bus
+from app.domain import commands, model
+from app.services import messagebus
 
 
 def test_available_products(
     mocker,
-    uow,
-    refurbished_adapter: apple.RefurbishedStoreAdapter
+    messagebus: messagebus.MessageBus,
+    refurbished_adapter: apple.RefurbishedStoreAdapter,
+    slack_adapter: slack.SlackAdapter,
 ):
-    # summary = from_json("tests/data/toggl/summary-2020-07-19.json")
     mocker.patch.object(refurbished_adapter, "search")
     refurbished_adapter.search.side_effect = [[
         Product(
@@ -38,20 +30,25 @@ def test_available_products(
             savings_price=decimal.Decimal('0.00')
         )]]
 
-    # bus.add_event_handler(type(cmd))
+    mocker.patch.object(slack_adapter, 'post_message')
+    slack_adapter.post_message.side_effect = [None]
+
     cmd = commands.CheckRefurbished(store='it', products=['ipad'])
-    actual_events = handlers.check_refurbished(cmd, uow, {})
 
-    # print('actual_events', actual_events)
-    assert actual_events, "no events generated"
+    messagebus.handle(cmd, {})
 
-    expected_events = [events.RefurbishedProductAvailable(text="""\
+    message = {
+        'text': """
 Found 2 ipad(s):
 
 - <https://www.apple.com/it/ipad-wifi-32gb|iPad Wi-Fi + Cellular 32GB ricondizionato> at ~489.00~ *419.00* (-70.00)
 - <https://www.apple.com/it/ipad-wifi-cellular-128gb|iPad Wi-Fi + Cellular 128GB ricondizionato> at *499.00*
-""")]
-    assert actual_events == expected_events
+
+`"""
+    }
+    slack_adapter.post_message.assert_called_once_with(
+        message, {}
+    )
 
 
 def test_unavailable_products(
