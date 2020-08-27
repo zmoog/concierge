@@ -44,7 +44,7 @@ Found 2 ipad(s):
 - <https://www.apple.com/it/ipad-wifi-32gb|iPad Wi-Fi + Cellular 32GB ricondizionato> at ~489.00~ *419.00* (-70.00)
 - <https://www.apple.com/it/ipad-wifi-cellular-128gb|iPad Wi-Fi + Cellular 128GB ricondizionato> at *499.00*
 
-`"""
+"""
     }
     slack_adapter.post_message.assert_called_once_with(
         message, {}

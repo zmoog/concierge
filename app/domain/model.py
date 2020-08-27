@@ -1,5 +1,8 @@
 import datetime
+import decimal
 from typing import Optional
+
+from pydantic import BaseModel
 
 
 def find_previous_business_day(day: Optional[datetime.date] = None):
@@ -21,3 +24,11 @@ def find_previous_business_day(day: Optional[datetime.date] = None):
         previous_day -= datetime.timedelta(days=1)
 
     return previous_day
+
+
+class Product(BaseModel):
+    name: str
+    url: str
+    price: decimal.Decimal
+    previous_price: decimal.Decimal
+    savings_price: decimal.Decimal

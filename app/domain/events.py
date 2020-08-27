@@ -1,4 +1,6 @@
 from dataclasses import dataclass
+from typing import List
+from app.domain.model import Product
 
 
 class Event:
@@ -29,7 +31,9 @@ class IFQIssueDownloadFailed(Event):
 
 @dataclass
 class RefurbishedProductAvailable(Event):
-    text: str
+    store: str
+    product: str
+    products: List[Product]
 
 
 @dataclass
