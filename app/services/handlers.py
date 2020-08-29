@@ -161,7 +161,7 @@ def notify_refurbished_product_available(
     uow.slack.post_message({'text': text}, context)
 
 
-def log_refurbished_product_available(
+def log_refurbished_product(
     event: events.RefurbishedProductAvailable,
     uow: UnitOfWork,
     context: Dict[str, Any],

@@ -69,7 +69,7 @@ def for_cli():
             handlers.log_summarized_entries,
         ],
         events.RefurbishedProductAvailable: [
-            handlers.log_refurbished_product_available,
+            handlers.log_refurbished_product,
         ],
         events.RefurbishedProductNotAvailable: [
             handlers.log_event,
