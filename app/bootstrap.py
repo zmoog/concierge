@@ -66,10 +66,10 @@ event_handlers = {
 def for_cli():
     event_handlers = {
         events.TogglEntriesSummarized: [
-            handlers.log_entries_summarized,
+            handlers.log_summarized_entries,
         ],
         events.RefurbishedProductAvailable: [
-            handlers.log_event,
+            handlers.log_refurbished_product,
         ],
         events.RefurbishedProductNotAvailable: [
             handlers.log_event,

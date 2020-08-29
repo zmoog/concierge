@@ -5,7 +5,7 @@ from typing import Any, Dict, List
 from humanize import naturaldelta
 
 from app.adapters import terminal
-from app.domain import commands, events
+from app.domain import commands, events, model
 from app.services.unit_of_work import UnitOfWork
 
 
@@ -63,16 +63,18 @@ def check_refurbished(
                 ))
                 continue
 
-            text = f"Found {len(products)} {product}(s):\n\n"
-            for p in products:
-                if p.savings_price == 0:
-                    text += f"- <{p.url}|{p.name}> at *{p.price}*\n"
-                else:
-                    text += \
-                        f"- <{p.url}|{p.name}> at ~{p.previous_price}~ \
-*{p.price}* (-{p.savings_price})\n"
             _events.append(
-                events.RefurbishedProductAvailable(text=text)
+                events.RefurbishedProductAvailable(
+                    store=cmd.store,
+                    product=product,
+                    products=[model.Product(
+                        name=p.name,
+                        url=p.url,
+                        price=p.price,
+                        previous_price=p.previous_price,
+                        savings_price=p.savings_price,
+                    ) for p in products],
+                )
             )
         return _events
 
@@ -104,7 +106,7 @@ def download_ifq(
         )]
 
 
-def log_entries_summarized(
+def log_summarized_entries(
     event: events.TogglEntriesSummarized,
     uow: UnitOfWork,
     context: Dict[str, Any],
@@ -119,7 +121,7 @@ def log_event(
     context: Dict[str, Any],
 ):
     """"Logs events"""
-    text = str(event)
+    text = repr(event)
     terminal.log(text)
 
 
@@ -146,11 +148,37 @@ def notify_refurbished_product_available(
 ):
     """Notify the event in a Slack channel"""
 
-    uow.slack.post_message({
-        'text': f"""
-{event.text}
-"""
-    }, context)
+    text = f"\nFound {len(event.products)} {event.product}(s):\n\n"
+    for p in event.products:
+
+        if p.savings_price == 0:
+            text += f"- <{p.url}|{p.name}> at *{p.price}*\n"
+        else:
+            text += \
+                f"- <{p.url}|{p.name}> at ~{p.previous_price}~ *{p.price}* (-{p.savings_price})\n"
+    text += '\n'
+
+    uow.slack.post_message({'text': text}, context)
+
+
+def log_refurbished_product(
+    event: events.RefurbishedProductAvailable,
+    uow: UnitOfWork,
+    context: Dict[str, Any],
+):
+    """Log the event to the terminal"""
+
+    text = f"\nFound {len(event.products)} {event.product}(s):\n\n"
+    for p in event.products:
+
+        if p.savings_price == 0:
+            text += f"- {p.name} at *{p.price}*\n"
+        else:
+            text += \
+                f"- {p.name} at *{p.price}* (-{p.savings_price})\n"
+    text += '\n'
+
+    terminal.log(text)
 
 
 def notify_refurbished_product_not_available(
