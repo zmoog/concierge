@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "4f9e70e202ad76f87300c969049880981083f86cf10ac27e1e4ab1933a0ba15e"
+            "sha256": "0133c2ec29c3ee0652d1e008468b3aabcf6b8cbde58a1c74929b945780f60d2c"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -47,12 +47,12 @@
         },
         "dropbox": {
             "hashes": [
-                "sha256:2d4d4f7c83581dd4745d127e09ac4ca0b6e10f49626a12b5751867d7fc83e64c",
-                "sha256:6de5f6f36aad32d4382f3d0ad88ee85a22d81d638c960667b8e1ada05db2f98c",
-                "sha256:a7646ae5ad616a28ee2eb48c27c2edb61db23f249ea0776a5896ba552d05a9c3"
+                "sha256:20d039d030f7c1f54f22d182832c1909ee5b5626ad52469a19d274bf07041e06",
+                "sha256:2aaca4eded7dd8516fa1b0187bf32a5836181dec17c23b5506914330f3b1b7ad",
+                "sha256:b4f137ced64c521f67dca7fc4daecddd4edcd70bf2b4e16c5730aad1fe21253c"
             ],
             "index": "pypi",
-            "version": "==10.3.1"
+            "version": "==10.4.1"
         },
         "humanize": {
             "hashes": [
@@ -190,10 +190,10 @@
         },
         "botocore": {
             "hashes": [
-                "sha256:4433510d12dc783dd068f39ada942008f5792eea0c569f6b357bb751640c6ab4",
-                "sha256:87326c2d3b68c49a56f2d9237aa47a0476bb9ec6c6bc50d04df8bba66991930c"
+                "sha256:198a62d387eb64b4c1dde33a9c41e96b07884c68c1442dd7c7d38123592aae7c",
+                "sha256:5f984def778b0000a12cf28ec727d64634ca46ab0dcdb5ce8b654bfb2a1fb99c"
             ],
-            "version": "==1.17.49"
+            "version": "==1.17.51"
         },
         "docutils": {
             "hashes": [
@@ -234,10 +234,10 @@
         },
         "more-itertools": {
             "hashes": [
-                "sha256:68c70cc7167bdf5c7c9d8f6954a7837089c6a36bf565383919bb595efb8a17e5",
-                "sha256:b78134b2063dd214000685165d81c154522c3ee0a1c0d4d113c80361c234c5a2"
+                "sha256:6f83822ae94818eae2612063a5101a7311e68ae8002005b5e05f03fd74a86a20",
+                "sha256:9b30f12df9393f0d28af9210ff8efe48d10c94f73e5daf886f10c4b0b0b4f03c"
             ],
-            "version": "==8.4.0"
+            "version": "==8.5.0"
         },
         "packaging": {
             "hashes": [
