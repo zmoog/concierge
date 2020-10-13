@@ -12,7 +12,7 @@ v = {editable = true,version = "*"}
 boto3 = "==1.14.49"
 
 [packages]
-dropbox = "==10.3.1"
+dropbox = "==10.6.0"
 requests = "==2.24.0"
 lxml = "==4.5.2"
 humanize = "==2.6.0"
