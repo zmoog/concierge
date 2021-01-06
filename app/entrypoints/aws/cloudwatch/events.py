@@ -29,6 +29,22 @@ def run_scheduled(event, config):
         day = whens[when]()
         print(f'summarizing {day}')
         cmd = commands.Summarize(day=day)
+    if 'SummarizeWorkTypes' in event:
+        request = event['SummarizeWorkTypes']
+        when = request.get('when', 'today')
+        project_ids = request.get('project_ids')
+
+        if when not in whens:
+            print(f'"{when}" is not a supported "when" value ({whens.keys()})')
+            return
+
+        day = whens[when]()
+        print(f'summarizing work items for {day}')
+
+        cmd = commands.SummarizeWorkTypes(since=day,
+                                          until=day,
+                                          project_ids=project_ids)
+
     elif 'CheckRefurbished' in event:
         cmd = commands.CheckRefurbished(
             store=event['CheckRefurbished'].get('store', 'it'),

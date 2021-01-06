@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import List
+from typing import Any, Dict, List
 from app.domain.model import Product
 
 
@@ -10,6 +10,12 @@ class Event:
 @dataclass
 class TogglEntriesSummarized(Event):
     summary: str
+
+
+@dataclass
+class TogglWorkTypesSummarized(Event):
+    total: int
+    tags: Dict[str, Any]
 
 
 @dataclass

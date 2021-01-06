@@ -108,6 +108,22 @@ functions:
             Summarize:
               when: today
       - schedule:
+          name: ${self:service}-${opt:stage, self:provider.stage}-toggl-summarize-worktypes-previous-business-day
+          rate: cron(30 6 ? * MON-SUN *)
+          enabled: true
+          input:
+            SummarizeWorkTypes:
+              when: previous_business_day
+      - schedule:
+          name: ${self:service}-${opt:stage, self:provider.stage}-toggl-summarize-worktypes-today
+          rate: cron(30 16 ? * MON-SUN *)
+          enabled: true
+          input:
+            SummarizeWorkTypes:
+              when: today
+              project_ids:
+                - "153201265"
+      - schedule:
           name: ${self:service}-${opt:stage, self:provider.stage}-refurbished-products
           rate: cron(00 6 ? * MON-SUN *)
           enabled: true

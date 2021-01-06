@@ -46,6 +46,41 @@ def summarize(
         return [events.TogglEntriesSummarized(text)]
 
 
+def summarize_worktypes(
+    cmd: commands.SummarizeWorkTypes,
+    uow: UnitOfWork,
+    context: Dict[str, Any],
+) -> List[events.Event]:
+    with uow:
+        details = uow.toggl.details(cmd.since,
+                                    cmd.until,
+                                    project_ids=cmd.project_ids)
+
+        total = 0
+        tags = {
+            "uncategorized": 0,
+            "business:planned": 0,
+            "business:unplanned": 0,
+            "maintenance:planned": 0,
+            "maintenance:unplanned": 0,
+        }
+
+        for entry in details:
+            if entry["tags"]:
+                for tag in entry["tags"]:
+                    if tag in tags:
+                        # tags[tag] = 0
+                        tags[tag] += entry["dur"] 
+                    else:
+                        tags["uncategorized"] += entry["dur"]
+            else:
+                tags["uncategorized"] += entry["dur"]
+
+            total += entry["dur"] 
+
+    return [events.TogglWorkTypesSummarized(total=total, tags=tags)]
+
+
 def check_refurbished(
     cmd: commands.CheckRefurbished,
     uow: UnitOfWork,
@@ -139,6 +174,38 @@ def notify_entries_summarized(
 ```
 """
     }, context)
+
+
+def notify_summarized_worktypes(
+    event: events.TogglWorkTypesSummarized,
+    uow: UnitOfWork,
+    context: Dict[str, Any],
+):
+    text = ''
+    for tag in event.tags:
+        # print(tag, event.tags[tag] / event.total * 100)
+        text += f" - {tag} {event.tags[tag] / event.total * 100}\n"
+
+    uow.slack.post_message({
+        'text': f"""
+```
+{text}
+```
+"""
+    }, context)
+
+
+def log_summarized_worktypes(
+    event: events.TogglWorkTypesSummarized,
+    uow: UnitOfWork,
+    context: Dict[str, Any],
+):
+    text = ''
+    for tag in event.tags:
+        # print(tag, event.tags[tag] / event.total * 100)
+        text += f" - {tag} {event.tags[tag] / event.total * 100}\n"
+
+    terminal.log(text)
 
 
 def notify_refurbished_product_available(

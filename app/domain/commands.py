@@ -11,17 +11,20 @@ class Command(BaseModel):
     pass
 
 
-# @dataclass
 class Summarize(Command):
     day: date
 
 
-# @dataclass
+class SummarizeWorkTypes(Command):
+    since: date
+    until: date
+    project_ids: List[str] = None
+
+
 class DownloadIFQ(Command):
     day: date
 
 
-# @dataclass
 class CheckRefurbished(Command):
     store: str
     products: List[str]

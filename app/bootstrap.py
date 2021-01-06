@@ -36,6 +36,7 @@ command_handlers = {
     commands.CheckRefurbished: handlers.check_refurbished,
     commands.DownloadIFQ: handlers.download_ifq,
     commands.Summarize: handlers.summarize,
+    commands.SummarizeWorkTypes: handlers.summarize_worktypes,
 }
 
 event_handlers = {
@@ -47,6 +48,9 @@ event_handlers = {
     ],
     events.TogglEntriesSummarized: [
         handlers.notify_entries_summarized,
+    ],
+    events.TogglWorkTypesSummarized: [
+        handlers.notify_summarized_worktypes,
     ],
     events.IFQIssueAlreadyExists: [
         handlers.log_event,
@@ -67,6 +71,9 @@ def for_cli():
     event_handlers = {
         events.TogglEntriesSummarized: [
             handlers.log_summarized_entries,
+        ],
+        events.TogglWorkTypesSummarized: [
+            handlers.log_summarized_worktypes,
         ],
         events.RefurbishedProductAvailable: [
             handlers.log_refurbished_product,
