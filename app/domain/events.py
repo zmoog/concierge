@@ -1,5 +1,7 @@
+from datetime import datetime
 from dataclasses import dataclass
 from typing import Any, Dict, List
+
 from app.domain.model import Product
 
 
@@ -14,6 +16,8 @@ class TogglEntriesSummarized(Event):
 
 @dataclass
 class TogglWorkTypesSummarized(Event):
+    since: datetime
+    until: datetime
     total: int
     tags: Dict[str, Any]
 
