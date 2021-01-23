@@ -14,7 +14,7 @@ boto3 = "==1.16.58"
 [packages]
 dropbox = "==11.0.0"
 requests = "==2.25.1"
-lxml = "==4.5.2"
+lxml = "==4.6.2"
 humanize = "==2.6.0"
 click = "==7.1.2"
 python-dateutil = "==2.8.1"
