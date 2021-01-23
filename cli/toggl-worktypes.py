@@ -6,16 +6,20 @@ from app import bootstrap
 
 @click.command()
 @click.option(
-    '--day',
+    '--since',
     type=click.DateTime(),
     required=True,
-    help='The day to summarize work types')
-def run_command(day):
+    help='The starting day to summarize work types')
+@click.option(
+    '--until',
+    type=click.DateTime(),
+    required=True,
+    help='The ending day to summarize work types')
+def run_command(since, until):
     """Summarize the time tracking entries for a specific day"""
-    print(f'summarizing work types {day}')
 
-    cmd = SummarizeWorkTypes(since=day,
-                             until=day,
+    cmd = SummarizeWorkTypes(since=since,
+                             until=until,
                              project_ids=["153201265"])
 
     messagebus = bootstrap.for_cli()
