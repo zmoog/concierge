@@ -26,7 +26,7 @@ def test_available_products(
             name='iPad Wi-Fi + Cellular 128GB ricondizionato',
             url='https://www.apple.com/it/ipad-wifi-cellular-128gb',
             price=decimal.Decimal('499.00'),
-            previous_price=decimal.Decimal('0.00'),
+            previous_price=decimal.Decimal('499.00'),
             savings_price=decimal.Decimal('0.00')
         )]]
 
