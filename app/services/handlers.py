@@ -56,29 +56,36 @@ def summarize_worktypes(
                                     cmd.until,
                                     project_ids=cmd.project_ids)
 
-        total = 0
         tags = {
-            "uncategorized": 0,
             "business:planned": 0,
             "business:unplanned": 0,
             "maintenance:planned": 0,
             "maintenance:unplanned": 0,
         }
+        total = 0
+        uncategorized = 0
 
         for entry in details:
-            if entry["tags"]:
-                for tag in entry["tags"]:
-                    if tag in tags:
-                        # tags[tag] = 0
-                        tags[tag] += entry["dur"] 
-                    else:
-                        tags["uncategorized"] += entry["dur"]
-            else:
-                tags["uncategorized"] += entry["dur"]
+            worktype_tag_found = False
+            for tag in entry['tags']:
+                if tag in tags:
+                    worktype_tag_found = True
+                    tags[tag] += entry["dur"]
+
+            # if this entry does not have any of tags
+            # we're interested to its time is counted as
+            # 'uncategorized'.
+            if not worktype_tag_found:
+                uncategorized += entry["dur"]
 
             total += entry["dur"] 
 
-    return [events.TogglWorkTypesSummarized(total=total, tags=tags)]
+        tags['uncategorized'] = uncategorized
+
+    return [events.TogglWorkTypesSummarized(since=cmd.since,
+                                            until=cmd.until,
+                                            total=total,
+                                            tags=tags)]
 
 
 def check_refurbished(
@@ -184,7 +191,7 @@ def notify_summarized_worktypes(
     text = ''
     for tag in event.tags:
         # print(tag, event.tags[tag] / event.total * 100)
-        text += f" - {tag} {event.tags[tag] / event.total * 100}\n"
+        text += f" - {tag} {event.tags[tag] / event.total * 100:.1f}%\n"
 
     uow.slack.post_message({
         'text': f"""
@@ -200,10 +207,10 @@ def log_summarized_worktypes(
     uow: UnitOfWork,
     context: Dict[str, Any],
 ):
-    text = ''
+    text = f'Summarizing work types from {event.since} to {event.until}\n'
     for tag in event.tags:
         # print(tag, event.tags[tag] / event.total * 100)
-        text += f" - {tag} {event.tags[tag] / event.total * 100}\n"
+        text += f" - {tag} {event.tags[tag] / event.total * 100:.1f}%\n"
 
     terminal.log(text)
 
