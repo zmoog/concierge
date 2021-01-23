@@ -29,7 +29,7 @@ def run_scheduled(event, config):
         day = whens[when]()
         print(f'summarizing {day}')
         cmd = commands.Summarize(day=day)
-    if 'SummarizeWorkTypes' in event:
+    elif 'SummarizeWorkTypes' in event:
         request = event['SummarizeWorkTypes']
         when = request.get('when', 'today')
         project_ids = request.get('project_ids')
