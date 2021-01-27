@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "9ed2e30848f3e51f19fa80a6bdd44f4d44ab5e68318922958bc34bbad53a60ae"
+            "sha256": "53cb56f380f2a7d5442fcc0f503fbd9a058aa93665a4e8aebe5bba50fa540923"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -47,12 +47,12 @@
         },
         "dropbox": {
             "hashes": [
-                "sha256:3b8fb347a872aba094be3c554f4d0f969468a98c04077e5c858ef4b9b2b7499e",
-                "sha256:4e168d334e73e315bdb541494c2f5834ba0102d86a282a2cd541915a6a97c464",
-                "sha256:d1bed59d2c43af7396de27f9cda6d8761eb2c2617bf68dfa90a5972578ed1d64"
+                "sha256:5741120a056abb11cd6ca20ce43bed4d9253f8cdf8b6dd2a0e20d33c749a2c04",
+                "sha256:88754600890bb0c67de25217c3fe4a2ff73ab21897290741b2f46ada5a1a21fc",
+                "sha256:d38c98be27447dc6b9ca02e12a390f05e26caca415e7a103a8e62723976aeb71"
             ],
             "index": "pypi",
-            "version": "==11.0.0"
+            "version": "==11.1.0"
         },
         "humanize": {
             "hashes": [
@@ -188,10 +188,10 @@
         },
         "urllib3": {
             "hashes": [
-                "sha256:19188f96923873c92ccb987120ec4acaa12f0461fa9ce5d3d0772bc965a39e08",
-                "sha256:d8ff90d979214d7b4f8ce956e80f4028fc6860e4431f731ea4a8c08f23f99473"
+                "sha256:1b465e494e3e0d8939b50680403e3aedaa2bc434b7d5af64dfd3c958d7f5ae80",
+                "sha256:de3eedaad74a2683334e282005cd8d7f22f4d55fa690a2a1020a416cb0a47e73"
             ],
-            "version": "==1.26.2"
+            "version": "==1.26.3"
         }
     },
     "develop": {
@@ -212,10 +212,10 @@
         },
         "botocore": {
             "hashes": [
-                "sha256:ac79e44c79158ad3fdc3afe205ed29460f6d80765cabdde469e13ca62c65f19c",
-                "sha256:f17a6ba3922e029858e0b82cbd07c20dc8025be6d5c27df793ae1fe3736a8708"
+                "sha256:423a1a9502bd7bc5db8c6e64f9374f64d8ac18e6b870278a9ff65f59d268cd58",
+                "sha256:80dd615a34c7e2c73606070a9358f7b5c1cb0c9989348306c1c9ddff45bb6ebe"
             ],
-            "version": "==1.19.58"
+            "version": "==1.19.60"
         },
         "flake8": {
             "hashes": [
@@ -342,10 +342,10 @@
         },
         "urllib3": {
             "hashes": [
-                "sha256:19188f96923873c92ccb987120ec4acaa12f0461fa9ce5d3d0772bc965a39e08",
-                "sha256:d8ff90d979214d7b4f8ce956e80f4028fc6860e4431f731ea4a8c08f23f99473"
+                "sha256:1b465e494e3e0d8939b50680403e3aedaa2bc434b7d5af64dfd3c958d7f5ae80",
+                "sha256:de3eedaad74a2683334e282005cd8d7f22f4d55fa690a2a1020a416cb0a47e73"
             ],
-            "version": "==1.26.2"
+            "version": "==1.26.3"
         },
         "v": {
             "hashes": [
