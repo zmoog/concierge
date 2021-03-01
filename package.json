@@ -18,7 +18,7 @@
   },
   "homepage": "https://github.com/zmoog/concierge#readme",
   "devDependencies": {
-    "serverless": "1.78.1",
+    "serverless": "2.28.0",
     "serverless-pseudo-parameters": "2.5.0",
     "serverless-python-requirements": "5.1.0"
   }
