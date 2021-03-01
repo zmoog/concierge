@@ -18,7 +18,7 @@ lxml = "==4.5.2"
 humanize = "==2.6.0"
 click = "==7.1.2"
 python-dateutil = "==2.8.1"
-pydantic = "==1.7.3"
+pydantic = "==1.8"
 refurbished = {editable = true,git = "https://github.com/zmoog/refurbished.git",ref = "v0.3.0"}
 
 [requires]
