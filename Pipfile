@@ -9,7 +9,7 @@ pypdf4 = "==1.27.0"
 flake8 = "*"
 pytest-mock = "*"
 v = {editable = true,version = "*"}
-boto3 = "==1.17.54"
+boto3 = "==1.17.87"
 
 [packages]
 dropbox = "==11.7.0"
