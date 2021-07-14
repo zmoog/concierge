@@ -13,7 +13,7 @@ boto3 = "==1.17.54"
 
 [packages]
 dropbox = "==11.7.0"
-requests = "==2.25.1"
+requests = "==2.26.0"
 lxml = "==4.5.2"
 humanize = "==3.4.1"
 click = "==7.1.2"
