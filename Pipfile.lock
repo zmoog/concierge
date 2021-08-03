@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "9b54e269f5fc3a3c069c4bf8cfc3095e063c74de80f826968fb491d0e3a28330"
+            "sha256": "a3c43b9db815f10ba57c14da4b68c2b2ed568be60ffb8d09c0ef6296d0e0227f"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -32,11 +32,11 @@
         },
         "charset-normalizer": {
             "hashes": [
-                "sha256:ad0da505736fc7e716a8da15bf19a985db21ac6415c26b34d2fafd3beb3d927e",
-                "sha256:b68b38179052975093d71c1b5361bf64afd80484697c1f27056e50593e695ceb"
+                "sha256:0c8911edd15d19223366a194a513099a302055a962bca2cec0f54b8b63175d8b",
+                "sha256:f23667ebe1084be45f6ae0538e4a5a865206544097e4e8bbcacf42cd02a348f3"
             ],
             "markers": "python_version >= '3'",
-            "version": "==2.0.1"
+            "version": "==2.0.4"
         },
         "click": {
             "hashes": [
@@ -48,12 +48,12 @@
         },
         "dropbox": {
             "hashes": [
-                "sha256:2d470f869fcb409d3bbf5220dc34a27ebf1894c459b61b591c1496fa2e4dc3a1",
-                "sha256:86e7878e5564d72a5665f0c6427f52c684f59771e6030e2e4265e31ece0f58d4",
-                "sha256:c65d981c1312b57373fa2f8e2b6b22ca6ec1fe9c975bdcdb6c216747f45efabf"
+                "sha256:3c29a6600bb592224f8cafbdbe22b6699f713ebf589d28713711cba661ac9858",
+                "sha256:664ed2f5d8ed70518c2034edfaf0453edfa89691813da1a436d0661e23afdd2c",
+                "sha256:c3135a53f4b121dc6570a24916754a5afbb7985859382c7364890d3d3f013524"
             ],
             "index": "pypi",
-            "version": "==11.7.0"
+            "version": "==11.15.0"
         },
         "humanize": {
             "hashes": [
@@ -222,10 +222,10 @@
         },
         "botocore": {
             "hashes": [
-                "sha256:21fc74dba0d4d6297b322aa79ecb4476b9e03a84b3f38eee2bed47555f4b4013",
-                "sha256:40a16019319691949411c98b8b55a103981274d0ac7d88c32143c384a1439bea"
+                "sha256:6d51de0981a3ef19da9e6a3c73b5ab427e3c0c8b92200ebd38d087299683dd2b",
+                "sha256:d0b9b70b6eb5b65bb7162da2aaf04b6b086b15cc7ea322ddc3ef2f5e07944dcf"
             ],
-            "version": "==1.20.111"
+            "version": "==1.20.112"
         },
         "flake8": {
             "hashes": [
