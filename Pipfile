@@ -16,7 +16,7 @@ dropbox = "==11.15.0"
 requests = "==2.26.0"
 lxml = "==4.5.2"
 humanize = "==3.4.1"
-click = "==7.1.2"
+click = "==8.0.1"
 python-dateutil = "==2.8.1"
 pydantic = "==1.8.2"
 refurbished = {editable = true,git = "https://github.com/zmoog/refurbished.git",ref = "v0.3.0"}
