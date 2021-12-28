@@ -26,6 +26,7 @@ plugins:
 provider:
   name: aws
   runtime: python3.7
+  lambdaHashingVersion: "20201221"
   logRetentionInDays: 30
 
   # you can overwrite defaults here
@@ -38,7 +39,7 @@ provider:
       Action:
         - "SNS:Publish"
       Resource:
-        - "!Ref CommandTopic"
+        - !Ref CommandTopic
 
   # you can define service wide environment variables here
   environment:
@@ -74,7 +75,7 @@ functions:
     handler: app/entrypoints/aws/sns/message.dispatch_command
     events:
     - sns:
-        arn: "!Ref CommandTopic"
+        arn: !Ref CommandTopic
         topicName: ${self:custom.CommandsTopicName}
 
   dispatch-slash-command:
