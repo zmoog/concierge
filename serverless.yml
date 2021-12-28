@@ -20,14 +20,13 @@ service: concierge
 # frameworkVersion: "=X.X.X"
 
 plugins:
-  - serverless-pseudo-parameters
   - serverless-python-requirements
-  # - serverless-pseudo-parameters
   # - serverless-step-functions
 
 provider:
   name: aws
   runtime: python3.7
+  lambdaHashingVersion: "20201221"
   logRetentionInDays: 30
 
   # you can overwrite defaults here
@@ -40,7 +39,7 @@ provider:
       Action:
         - "SNS:Publish"
       Resource:
-        - !Ref CommandTopic 
+        - !Ref CommandTopic
 
   # you can define service wide environment variables here
   environment:
@@ -54,7 +53,7 @@ provider:
     TOGGL_API_TOKEN: ${ssm:/concierge/${self:provider.stage}/toggl-api-token}
     TOGGL_USER_AGENT: ${ssm:/concierge/${self:provider.stage}/toggl-user-agent}
     TOGGL_WORKSPACE_ID: ${ssm:/concierge/${self:provider.stage}/toggl-workspace-id}
-    SNS_COMMANDS_TOPIC_ARN: !Ref CommandTopic 
+    SNS_COMMANDS_TOPIC_ARN: "!Ref CommandTopic"
 
 
 # you can add packaging information here
@@ -66,7 +65,6 @@ package:
  individually: false
 
 custom:
-  # CommandsTopicArn: "#{CommandTopic.Arn}"
   CommandsTopicName: ${self:service}-commands-topic-${self:provider.stage}
   pythonRequirements:
     dockerizePip: non-linux
@@ -79,8 +77,6 @@ functions:
     - sns:
         arn: !Ref CommandTopic
         topicName: ${self:custom.CommandsTopicName}
-    # environment:
-      # SNS_COMMANDS_TOPIC_ARN: ""#{CommandTopic.Arn}""
 
   dispatch-slash-command:
     handler: app/entrypoints/aws/api_gateway/slash_commands.dispatch
