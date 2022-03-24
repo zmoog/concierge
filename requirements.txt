@@ -14,7 +14,7 @@ click==7.1.2
 dropbox==11.27.0
 humanize==3.4.1
 idna==3.3; python_version >= '3'
-lxml==4.7.1
+lxml==4.8.0
 ply==3.11
 price-parser==0.3.3
 pydantic==1.8.2
