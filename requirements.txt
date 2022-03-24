@@ -12,7 +12,7 @@ certifi==2021.10.8
 charset-normalizer==2.0.12; python_version >= '3'
 click==7.1.2
 dropbox==11.27.0
-humanize==3.4.1
+humanize==4.0.0
 idna==3.3; python_version >= '3'
 lxml==4.7.1
 ply==3.11
