@@ -17,7 +17,7 @@ idna==3.3; python_version >= '3'
 lxml==4.7.1
 ply==3.11
 price-parser==0.3.3
-pydantic==1.8.2
+pydantic==1.9.0
 python-dateutil==2.8.1
 requests==2.26.0
 setuptools==61.0.0; python_version >= '3.7'
