@@ -17,16 +17,18 @@ def test_available_products(
     refurbished_adapter.search.side_effect = [[
         Product(
             name='iPad Wi-Fi + Cellular 32GB ricondizionato',
-            url='https://www.apple.com/it/ipad-wifi-32gb',
+            family='ipad',
+            url='https://www.apple.com/it/shop/product/FR7K2TY/A/ipad-wifi-32gb',
             price=decimal.Decimal('419.00'),
             previous_price=decimal.Decimal('489.00'),
             savings_price=decimal.Decimal('70.00')
         ), 
         Product(
             name='iPad Wi-Fi + Cellular 128GB ricondizionato',
-            url='https://www.apple.com/it/ipad-wifi-cellular-128gb',
+            family='ipad',
+            url='https://www.apple.com/it/shop/product/FR7K2TY/A/ipad-wifi-cellular-128gb',
             price=decimal.Decimal('499.00'),
-            previous_price=decimal.Decimal('0.00'),
+            previous_price=decimal.Decimal('499.00'),
             savings_price=decimal.Decimal('0.00')
         )]]
 
@@ -41,8 +43,8 @@ def test_available_products(
         'text': """
 Found 2 ipad(s):
 
-- <https://www.apple.com/it/ipad-wifi-32gb|iPad Wi-Fi + Cellular 32GB ricondizionato> at ~489.00~ *419.00* (-70.00)
-- <https://www.apple.com/it/ipad-wifi-cellular-128gb|iPad Wi-Fi + Cellular 128GB ricondizionato> at *499.00*
+- <https://www.apple.com/it/shop/product/FR7K2TY/A/ipad-wifi-32gb|iPad Wi-Fi + Cellular 32GB ricondizionato> at ~489.00~ *419.00* (-70.00)
+- <https://www.apple.com/it/shop/product/FR7K2TY/A/ipad-wifi-cellular-128gb|iPad Wi-Fi + Cellular 128GB ricondizionato> at *499.00*
 
 """
     }
