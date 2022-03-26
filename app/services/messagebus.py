@@ -5,12 +5,11 @@ from app.services import unit_of_work
 
 
 class MessageBus:
-
     def __init__(
         self,
         uow: unit_of_work.UnitOfWork,
         event_handlers: Dict[Type[events.Event], List[Callable]],
-        command_handlers: Dict[Type[commands.Command], Callable]
+        command_handlers: Dict[Type[commands.Command], Callable],
     ):
         self.event_handlers = event_handlers
         self.command_handlers = command_handlers
@@ -36,8 +35,7 @@ class MessageBus:
 
     def _handle_command(
         self,
-        command:
-        commands.Command,
+        command: commands.Command,
         context: Dict[str, Any],
     ):
         handler = self.command_handlers[type(command)]

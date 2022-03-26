@@ -17,7 +17,7 @@ def summarize(
     """Summarize the toggl entries for a given day"""
     with uow:
         summary = uow.toggl.summary(cmd.day, cmd.day)
-        x = cmd.day.strftime('%A, %B %d %Y')
+        x = cmd.day.strftime("%A, %B %d %Y")
         text = f"Here's the summary for {x}\n\n---\n\n"
 
         if not summary["data"]:
@@ -33,12 +33,11 @@ def summarize(
                 duration = naturaldelta(
                     datetime.timedelta(milliseconds=item_duration)
                 )
-                items_text += \
+                items_text += (
                     f" * {item['title']['time_entry']} ({duration})\n"
+                )
 
-            x = naturaldelta(
-                datetime.timedelta(milliseconds=project_duration)
-            )
+            x = naturaldelta(datetime.timedelta(milliseconds=project_duration))
 
             text += f"# {entry['title']['project']} ({x})\n"
             text += items_text
@@ -57,23 +56,28 @@ def check_refurbished(
         for product in cmd.products:
             products = uow.refurbished.search(cmd.store, product)
             if not products:
-                _events.append(events.RefurbishedProductNotAvailable(
-                    store=cmd.store,
-                    product=product,
-                ))
+                _events.append(
+                    events.RefurbishedProductNotAvailable(
+                        store=cmd.store,
+                        product=product,
+                    )
+                )
                 continue
 
             _events.append(
                 events.RefurbishedProductAvailable(
                     store=cmd.store,
                     product=product,
-                    products=[model.Product(
-                        name=p.name,
-                        url=p.url,
-                        price=p.price,
-                        previous_price=p.previous_price,
-                        savings_price=p.savings_price,
-                    ) for p in products],
+                    products=[
+                        model.Product(
+                            name=p.name,
+                            url=p.url,
+                            price=p.price,
+                            previous_price=p.previous_price,
+                            savings_price=p.savings_price,
+                        )
+                        for p in products
+                    ],
                 )
             )
         return _events
@@ -84,7 +88,7 @@ def download_ifq(
     uow: UnitOfWork,
     context: Dict[str, Any],
 ) -> List[events.Event]:
-    FILENAME_PATTERN = 'ilfatto-%Y%m%d.pdf'
+    FILENAME_PATTERN = "ilfatto-%Y%m%d.pdf"
     try:
         filename = cmd.day.strftime(FILENAME_PATTERN)
 
@@ -99,11 +103,13 @@ def download_ifq(
     # except ifq.IssueNotAvailable as error:
     #     return [events.ifq]
     except Exception as error:
-        return [events.IFQIssueDownloadFailed(
-            filename,
-            error,
-            traceback.format_exc(),
-        )]
+        return [
+            events.IFQIssueDownloadFailed(
+                filename,
+                error,
+                traceback.format_exc(),
+            )
+        ]
 
 
 def log_summarized_entries(
@@ -120,7 +126,7 @@ def log_event(
     uow: UnitOfWork,
     context: Dict[str, Any],
 ):
-    """"Logs events"""
+    """ "Logs events"""
     text = repr(event)
     terminal.log(text)
 
@@ -132,13 +138,16 @@ def notify_entries_summarized(
 ):
     """Notify the event in a Slack channel"""
 
-    uow.slack.post_message({
-        'text': f"""
+    uow.slack.post_message(
+        {
+            "text": f"""
 ```
 {event.summary}
 ```
 """
-    }, context)
+        },
+        context,
+    )
 
 
 def notify_refurbished_product_available(
@@ -154,11 +163,10 @@ def notify_refurbished_product_available(
         if p.savings_price == 0:
             text += f"- <{p.url}|{p.name}> at *{p.price}*\n"
         else:
-            text += \
-                f"- <{p.url}|{p.name}> at ~{p.previous_price}~ *{p.price}* (-{p.savings_price})\n"
-    text += '\n'
+            text += f"- <{p.url}|{p.name}> at ~{p.previous_price}~ *{p.price}* (-{p.savings_price})\n"
+    text += "\n"
 
-    uow.slack.post_message({'text': text}, context)
+    uow.slack.post_message({"text": text}, context)
 
 
 def log_refurbished_product(
@@ -174,9 +182,8 @@ def log_refurbished_product(
         if p.savings_price == 0:
             text += f"- {p.name} at *{p.price}*\n"
         else:
-            text += \
-                f"- {p.name} at *{p.price}* (-{p.savings_price})\n"
-    text += '\n'
+            text += f"- {p.name} at *{p.price}* (-{p.savings_price})\n"
+    text += "\n"
 
     terminal.log(text)
 
@@ -188,10 +195,13 @@ def notify_refurbished_product_not_available(
 ):
     """Notify the event in a Slack channel"""
 
-    uow.slack.post_message({
-        'text': f"Hey, can't find any '{event.product}' "
-        f"in the '{event.store}' store now 🤔"
-    }, context)
+    uow.slack.post_message(
+        {
+            "text": f"Hey, can't find any '{event.product}' "
+            f"in the '{event.store}' store now 🤔"
+        },
+        context,
+    )
 
 
 def notify_ifq_issue_already_available(
@@ -201,10 +211,13 @@ def notify_ifq_issue_already_available(
 ):
     """Notify the event in a Slack channel"""
 
-    uow.slack.post_message({
-        'text': f'Hey, the IFQ issue named`{event.filename}`'
-        ' is already available.'
-    }, context)
+    uow.slack.post_message(
+        {
+            "text": f"Hey, the IFQ issue named`{event.filename}`"
+            " is already available."
+        },
+        context,
+    )
 
 
 def notify_ifq_issue_downloaded(
@@ -214,10 +227,13 @@ def notify_ifq_issue_downloaded(
 ):
     """Notify the event in a Slack channel"""
 
-    uow.slack.post_message({
-        'text': f'Hey, the IFQ issue named `{event.filename}`'
-        ' has been downloaded successfully! 🎉'
-    }, context)
+    uow.slack.post_message(
+        {
+            "text": f"Hey, the IFQ issue named `{event.filename}`"
+            " has been downloaded successfully! 🎉"
+        },
+        context,
+    )
 
 
 def notify_ifq_issue_download_failed(
@@ -227,8 +243,11 @@ def notify_ifq_issue_download_failed(
 ):
     """Notify the event in a Slack channel"""
 
-    uow.slack.post_message({
-        'text': f"Hey, the download of the IFQ issue "
-        f"named `{event.filename}` is failed"
-        f" (`{event.error!r}`)."
-    }, context)
+    uow.slack.post_message(
+        {
+            "text": f"Hey, the download of the IFQ issue "
+            f"named `{event.filename}` is failed"
+            f" (`{event.error!r}`)."
+        },
+        context,
+    )

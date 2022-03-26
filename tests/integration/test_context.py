@@ -12,10 +12,10 @@ def test_unavailable_products(
     mocker.patch.object(refurbished_adapter, "search")
     refurbished_adapter.search.side_effect = [[]]
 
-    mocker.patch.object(slack_adapter, 'post_message')
+    mocker.patch.object(slack_adapter, "post_message")
     slack_adapter.post_message.side_effect = [None]
 
-    cmd = commands.CheckRefurbished(store='it', products=['ipad'])
+    cmd = commands.CheckRefurbished(store="it", products=["ipad"])
     ctx = {
         "slack": {
             "response_url": "https://stocazzo.net",
@@ -24,9 +24,5 @@ def test_unavailable_products(
 
     messagebus.handle(cmd, ctx)
 
-    message = {
-        'text': "Hey, can't find any 'ipad' in the 'it' store now 🤔"
-    }
-    slack_adapter.post_message.assert_called_once_with(
-       message, ctx
-    )
+    message = {"text": "Hey, can't find any 'ipad' in the 'it' store now 🤔"}
+    slack_adapter.post_message.assert_called_once_with(message, ctx)

@@ -1,27 +1,23 @@
 from typing import Any, Dict
 
-from app.adapters.slack import build_slash_command, SlashCommandDispatcher
-
+from app.adapters.slack import SlashCommandDispatcher, build_slash_command
 
 dispatcher = SlashCommandDispatcher()
 
 
 @dispatcher.route(
-    "/refurbished",
-    text_regex="(?P<store>it|us) (?P<product>ipad|iphone|mac)"
+    "/refurbished", text_regex="(?P<store>it|us) (?P<product>ipad|iphone|mac)"
 )
 def check_refurbished(context: Dict[str, Any], store: str, product: str):
-    assert store == 'it'
-    assert product == 'mac'
+    assert store == "it"
+    assert product == "mac"
 
 
 def test_simple_command(from_json):
     event = from_json(
-        'tests/data/aws/lambda/events/api-gateway/slack/slash-commands/dm.json'
+        "tests/data/aws/lambda/events/api-gateway/slack/slash-commands/dm.json"
     )
 
-    dispatcher.dispatch(
-        build_slash_command(event["body"]), {}
-    )
+    dispatcher.dispatch(build_slash_command(event["body"]), {})
 
     # should not raise any exception

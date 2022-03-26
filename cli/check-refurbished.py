@@ -1,18 +1,12 @@
 import click
 
-from app.domain import commands
 from app import bootstrap
+from app.domain import commands
 
 
 @click.command()
-@click.option(
-    '--store',
-    required=True,
-    help='The store ID')
-@click.option(
-    '--product',
-    required=True,
-    help='The product ID')
+@click.option("--store", required=True, help="The store ID")
+@click.option("--product", required=True, help="The product ID")
 def run_command(store: str, product: str):
     """Check the product availability in a given store"""
 
@@ -25,5 +19,5 @@ def run_command(store: str, product: str):
     messagebus.handle(cmd, {})
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     run_command()

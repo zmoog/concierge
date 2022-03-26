@@ -2,7 +2,6 @@ from app.adapters import apple, dropbox, ifq, slack, toggl
 
 
 class UnitOfWork:
-
     def __init__(
         self,
         toggl: toggl.TogglAdapter,

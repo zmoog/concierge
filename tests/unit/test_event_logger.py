@@ -1,6 +1,6 @@
+from app.adapters import terminal
 from app.domain import events
 from app.services import handlers
-from app.adapters import terminal
 
 
 def test_log_event_as_text(mocker, uow):

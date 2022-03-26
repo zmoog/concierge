@@ -1,10 +1,9 @@
-from app.domain import commands, events
-from app.services.unit_of_work import UnitOfWork
-from app.services.messagebus import MessageBus
-from app.services import handlers
-from app.adapters import apple, dropbox, ifq, slack, toggl
 from app import config
-
+from app.adapters import apple, dropbox, ifq, slack, toggl
+from app.domain import commands, events
+from app.services import handlers
+from app.services.messagebus import MessageBus
+from app.services.unit_of_work import UnitOfWork
 
 dropbox_adapter = dropbox.DropboxAdapter(
     config.DROPBOX_ROOT_FOLDER,
@@ -16,9 +15,9 @@ ifq_adapter = ifq.IFQAdapter(
     config.IFQ_PASSWORD,
 )
 
-slack_adapter = slack.SlackAdapter(slack.SlackConfig(
-    webhook_url=config.SLACK_WEBHOOK_URL
-))
+slack_adapter = slack.SlackAdapter(
+    slack.SlackConfig(webhook_url=config.SLACK_WEBHOOK_URL)
+)
 
 toggl_adapter = toggl.TogglAdapter()
 
@@ -29,7 +28,7 @@ uow = UnitOfWork(
     ifq_adapter,
     dropbox_adapter,
     slack_adapter,
-    refurbished_adapter
+    refurbished_adapter,
 )
 
 command_handlers = {

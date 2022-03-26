@@ -1,19 +1,19 @@
 import json
 import urllib
+from datetime import datetime
+
 import requests
 
-from datetime import datetime
 from app import config
 
 
 class TogglAdapter:
-
     def summary(self, since: datetime, until: datetime):
         """Fetches the Toggl report between `since` and `until` dates.
 
         Toggl Reports API v2
         https://github.com/toggl/toggl_api_docs/blob/master/reports.md
-        https://github.com/toggl/toggl_api_docs/blob/master/reports/summary.md  
+        https://github.com/toggl/toggl_api_docs/blob/master/reports/summary.md
         """
         params = dict(
             workspace_id=config.TOGGL_WORKSPACE_ID,
@@ -22,8 +22,10 @@ class TogglAdapter:
             user_agent=config.TOGGL_USER_AGENT,
         )
 
-        url = "https://toggl.com/reports/api/v2/summary?" + \
-            urllib.parse.urlencode(params)
+        url = (
+            "https://toggl.com/reports/api/v2/summary?"
+            + urllib.parse.urlencode(params)
+        )
 
         # For the authentication details see the official Toggl API docs:
         # https://github.com/toggl/toggl_api_docs/blob/master/chapters/authentication.md

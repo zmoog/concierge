@@ -1,8 +1,7 @@
 import json
 import logging
-from typing import Any, Dict
-
 from datetime import date, datetime
+from typing import Any, Dict
 
 from app import config
 from app.adapters import aws, slack
@@ -22,37 +21,26 @@ sns = aws.SNSCommandPublisher(
 
 @dispatcher.route(
     "/refurbished",
-    text_regex="(?P<store>it|us|uk|au) (?P<product>ipad|iphone|mac)"
+    text_regex="(?P<store>it|us|uk|au) (?P<product>ipad|iphone|mac)",
 )
-def check_refurbished(
-    context: Dict[str, Any],
-    store: str,
-    product: str
-):
+def check_refurbished(context: Dict[str, Any], store: str, product: str):
     resp = sns.publish(
-        commands.CheckRefurbished(
-            store=store,
-            products=[product]
-        ),
+        commands.CheckRefurbished(store=store, products=[product]),
         context,
     )
-    logger.info(f'publish: {resp}')
+    logger.info(f"publish: {resp}")
 
 
-@dispatcher.route(
-    "/summarize"
-)
+@dispatcher.route("/summarize")
 def summarize(context: Dict[str, Any], text: str = None):
 
-    day = datetime.strptime(text, '%Y-%m-%d') if text else date.today()
+    day = datetime.strptime(text, "%Y-%m-%d") if text else date.today()
 
     resp = sns.publish(
-        commands.Summarize(
-            day=day
-        ),
+        commands.Summarize(day=day),
         context,
     )
-    logger.info(f'publish: {resp}')
+    logger.info(f"publish: {resp}")
 
 
 def dispatch(event: dict, context: Any = None):
@@ -65,7 +53,7 @@ def dispatch(event: dict, context: Any = None):
         # or replaced w/ an appropriate log level
         # logging.info(json.dumps(event))
 
-        body, headers = event['body'], event['headers']
+        body, headers = event["body"], event["headers"]
 
         # Checks if the request really come from Slack, see
         # https://api.slack.com/authentication/verifying-requests-from-slack
@@ -78,35 +66,33 @@ def dispatch(event: dict, context: Any = None):
 
         # dispatch the /command to invoke the most
         # appropriate business command
-        dispatcher.dispatch(slash_command, {
-            "slack": {
-                "response_url": slash_command.response_url,
-            }
-        })
+        dispatcher.dispatch(
+            slash_command,
+            {
+                "slack": {
+                    "response_url": slash_command.response_url,
+                }
+            },
+        )
 
-        return build_proxy_response(200, body={'text': 'On it!'})
+        return build_proxy_response(200, body={"text": "On it!"})
 
     except slack.RouteNotFound as e:
         logger.warning(e)
         return build_proxy_response(
             200,
             body={
-                'response_type': 'ephemeral',
-                'text': 'I don\'t know how to handle your request ¯\\_(ツ)_/¯'
-            }
+                "response_type": "ephemeral",
+                "text": "I don't know how to handle your request ¯\\_(ツ)_/¯",
+            },
         )
     except slack.InvalidSignature:
         return build_proxy_response(401)
 
 
-def build_proxy_response(
-    status_code: int,
-    body=None
-):
-    resp = {
-        'statusCode': status_code
-    }
+def build_proxy_response(status_code: int, body=None):
+    resp = {"statusCode": status_code}
     if body:
-        resp['body'] = json.dumps(body)
+        resp["body"] = json.dumps(body)
 
     return resp

@@ -1,19 +1,19 @@
 # import logging
-from datetime import datetime
 # import os
 import tempfile
-import requests
+from datetime import datetime
 
+import requests
 from lxml import html
 
-IFQ_LOGIN_URL = 'https://shop.ilfattoquotidiano.it/login/'
-IFQ_ARCHIVE_URL = 'https://shop.ilfattoquotidiano.it/archivio-edizioni/'
+IFQ_LOGIN_URL = "https://shop.ilfattoquotidiano.it/login/"
+IFQ_ARCHIVE_URL = "https://shop.ilfattoquotidiano.it/archivio-edizioni/"
 
 
 # logging.basicConfig(level=logging.DEBUG)
 
-class IFQAdapter:
 
+class IFQAdapter:
     def __init__(self, username: str, password: str):
         self.username = username
         self.password = password
@@ -23,26 +23,28 @@ class IFQAdapter:
         login_payload = dict(
             username=self.username,
             password=self.password,
-            _wp_http_referer='/login/',
-            redirect='/login/',
-            login='Accedi')
+            _wp_http_referer="/login/",
+            redirect="/login/",
+            login="Accedi",
+        )
 
         edition_payload = dict(
-            edition_date=pub_date.strftime('%d/%m/%Y'),
-            _wp_http_referer='/abbonati/')
+            edition_date=pub_date.strftime("%d/%m/%Y"),
+            _wp_http_referer="/abbonati/",
+        )
 
         with requests.Session() as session:
 
             resp = session.get(IFQ_LOGIN_URL)
-            # print(IFQ_LOGIN_URL) 
-            # print(resp.status_code) 
+            # print(IFQ_LOGIN_URL)
+            # print(resp.status_code)
             # print(resp.cookies)
             tree = html.fromstring(resp.text)
             # print('resp.text', resp.text)
             # print('tree', tree)
             nonce = tree.xpath('//input[@id="woocommerce-login-nonce"]')
             # print('woocommerce-login-nonce', nonce)
-            login_payload['woocommerce-login-nonce'] = nonce[0].value
+            login_payload["woocommerce-login-nonce"] = nonce[0].value
 
             # cookies = dict(cookies_are='working')
             resp = session.post(IFQ_LOGIN_URL, data=login_payload)
@@ -60,14 +62,14 @@ class IFQAdapter:
             # print('nonce', nonce)
             edition_date_nonce = nonce[0].value
 
-            edition_payload['edition_date_nonce'] = edition_date_nonce
+            edition_payload["edition_date_nonce"] = edition_date_nonce
 
             # logging.debug(edition_payload)
             # print(edition_payload)
 
-            resp = session.post(IFQ_ARCHIVE_URL,
-                                data=edition_payload,
-                                stream=True)
+            resp = session.post(
+                IFQ_ARCHIVE_URL, data=edition_payload, stream=True
+            )
 
             if resp.status_code != 200:
                 # print(resp.text)

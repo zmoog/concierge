@@ -1,6 +1,7 @@
 # pylint: disable=too-few-public-methods
 from datetime import date
 from typing import List  # Optional
+
 # from dataclasses import dataclass
 # from pydantic import BaseModel
 # from pydantic.dataclasses import dataclass

@@ -22,10 +22,10 @@ lint-flake8:
 fix-lint: fix-black fix-isort  ## Fix linting
 
 fix-black:
-	@black --diff ${black_options}
+	@black ${black_options}
 
 fix-isort:
-	@isort --diff ${isort_options}
+	@isort ${isort_options}
 
 test:
 	pytest tests
