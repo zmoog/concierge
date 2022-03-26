@@ -4,8 +4,6 @@ import pytest
 
 from app import bootstrap, config
 from app.adapters import apple, dropbox, ifq, slack, toggl
-from app.domain import events
-from app.services import handlers
 from app.services.messagebus import MessageBus
 from app.services.unit_of_work import UnitOfWork
 

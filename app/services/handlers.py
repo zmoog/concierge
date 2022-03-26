@@ -163,7 +163,7 @@ def notify_refurbished_product_available(
         if p.savings_price == 0:
             text += f"- <{p.url}|{p.name}> at *{p.price}*\n"
         else:
-            text += f"- <{p.url}|{p.name}> at ~{p.previous_price}~ *{p.price}* (-{p.savings_price})\n"
+            text += f"- <{p.url}|{p.name}> at ~{p.previous_price}~ *{p.price}* (-{p.savings_price})\n"  # noqa: E501
     text += "\n"
 
     uow.slack.post_message({"text": text}, context)
