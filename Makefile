@@ -28,6 +28,7 @@ fix-isort:
 	@isort ${isort_options}
 
 test:
+	export PYTHONPATH=$PYTHONPATH:`pwd`
 	pytest tests
 
 ready: lint test ## Make sure we're ready to ship the code in a PR
