@@ -1,6 +1,6 @@
 -i https://pypi.org/simple
 # -e git+https://github.com/zmoog/refurbished.git@033ab3c0e67b5fc4be7c756d16d20582a5d2c4aa#egg=refurbished
-boto3==1.21.26
+boto3==1.21.27
 click==8.0.4
 dropbox==11.28.0
 humanize==4.0.0
