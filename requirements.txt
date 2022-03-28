@@ -9,5 +9,5 @@ price-parser==0.3.3
 pydantic==1.9.0
 python-dateutil==2.8.2
 requests==2.27.1
-setuptools==61.0.0
+setuptools==61.2.0
 typing-extensions==4.1.1
