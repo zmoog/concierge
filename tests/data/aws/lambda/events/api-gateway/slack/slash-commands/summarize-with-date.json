@@ -21,7 +21,7 @@
         "X-Forwarded-Port": "443",
         "X-Forwarded-Proto": "https",
         "X-Slack-Request-Timestamp": "1595828273",
-        "X-Slack-Signature": "v0=39edb6d769cbf698027d8ed337de40b688077acd72c66ca892c3976325c1381a"
+        "X-Slack-Signature": "v0=0f6428d6398516259cb3643a2887b3e5867e170bca3908838f821b956a2f0bb2"
     },
     "multiValueHeaders": {
         "Accept": [
@@ -79,7 +79,7 @@
             "1595828273"
         ],
         "X-Slack-Signature": [
-            "v0=8f62496c1f63b47e0ee797b00500abfc8b08fe01bc1b39a9434e02c56140c508"
+            "v0=0f6428d6398516259cb3643a2887b3e5867e170bca3908838f821b956a2f0bb2"
         ]
     },
     "queryStringParameters": null,

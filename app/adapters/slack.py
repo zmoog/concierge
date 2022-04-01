@@ -162,9 +162,14 @@ class RouteNotFound(Exception):
 
 
 def verify_signature(body: str, headers: Dict[str, str]):
+    """
+    Verify if the signature of an Slack webhook call.
 
-    signature = headers.get("X-Slack-Signature")
-    timestamp = headers.get("X-Slack-Request-Timestamp")
+    Check https://api.slack.com/authentication/verifying-requests-from-slack
+    for more details.
+    """
+    signature = headers.get("X-Slack-Signature", "")
+    timestamp = headers.get("X-Slack-Request-Timestamp", "")
 
     req = str.encode(f"v0:{timestamp}:{body}")
 
@@ -176,6 +181,4 @@ def verify_signature(body: str, headers: Dict[str, str]):
     )
 
     if not hmac.compare_digest(request_hash, signature):
-        logger.warning(f"expected: {signature}")
-        logger.warning(f"actual: {request_hash}")
         raise InvalidSignature()

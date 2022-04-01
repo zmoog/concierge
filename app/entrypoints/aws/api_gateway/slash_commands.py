@@ -49,18 +49,12 @@ def dispatch(event: dict, context: Any = None):
     HTTP request from Slack for a slash command invoked by a user.
     """
     try:
-        # dump the event in the log, it will be removed later
-        # or replaced w/ an appropriate log level
-        # logging.info(json.dumps(event))
-
         body, headers = event["body"], event["headers"]
 
-        # Checks if the request really come from Slack, see
-        # https://api.slack.com/authentication/verifying-requests-from-slack
-        # for more details
+        # checks if the http request really comes from Slack
         slack.verify_signature(body, headers)
 
-        # create a new /command using the payload
+        # build a new /command using the payload
         # from Slack
         slash_command = slack.build_slash_command(body)
 
@@ -75,11 +69,11 @@ def dispatch(event: dict, context: Any = None):
             },
         )
 
-        return build_proxy_response(200, body={"text": "On it!"})
+        return proxy_response(200, body={"text": "On it!"})
 
     except slack.RouteNotFound as e:
         logger.warning(e)
-        return build_proxy_response(
+        return proxy_response(
             200,
             body={
                 "response_type": "ephemeral",
@@ -87,10 +81,13 @@ def dispatch(event: dict, context: Any = None):
             },
         )
     except slack.InvalidSignature:
-        return build_proxy_response(401)
+        return proxy_response(401)
 
 
-def build_proxy_response(status_code: int, body=None):
+def proxy_response(status_code: int, body=None) -> Dict[str, Any]:
+    """
+    Build an AWS Lambda proxy response.
+    """
     resp = {"statusCode": status_code}
     if body:
         resp["body"] = json.dumps(body)
