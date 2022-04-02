@@ -75,6 +75,10 @@ custom:
   CommandsTopicName: ${self:service}-commands-topic-${self:provider.stage}
   pythonRequirements:
     dockerizePip: non-linux
+    noDeploy:
+      - boto3
+      - botocore
+      - setuptools
 
 functions:
 
