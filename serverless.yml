@@ -33,12 +33,14 @@ provider:
   region: eu-west-1
 
   # you can add statements to the Lambda function's IAM Role here
-  iamRoleStatements:
-    - Effect: "Allow"
-      Action:
-        - "SNS:Publish"
-      Resource:
-        - !Ref CommandTopic
+  iam:
+    role:
+      statements:
+        - Effect: "Allow"
+          Action:
+            - "SNS:Publish"
+          Resource:
+            - !Ref CommandTopic
 
   # you can define service wide environment variables here
   environment:
