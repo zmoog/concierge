@@ -1,19 +1,6 @@
-# Welcome to Serverless!
-#
-# This file is the main config file for your service.
-# It's very minimal at this point and uses default values.
-# You can always add more config options for more control.
-# We've included some commented out config examples here.
-# Just uncomment any of them to get that config option.
-#
-# For full config options, check the docs:
-#    docs.serverless.com
-#
-# Happy Coding!
+# Welcome to Concierge!
 
 service: concierge
-#app: your-app-name
-#tenant: your-tenant-name
 
 # You can pin your service to only deploy with a specific Serverless version
 # Check out our docs for more details
@@ -69,6 +56,8 @@ package:
     - '!setenv*.sh'
     - '!tests'
     - '!venv'
+  # All lambdas share the same internal framework, so
+  # deploying them individually is probably a waste.
   individually: false
 
 custom:
