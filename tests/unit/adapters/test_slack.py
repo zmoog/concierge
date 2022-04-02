@@ -1,3 +1,5 @@
+import pytest
+
 from app.adapters import slack
 
 
@@ -25,7 +27,7 @@ def test_verify_a_valid_signature():
 
 def test_verify_an_invalid_signature():
     # signature created using "signing-secret" as signing secret
-    sig = "v0=4306a63173d2668fe1691d71c3724d85269ae9c25b2f7af914f1a4db2d6509f0"
+    sig = "v0=deadbeeddeadbeeddeadbeeddeadbeeddeadbeeddeadbeeddeadbeeddeadbeed"
     ts = "1595524130"
 
     # request body and headers coming from Slack webhooks
@@ -43,4 +45,5 @@ def test_verify_an_invalid_signature():
         "X-Slack-Request-Timestamp": ts,
     }
 
-    slack.verify_signature(body, headers)
+    with pytest.raises(slack.InvalidSignature):
+        slack.verify_signature(body, headers)
