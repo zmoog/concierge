@@ -1,22 +1,22 @@
-from datetime import date
 import logging
+from datetime import date
 
-from app.entrypoints.aws.api_gateway.slash_commands import dispatch, sns
 from app.bootstrap import slack_adapter
 from app.domain import commands
+from app.entrypoints.aws.api_gateway.slash_commands import dispatch, sns
 
 
 def test_slash_commands_with_an_invalid_token(from_json):
     # setup event from the AWS lambda proxy
     event = from_json(
-        'tests/data/aws/lambda/events/api-gateway/slack/slash-commands/\
-invalid-token.json'
+        "tests/data/aws/lambda/events/api-gateway/slack/slash-commands/\
+invalid-token.json"
     )
 
     resp = dispatch(event)
 
-    assert 'statusCode' in resp
-    assert resp['statusCode'] == 401
+    assert "statusCode" in resp
+    assert resp["statusCode"] == 401
 
 
 def test_slash_commands_from_a_dm(
@@ -28,7 +28,7 @@ def test_slash_commands_from_a_dm(
 
     # setup event from the AWS lambda proxy
     event = from_json(
-        'tests/data/aws/lambda/events/api-gateway/slack/slash-commands/dm.json'
+        "tests/data/aws/lambda/events/api-gateway/slack/slash-commands/dm.json"
     )
 
     # setup fake response from Apple Store and spy on Slack adapters
@@ -50,9 +50,9 @@ def test_slash_commands_from_a_dm(
 
     resp = dispatch(event)
 
-    assert 'statusCode' in resp
-    assert resp['statusCode'] == 200
-    assert resp['body'] == '{"text": "On it!"}'
+    assert "statusCode" in resp
+    assert resp["statusCode"] == 200
+    assert resp["body"] == '{"text": "On it!"}'
 
     # message = {
     #     'text': "On it!"
@@ -68,8 +68,8 @@ def test_slash_commands_without_text(
 ):
     # setup event from the AWS lambda proxy
     event = from_json(
-        'tests/data/aws/lambda/events/api-gateway/slack/slash-commands/\
-no-text.json'
+        "tests/data/aws/lambda/events/api-gateway/slack/slash-commands/\
+no-text.json"
     )
     # mocker.patch.object(slack_adapter, "post_message")
     # slack_adapter.post_message.side_effect = [None]
@@ -79,9 +79,9 @@ no-text.json'
 
     resp = dispatch(event)
 
-    assert 'statusCode' in resp
-    assert resp['statusCode'] == 200
-    assert resp['body'] == '{"text": "On it!"}'
+    assert "statusCode" in resp
+    assert resp["statusCode"] == 200
+    assert resp["body"] == '{"text": "On it!"}'
 
 
 def test_slash_commands_with_unexpected_text(
@@ -93,8 +93,8 @@ def test_slash_commands_with_unexpected_text(
 
     # setup event from the AWS lambda proxy
     event = from_json(
-        'tests/data/aws/lambda/events/api-gateway/slack/slash-commands/\
-unexpected-text.json'
+        "tests/data/aws/lambda/events/api-gateway/slack/slash-commands/\
+unexpected-text.json"
     )
 
     # setup fake response for Slack adapter
@@ -103,14 +103,17 @@ unexpected-text.json'
     # run the command
     resp = dispatch(event)
 
-    assert 'statusCode' in resp
-    assert resp['statusCode'] == 200
-    assert 'body' in resp
-    assert resp['body'] == '{\
+    assert "statusCode" in resp
+    assert resp["statusCode"] == 200
+    assert "body" in resp
+    assert (
+        resp["body"]
+        == '{\
 "response_type": "ephemeral", \
 "text": "I don\'t know how to handle your request \
 \\u00af\\\\_(\\u30c4)_/\\u00af\
 "}'
+    )
 
 
 def test_when_i_summarize_an_additional_date(
@@ -122,8 +125,8 @@ def test_when_i_summarize_an_additional_date(
 
     # the event contains a slash command with a specific date (2020-08-06)
     event = from_json(
-        'tests/data/aws/lambda/events/'
-        'api-gateway/slack/slash-commands/summarize-with-date.json'
+        "tests/data/aws/lambda/events/"
+        "api-gateway/slack/slash-commands/summarize-with-date.json"
     )
 
     mocker.patch.object(sns, "publish")
@@ -131,18 +134,18 @@ def test_when_i_summarize_an_additional_date(
 
     resp = dispatch(event)
 
-    assert 'statusCode' in resp
-    assert resp['statusCode'] == 200
-    assert resp['body'] == '{"text": "On it!"}'
+    assert "statusCode" in resp
+    assert resp["statusCode"] == 200
+    assert resp["body"] == '{"text": "On it!"}'
 
     sns.publish.assert_called_once_with(
         commands.Summarize(day=date(2020, 8, 6)),
         {
-            'slack': {
-                'response_url': 'https://hooks.slack.com/commands/'
-                'T02RX18RT/1287752509456/RvnHleL1XCLxuMU2zGDGRbtT'
+            "slack": {
+                "response_url": "https://hooks.slack.com/commands/"
+                "T02RX18RT/1287752509456/RvnHleL1XCLxuMU2zGDGRbtT"
             }
-        }
+        },
     )
 
 
@@ -156,8 +159,8 @@ def test_when_i_summarize_without_a_specific_date(
     # the event contains a slash command without any date, in this case
     # the date use should be today
     event = from_json(
-        'tests/data/aws/lambda/events/'
-        'api-gateway/slack/slash-commands/summarize-without-date.json'
+        "tests/data/aws/lambda/events/"
+        "api-gateway/slack/slash-commands/summarize-without-date.json"
     )
 
     mocker.patch.object(sns, "publish")
@@ -165,16 +168,16 @@ def test_when_i_summarize_without_a_specific_date(
 
     resp = dispatch(event)
 
-    assert 'statusCode' in resp
-    assert resp['statusCode'] == 200
-    assert resp['body'] == '{"text": "On it!"}'
+    assert "statusCode" in resp
+    assert resp["statusCode"] == 200
+    assert resp["body"] == '{"text": "On it!"}'
 
     sns.publish.assert_called_once_with(
         commands.Summarize(day=date.today()),
         {
-            'slack': {
-                'response_url': 'https://hooks.slack.com/commands/'
-                'T02RX18RT/1287752509456/RvnHleL1XCLxuMU2zGDGRbtT'
+            "slack": {
+                "response_url": "https://hooks.slack.com/commands/"
+                "T02RX18RT/1287752509456/RvnHleL1XCLxuMU2zGDGRbtT"
             }
-        }
+        },
     )

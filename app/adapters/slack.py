@@ -1,15 +1,15 @@
 import collections
 import hashlib
 import hmac
-import logging
 import json
+import logging
 import re
-import requests
-
 from typing import Any, Callable, Dict, Optional, Pattern
-
 from urllib.parse import parse_qs
+
+import requests
 from pydantic.dataclasses import dataclass
+
 from app import config
 
 logger = logging.getLogger(__name__)
@@ -21,6 +21,7 @@ class SlashCommand:
     """
     https://api.slack.com/interactivity/slash-commands#responding_to_commands
     """
+
     name: str
     text: Optional[str]
     team_id: str
@@ -52,7 +53,7 @@ class SlackAdapter:
         Posts the message to to channel configured in the webhook.
         """
 
-        slack_ctx = context.get('slack', {})
+        slack_ctx = context.get("slack", {})
         logger.info(slack_ctx)
 
         url = slack_ctx.get("response_url", self.config.webhook_url)
@@ -63,10 +64,8 @@ class SlackAdapter:
         requests.post(
             # self.config.webhook_url,
             url,
-            headers={
-                "Content-type": "application/json"
-            },
-            data=json.dumps(message)
+            headers={"Content-type": "application/json"},
+            data=json.dumps(message),
         )
 
 
@@ -78,18 +77,17 @@ class Route:
 
 
 class SlashCommandDispatcher:
-
     def __init__(self):
         self.routes: Dict[str, Route] = {}
 
     def route(self, id: str, text_regex: Optional[str] = None) -> Callable:
-        logger.info(f'adding route {id}')
+        logger.info(f"adding route {id}")
 
         def decorator(func: Callable) -> Callable:
             route = Route(
                 id=id,
                 pattern=re.compile(text_regex) if text_regex else None,
-                handler=func
+                handler=func,
             )
             self.routes[id] = route
             return route
@@ -99,7 +97,7 @@ class SlashCommandDispatcher:
     def dispatch(self, cmd: SlashCommand, context: Dict[str, Any]):
 
         if cmd.name not in self.routes:
-            logger.error(f'can\'t find a route for cmd {cmd.name}')
+            logger.error(f"can't find a route for cmd {cmd.name}")
             raise RouteNotFound()
 
         route = self.routes[cmd.name]
@@ -107,15 +105,15 @@ class SlashCommandDispatcher:
         if route.pattern:
             match = route.pattern.match(cmd.text)
             if not match:
-                msg = f'{cmd.text} doesn\'t match {route.pattern}'
+                msg = f"{cmd.text} doesn't match {route.pattern}"
                 logger.warning(msg)
                 raise RouteNotFound(msg)
 
             # call the command handler
             args = match.groupdict()
             logger.info(
-                f'handing off cmd {cmd.name} to {route.handler}'
-                f' with context {context} args {args}'
+                f"handing off cmd {cmd.name} to {route.handler}"
+                f" with context {context} args {args}"
             )
             route.handler(context, **args)
         else:
@@ -139,18 +137,18 @@ def build_slash_command(qs: str) -> SlashCommand:
     #     text = dictionary['text'][0] if 'text' in dictionary else None
     # else:
     #     text = None
-    text = dictionary['text'][0] if 'text' in dictionary else None
+    text = dictionary["text"][0] if "text" in dictionary else None
 
     return SlashCommand(
-        name=dictionary['command'][0],
-        team_id=dictionary['team_id'][0],
-        team_domain=dictionary['team_domain'][0],
-        channel_id=dictionary['channel_id'][0],
-        channel_name=dictionary['channel_name'][0],
-        user_id=dictionary['user_id'][0],
-        user_name=dictionary['user_name'][0],
-        response_url=dictionary['response_url'][0],
-        trigger_id=dictionary['trigger_id'][0],
+        name=dictionary["command"][0],
+        team_id=dictionary["team_id"][0],
+        team_domain=dictionary["team_domain"][0],
+        channel_id=dictionary["channel_id"][0],
+        channel_name=dictionary["channel_name"][0],
+        user_id=dictionary["user_id"][0],
+        user_name=dictionary["user_name"][0],
+        response_url=dictionary["response_url"][0],
+        trigger_id=dictionary["trigger_id"][0],
         text=text,
     )
 
@@ -164,19 +162,23 @@ class RouteNotFound(Exception):
 
 
 def verify_signature(body: str, headers: Dict[str, str]):
+    """
+    Verify if the signature of an Slack webhook call.
 
-    signature = headers.get('X-Slack-Signature')
-    timestamp = headers.get('X-Slack-Request-Timestamp')
+    Check https://api.slack.com/authentication/verifying-requests-from-slack
+    for more details.
+    """
+    signature = headers.get("X-Slack-Signature", "")
+    timestamp = headers.get("X-Slack-Request-Timestamp", "")
 
-    req = str.encode(f'v0:{timestamp}:{body}')
+    req = str.encode(f"v0:{timestamp}:{body}")
 
-    request_hash = 'v0=' + hmac.new(
-        str.encode(config.SLACK_SIGNING_SECRET),
-        req,
-        hashlib.sha256
-    ).hexdigest()
+    request_hash = (
+        "v0="
+        + hmac.new(
+            str.encode(config.SLACK_SIGNING_SECRET), req, hashlib.sha256
+        ).hexdigest()
+    )
 
     if not hmac.compare_digest(request_hash, signature):
-        logger.warning(f'expected: {signature}')
-        logger.warning(f'actual: {request_hash}')
         raise InvalidSignature()

@@ -1,14 +1,11 @@
 import json
+
 import pytest
 
-from app import config
-from app.domain import events
+from app import bootstrap, config
 from app.adapters import apple, dropbox, ifq, slack, toggl
-from app.services import handlers
 from app.services.messagebus import MessageBus
 from app.services.unit_of_work import UnitOfWork
-from app import bootstrap
-
 
 # @pytest.fixture(scope="session")
 # def tmp_dir(tmpdir_factory):
@@ -72,9 +69,9 @@ def dropbox_adapter():
 
 @pytest.fixture(scope="function")
 def slack_adapter():
-    return slack.SlackAdapter(slack.SlackConfig(
-        webhook_url=config.SLACK_WEBHOOK_URL
-    ))
+    return slack.SlackAdapter(
+        slack.SlackConfig(webhook_url=config.SLACK_WEBHOOK_URL)
+    )
 
 
 @pytest.fixture(scope="function")
@@ -88,17 +85,19 @@ def refurbished_adapter():
 
 
 @pytest.fixture(scope="function")
-def uow(toggl_adapter,
-        ifq_adapter,
-        dropbox_adapter,
-        slack_adapter,
-        refurbished_adapter):
+def uow(
+    toggl_adapter,
+    ifq_adapter,
+    dropbox_adapter,
+    slack_adapter,
+    refurbished_adapter,
+):
     return UnitOfWork(
         toggl_adapter,
         ifq_adapter,
         dropbox_adapter,
         slack_adapter,
-        refurbished_adapter
+        refurbished_adapter,
     )
 
 
@@ -116,4 +115,5 @@ def from_json():
     def wrapper(path: str):
         with open(path) as f:
             return json.loads(f.read())
+
     return wrapper

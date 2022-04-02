@@ -11,14 +11,18 @@ def test_summarize_without_entries(mocker, uow, toggl_adapter, from_json):
     mocker.patch.object(toggl_adapter, "summary")
     toggl_adapter.summary.side_effect = [summary]
 
-    expected_events = [TogglEntriesSummarized(summary="""\
+    expected_events = [
+        TogglEntriesSummarized(
+            summary="""\
 Here's the summary for Thursday, June 25 2020
 
 ---
 
 Oooops, there are no entries here ¯\\_(ツ)_/¯
 
-""")]
+"""
+        )
+    ]
 
     cmd = Summarize(day=date(2020, 6, 25))
 
@@ -34,7 +38,9 @@ def test_summarize_with_entries(mocker, uow, toggl_adapter, from_json):
     mocker.patch.object(toggl_adapter, "summary")
     toggl_adapter.summary.side_effect = [summary]
 
-    expected_events = [TogglEntriesSummarized(summary="""\
+    expected_events = [
+        TogglEntriesSummarized(
+            summary="""\
 Here's the summary for Thursday, June 25 2020
 
 ---
@@ -54,7 +60,9 @@ Here's the summary for Thursday, June 25 2020
 # Professional development (an hour)
  * Concierge: today recap (an hour)
 
-""")]
+"""
+        )
+    ]
 
     cmd = Summarize(day=date(2020, 6, 25))
 

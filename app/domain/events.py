@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 from typing import List
+
 from app.domain.model import Product
 
 
