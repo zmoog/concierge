@@ -58,11 +58,17 @@ provider:
 
 # you can add packaging information here
 package:
- include:
-   - app/**
- exclude:
-   - "**"
- individually: false
+  patterns:
+    - 'app/**'
+    - '!.github'
+    - '!.tool-versions'
+    - '!.vscode'
+    - '!node_modules'
+    - '!package*.json'
+    - '!setenv*.sh'
+    - '!tests'
+    - '!venv'
+  individually: false
 
 custom:
   CommandsTopicName: ${self:service}-commands-topic-${self:provider.stage}
