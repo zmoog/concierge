@@ -34,5 +34,6 @@ jobs:
         make lint
     - name: Test with pytest
       run: |
+        source setenv-test.sh
         make test
 
