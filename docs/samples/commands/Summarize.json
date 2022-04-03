@@ -1,0 +1,5 @@
+{
+    "Summarize": {
+        "when": "previous_business_day"
+    }
+}

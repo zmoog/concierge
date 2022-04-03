@@ -1,19 +1,6 @@
-# Welcome to Serverless!
-#
-# This file is the main config file for your service.
-# It's very minimal at this point and uses default values.
-# You can always add more config options for more control.
-# We've included some commented out config examples here.
-# Just uncomment any of them to get that config option.
-#
-# For full config options, check the docs:
-#    docs.serverless.com
-#
-# Happy Coding!
+# Welcome to Concierge!
 
 service: concierge
-#app: your-app-name
-#tenant: your-tenant-name
 
 # You can pin your service to only deploy with a specific Serverless version
 # Check out our docs for more details
@@ -26,7 +13,6 @@ plugins:
 provider:
   name: aws
   runtime: python3.7
-  lambdaHashingVersion: "20201221"
   logRetentionInDays: 30
 
   # you can overwrite defaults here
@@ -34,12 +20,14 @@ provider:
   region: eu-west-1
 
   # you can add statements to the Lambda function's IAM Role here
-  iamRoleStatements:
-    - Effect: "Allow"
-      Action:
-        - "SNS:Publish"
-      Resource:
-        - !Ref CommandTopic
+  iam:
+    role:
+      statements:
+        - Effect: "Allow"
+          Action:
+            - "SNS:Publish"
+          Resource:
+            - !Ref CommandTopic
 
   # you can define service wide environment variables here
   environment:
@@ -58,16 +46,29 @@ provider:
 
 # you can add packaging information here
 package:
- include:
-   - app/**
- exclude:
-   - "**"
- individually: false
+  patterns:
+    - 'app/**'
+    - '!.github'
+    - '!.tool-versions'
+    - '!.vscode'
+    - '!node_modules'
+    - '!package*.json'
+    - '!setenv*.sh'
+    - '!tests'
+    - '!venv'
+  # All lambdas share the same internal framework, so
+  # individually deploying them would end up in uploading
+  # the very same function package multiple times.
+  individually: false
 
 custom:
   CommandsTopicName: ${self:service}-commands-topic-${self:provider.stage}
   pythonRequirements:
     dockerizePip: non-linux
+    noDeploy:
+      - boto3
+      - botocore
+      - setuptools
 
 functions:
 
