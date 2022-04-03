@@ -57,7 +57,8 @@ package:
     - '!tests'
     - '!venv'
   # All lambdas share the same internal framework, so
-  # deploying them individually is probably a waste.
+  # individually deploying them would end up in uploading
+  # the very same function package multiple times.
   individually: false
 
 custom:
