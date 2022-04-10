@@ -2,7 +2,9 @@ import logging
 from datetime import date
 
 from app import bootstrap, config
-from app.domain import commands, model
+from app.domain import commands
+from app.domain.commands.school import ListHomework
+from app.domain import model
 
 app_logger = logging.getLogger()
 app_logger.setLevel(config.LOG_LEVEL)
@@ -36,7 +38,11 @@ def run_scheduled(event, config):
         )
     elif "DownloadIFQ" in event:
         cmd = commands.DownloadIFQ(day=date.today())
+    elif "ListHomework" in event:
+        evt = event["ListHomework"]
+        cmd = ListHomework(days=int(evt.get("days", 5)))
     else:
+        print(f"event {event} is not supported")
         return
 
     messagebus.handle(cmd, {})

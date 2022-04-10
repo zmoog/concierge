@@ -1,9 +1,28 @@
 from app import config
-from app.adapters import apple, dropbox, ifq, slack, toggl
+from app.adapters import (
+    apple,
+    classeviva,
+    dropbox,
+    ifq,
+    slack,
+    telegram,
+    toggl,
+)
 from app.domain import commands, events
+from app.domain.commands.school import ListHomework
+from app.domain.events.school import HomeworkAvailable, NoHomework
 from app.services import handlers
+from app.services.handlers.school import (
+    list_homework,
+    notify_homework_available,
+    notify_no_homework,
+)
 from app.services.messagebus import MessageBus
 from app.services.unit_of_work import UnitOfWork
+
+refurbished_adapter = apple.RefurbishedStoreAdapter()
+
+classeviva_adapter = classeviva.ClassevivaAdapter()
 
 dropbox_adapter = dropbox.DropboxAdapter(
     config.DROPBOX_ROOT_FOLDER,
@@ -19,20 +38,24 @@ slack_adapter = slack.SlackAdapter(
     slack.SlackConfig(webhook_url=config.SLACK_WEBHOOK_URL)
 )
 
+telegram_adapter = telegram.TelegramAdapter(config.TELEGRAM_TOKEN)
+
 toggl_adapter = toggl.TogglAdapter()
 
-refurbished_adapter = apple.RefurbishedStoreAdapter()
 
 uow = UnitOfWork(
-    toggl_adapter,
-    ifq_adapter,
-    dropbox_adapter,
-    slack_adapter,
     refurbished_adapter,
+    classeviva_adapter,
+    dropbox_adapter,
+    ifq_adapter,
+    slack_adapter,
+    telegram_adapter,
+    toggl_adapter,
 )
 
 command_handlers = {
     commands.CheckRefurbished: handlers.check_refurbished,
+    ListHomework: list_homework,
     commands.DownloadIFQ: handlers.download_ifq,
     commands.Summarize: handlers.summarize,
 }
@@ -43,6 +66,12 @@ event_handlers = {
     ],
     events.RefurbishedProductNotAvailable: [
         handlers.notify_refurbished_product_not_available,
+    ],
+    HomeworkAvailable: [
+        notify_homework_available,
+    ],
+    NoHomework: [
+        notify_no_homework,
     ],
     events.TogglEntriesSummarized: [
         handlers.notify_entries_summarized,
@@ -73,6 +102,12 @@ def for_cli():
         events.RefurbishedProductNotAvailable: [
             handlers.log_event,
         ],
+        HomeworkAvailable: [
+            notify_homework_available,
+        ],
+        NoHomework: [
+            notify_no_homework,
+        ],
         events.IFQIssueAlreadyExists: [
             handlers.log_event,
         ],
@@ -83,6 +118,7 @@ def for_cli():
             handlers.log_event,
         ],
     }
+
     return MessageBus(uow, event_handlers, command_handlers)
 
 
