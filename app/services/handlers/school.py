@@ -9,23 +9,25 @@ from app.services.unit_of_work import UnitOfWork
 
 
 def list_homework(
-    cmd: ListHomework, uow: UnitOfWork, context: Dict[str, Any]
+    cmd: ListHomework, uow: UnitOfWork, ctx: Dict[str, Any]
 ) -> List[events.Event]:
+    nr_of_days = (cmd.until - cmd.since).days
+
     assignments = uow.classeviva.list_assignments(
-        days=cmd.days
+        cmd.since, cmd.until
     )  # for the next n days
     print(f"fetched {len(assignments)} assignments")
 
     if not assignments:
-        return [NoHomework(days=cmd.days)]
+        return [NoHomework(days=nr_of_days)]
 
-    return [HomeworkAvailable(assignments, days=cmd.days)]
+    return [HomeworkAvailable(assignments, days=nr_of_days)]
 
 
 def notify_no_homework(
     event: NoHomework, uow: UnitOfWork, context: Dict[str, Any]
 ):
-    msg = f"No homework for the next {event.days} days"
+    msg = f"No homework for the next {event.days} days."
     group_id = config.TELEGRAM_DEFAULT_GROUP_ID
 
     print(f"notifying using telegram to group {group_id}: {msg}")

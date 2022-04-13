@@ -8,10 +8,10 @@ from . import Event
 
 @dataclass
 class NoHomework(Event):
-    days: int = 5
+    days: int
 
 
 @dataclass
 class HomeworkAvailable(Event):
     assignments: List[Assignment]
-    days: int = 5
+    days: int

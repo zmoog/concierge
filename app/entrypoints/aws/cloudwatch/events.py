@@ -2,9 +2,8 @@ import logging
 from datetime import date
 
 from app import bootstrap, config
-from app.domain import commands
+from app.domain import commands, model
 from app.domain.commands.school import ListHomework
-from app.domain import model
 
 app_logger = logging.getLogger()
 app_logger.setLevel(config.LOG_LEVEL)

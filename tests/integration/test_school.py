@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 
 from app.adapters import classeviva, telegram
 from app.domain.commands.school import ListHomework
@@ -13,35 +13,19 @@ def test_no_homework(
     telegram_adapter: telegram.TelegramAdapter,
 ):
     mocker.patch.object(classeviva_adapter, "list_assignments")
-    classeviva_adapter.list_assignments.side_effect = [
-        [
-            # Product(
-            #     name="iPad Wi-Fi + Cellular 32GB ricondizionato",
-            #     family="ipad",
-            #     url="https://www.apple.com/it/shop/product/FR7K2TY/A/ipad-wifi-32gb",  # noqa: E501
-            #     price=decimal.Decimal("419.00"),
-            #     previous_price=decimal.Decimal("489.00"),
-            #     savings_price=decimal.Decimal("70.00"),
-            # ),
-            # Product(
-            #     name="iPad Wi-Fi + Cellular 128GB ricondizionato",
-            #     family="ipad",
-            #     url="https://www.apple.com/it/shop/product/FR7K2TY/A/ipad-wifi-cellular-128gb",  # noqa: E501
-            #     price=decimal.Decimal("499.00"),
-            #     previous_price=decimal.Decimal("499.00"),
-            #     savings_price=decimal.Decimal("0.00"),
-            # ),
-        ]
-    ]
+    classeviva_adapter.list_assignments.side_effect = [[]]
 
     mocker.patch.object(telegram_adapter, "send_message")
     telegram_adapter.send_message.side_effect = [None]
 
-    cmd = ListHomework(days=5)
+    cmd = ListHomework(
+        since=datetime.today(),
+        until=datetime.today() + timedelta(days=5),
+    )
 
     messagebus.handle(cmd, {})
 
-    message = "No homework for the next 5 days"
+    message = "No homework for the next 5 days."
     group_id = "161035319"
     telegram_adapter.send_message.assert_called_once_with(message, group_id)
 
@@ -75,7 +59,10 @@ def test_homework_available(
     mocker.patch.object(telegram_adapter, "send_message")
     telegram_adapter.send_message.side_effect = [None]
 
-    cmd = ListHomework(days=5)
+    cmd = ListHomework(
+        since=datetime.today(),
+        until=datetime.today() + timedelta(days=5),
+    )
     messagebus.handle(cmd, {})
 
     message = """Here's the homework for the next 5 days:

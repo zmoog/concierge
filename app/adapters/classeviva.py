@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta
+from datetime import date, datetime
 from typing import List
 
 from classeviva.client import Client
@@ -8,14 +8,11 @@ from app.domain.model.school import Assignment
 
 
 class ClassevivaAdapter:
-    def list_assignments(self, days: int = 5) -> List[Assignment]:
+    def list_assignments(self, since: date, until: date) -> List[Assignment]:
         creds = EnvCredentialsProvider()
 
         with Client(creds) as client:
-            since = datetime.today()
-            until = since + timedelta(days=days)
-
-            entries = client.list_agenda(since=since, until=until)
+            entries = client.list_agenda(since, until)
             return [
                 Assignment(
                     id=entry.id,
