@@ -32,16 +32,20 @@ provider:
   # you can define service wide environment variables here
   environment:
     LOG_LEVEL: INFO
+    CLASSEVIVA_USERNAME: ${ssm:/concierge/${self:provider.stage}/classeviva-username}
+    CLASSEVIVA_PASSWORD: ${ssm:/concierge/${self:provider.stage}/classeviva-password}
     DROPBOX_ROOT_FOLDER: ${ssm:/concierge/${self:provider.stage}/dropbox-root-folder}
     DROPBOX_ACCESS_TOKEN: ${ssm:/concierge/${self:provider.stage}/dropbox-access-token}
     IFQ_USERNAME: ${ssm:/concierge/${self:provider.stage}/ifq-username}
     IFQ_PASSWORD: ${ssm:/concierge/${self:provider.stage}/ifq-password}
     SLACK_WEBHOOK_URL: ${ssm:/concierge/${self:provider.stage}/slack-webhook-url}
     SLACK_SIGNING_SECRET: ${ssm:/concierge/${self:provider.stage}/slack-signing-secret}
+    SNS_COMMANDS_TOPIC_ARN: "!Ref CommandTopic"
+    TELEGRAM_TOKEN: ${ssm:/concierge/${self:provider.stage}/telegram-token}
+    TELEGRAM_DEFAULT_GROUP_ID: ${ssm:/concierge/${self:provider.stage}/telegram-default-group-id}
     TOGGL_API_TOKEN: ${ssm:/concierge/${self:provider.stage}/toggl-api-token}
     TOGGL_USER_AGENT: ${ssm:/concierge/${self:provider.stage}/toggl-user-agent}
     TOGGL_WORKSPACE_ID: ${ssm:/concierge/${self:provider.stage}/toggl-workspace-id}
-    SNS_COMMANDS_TOPIC_ARN: "!Ref CommandTopic"
 
 
 # you can add packaging information here
@@ -93,21 +97,21 @@ functions:
       - schedule:
           name: ${self:service}-${opt:stage, self:provider.stage}-toggl-summarize-previous-business-day
           rate: cron(30 6 ? * MON-SUN *)
-          enabled: true
+          enabled: false
           input:
             Summarize:
               when: previous_business_day
       - schedule:
           name: ${self:service}-${opt:stage, self:provider.stage}-toggl-summarize-today
           rate: cron(30 16 ? * MON-SUN *)
-          enabled: true
+          enabled: false
           input:
             Summarize:
               when: today
       - schedule:
           name: ${self:service}-${opt:stage, self:provider.stage}-refurbished-products
           rate: cron(00 6 ? * MON-SUN *)
-          enabled: true
+          enabled: false
           input:
             CheckRefurbished:
               store: it

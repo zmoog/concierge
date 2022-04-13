@@ -2,6 +2,9 @@ export AWS_DEFAULT_REGION='eu-west-1'
 
 export LOG_LEVEL='INFO'
 
+export TELEGRAM_TOKEN=""
+export TELEGRAM_DEFAULT_GROUP_ID="123456"
+
 export TOGGL_API_TOKEN=''
 export TOGGL_USER_AGENT=''
 export TOGGL_WORKSPACE_ID=''

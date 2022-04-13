@@ -3,7 +3,15 @@ import json
 import pytest
 
 from app import bootstrap, config
-from app.adapters import apple, dropbox, ifq, slack, toggl
+from app.adapters import (
+    apple,
+    classeviva,
+    dropbox,
+    ifq,
+    slack,
+    telegram,
+    toggl,
+)
 from app.services.messagebus import MessageBus
 from app.services.unit_of_work import UnitOfWork
 
@@ -52,11 +60,8 @@ from app.services.unit_of_work import UnitOfWork
 
 
 @pytest.fixture(scope="function")
-def ifq_adapter():
-    return ifq.IFQAdapter(
-        config.IFQ_USERNAME,
-        config.IFQ_PASSWORD,
-    )
+def refurbished_adapter():
+    return apple.RefurbishedStoreAdapter()
 
 
 @pytest.fixture(scope="function")
@@ -68,10 +73,28 @@ def dropbox_adapter():
 
 
 @pytest.fixture(scope="function")
+def classeviva_adapter():
+    return classeviva.ClassevivaAdapter()
+
+
+@pytest.fixture(scope="function")
+def ifq_adapter():
+    return ifq.IFQAdapter(
+        config.IFQ_USERNAME,
+        config.IFQ_PASSWORD,
+    )
+
+
+@pytest.fixture(scope="function")
 def slack_adapter():
     return slack.SlackAdapter(
         slack.SlackConfig(webhook_url=config.SLACK_WEBHOOK_URL)
     )
+
+
+@pytest.fixture(scope="function")
+def telegram_adapter():
+    return telegram.TelegramAdapter(config.TELEGRAM_TOKEN)
 
 
 @pytest.fixture(scope="function")
@@ -80,24 +103,23 @@ def toggl_adapter():
 
 
 @pytest.fixture(scope="function")
-def refurbished_adapter():
-    return apple.RefurbishedStoreAdapter()
-
-
-@pytest.fixture(scope="function")
 def uow(
-    toggl_adapter,
-    ifq_adapter,
-    dropbox_adapter,
-    slack_adapter,
     refurbished_adapter,
+    classeviva_adapter,
+    dropbox_adapter,
+    ifq_adapter,
+    slack_adapter,
+    telegram_adapter,
+    toggl_adapter,
 ):
     return UnitOfWork(
-        toggl_adapter,
-        ifq_adapter,
-        dropbox_adapter,
-        slack_adapter,
         refurbished_adapter,
+        classeviva_adapter,
+        dropbox_adapter,
+        ifq_adapter,
+        slack_adapter,
+        telegram_adapter,
+        toggl_adapter,
     )
 
 

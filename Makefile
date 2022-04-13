@@ -1,6 +1,6 @@
 .PHONY:
 
-sources = cli/* app tests
+sources = app tests
 line_length = 79
 black_options = --line-length=${line_length} ${sources}
 isort_options = --line-length=${line_length} --py 39 --profile black ${sources}

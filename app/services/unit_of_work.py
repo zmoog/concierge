@@ -1,20 +1,32 @@
-from app.adapters import apple, dropbox, ifq, slack, toggl
+from app.adapters import (
+    apple,
+    classeviva,
+    dropbox,
+    ifq,
+    slack,
+    telegram,
+    toggl,
+)
 
 
 class UnitOfWork:
     def __init__(
         self,
-        toggl: toggl.TogglAdapter,
-        ifq: ifq.IFQAdapter,
-        dropbox: dropbox.DropboxAdapter,
-        slack: slack.SlackAdapter,
         refurbished: apple.RefurbishedStoreAdapter,
+        classeviva: classeviva.ClassevivaAdapter,
+        dropbox: dropbox.DropboxAdapter,
+        ifq: ifq.IFQAdapter,
+        slack: slack.SlackAdapter,
+        telegram: telegram.TelegramAdapter,
+        toggl: toggl.TogglAdapter,
     ):
+        self.refurbished = refurbished
+        self.classeviva = classeviva
         self.dropbox = dropbox
         self.ifq = ifq
-        self.toggl = toggl
         self.slack = slack
-        self.refurbished = refurbished
+        self.telegram = telegram
+        self.toggl = toggl
 
     def __enter__(self):
         pass
