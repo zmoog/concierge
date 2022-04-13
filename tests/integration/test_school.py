@@ -26,7 +26,7 @@ def test_no_homework(
     messagebus.handle(cmd, {})
 
     message = "No homework for the next 5 days."
-    group_id = "161035319"
+    group_id = "123456"
     telegram_adapter.send_message.assert_called_once_with(message, group_id)
 
 
@@ -74,5 +74,5 @@ def test_homework_available(
 - DICEMBRE ELISA, CONSEGNA E CORREZIONE VERIFICA GRAMMATICA
 
 """
-    group_id = "161035319"
+    group_id = "123456"
     telegram_adapter.send_message.assert_called_once_with(message, group_id)
