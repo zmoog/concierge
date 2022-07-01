@@ -2,7 +2,7 @@
 boto3==1.22.10
 click==8.0.4
 dropbox==11.29.0
-humanize==4.0.0
+humanize==4.2.3
 lxml==4.8.0
 price-parser==0.3.4
 pydantic==1.9.0
