@@ -5,7 +5,7 @@ dropbox==11.29.0
 humanize==4.0.0
 lxml==4.8.0
 price-parser==0.3.4
-pydantic==1.9.0
+pydantic==1.9.2
 python-dateutil==2.8.2
 refurbished==0.7.1
 requests==2.27.1
