@@ -9,5 +9,5 @@ pydantic==1.9.0
 python-dateutil==2.8.2
 refurbished==0.7.1
 requests==2.27.1
-setuptools==62.0.0
+setuptools==65.0.0
 typing-extensions==4.1.1
