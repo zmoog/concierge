@@ -10,4 +10,4 @@ python-dateutil==2.8.2
 refurbished==0.7.1
 requests==2.27.1
 setuptools==65.6.3
-typing-extensions==4.1.1
+typing-extensions==4.4.0
